@@ -8,7 +8,7 @@ namespace DSharpPlus.Examples.Bots
     {
         static void Main(string[] args = null)
         {
-            string dev = "ODIyMjQyNDQ0MDcwMDkyODYw.YFPa8w.bqrtuN3t7L1FQ9kRsm08clbJDUo";
+            string dev = "";
             Console.WriteLine($"{Assembly.GetExecutingAssembly().FullName.Split(",")[0]} has the permission to run. Yay!");
             using var b = new Bot(dev);
             b.RunAsync().Wait();
