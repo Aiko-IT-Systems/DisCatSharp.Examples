@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+    <Authors>Lulalaby (Lala Sabathil) &lt;aiko@aitsys.dev&gt;</Authors>
+    <Company>Aiko IT Systems</Company>
+    <Product>DSharpPlus Example Bots</Product>
+    <PackageLicenseExpression>The Unlicense</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/Aiko-IT-Systems/DSharpPlus.Examples.Bots</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Aiko-IT-Systems/DSharpPlus.Examples.Bots</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>dsharpplus,discord,examples,csharp,slashcommands,voice</PackageTags>
+    <Description>Example Bots written in DSharpPlus</Description>
+    <Copyright>2021 General</Copyright>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DSharpPlus" Version="4.1.0" />
+    <PackageReference Include="DSharpPlus.CommandsNext" Version="4.1.0" />
+    <PackageReference Include="DSharpPlus.Interactivity" Version="4.1.0" />
+    <PackageReference Include="DSharpPlus.VoiceNext" Version="4.1.0" />
+    <PackageReference Include="IDoEverything.DSharpPlus.SlashCommands" Version="1.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="SlashCommands\" />
+  </ItemGroup>
+
+</Project>
