@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\pkmor\\source\\repos\\DSharpTest\\DSharpTestBot\\DSharpPlus.Examples.Bots.csproj": {}
+    "C:\\Users\\pkmor\\source\\GitHub\\DSharpPlus.Examples.Bots\\DSharpPlus.Examples\\DSharpPlus.Examples.Bots\\DSharpPlus.Examples.Bots.csproj": {}
   },
   "projects": {
-    "C:\\Users\\pkmor\\source\\repos\\DSharpTest\\DSharpTestBot\\DSharpPlus.Examples.Bots.csproj": {
+    "C:\\Users\\pkmor\\source\\GitHub\\DSharpPlus.Examples.Bots\\DSharpPlus.Examples\\DSharpPlus.Examples.Bots\\DSharpPlus.Examples.Bots.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\pkmor\\source\\repos\\DSharpTest\\DSharpTestBot\\DSharpPlus.Examples.Bots.csproj",
+        "projectUniqueName": "C:\\Users\\pkmor\\source\\GitHub\\DSharpPlus.Examples.Bots\\DSharpPlus.Examples\\DSharpPlus.Examples.Bots\\DSharpPlus.Examples.Bots.csproj",
         "projectName": "DSharpPlus.Examples.Bots",
-        "projectPath": "C:\\Users\\pkmor\\source\\repos\\DSharpTest\\DSharpTestBot\\DSharpPlus.Examples.Bots.csproj",
+        "projectPath": "C:\\Users\\pkmor\\source\\GitHub\\DSharpPlus.Examples.Bots\\DSharpPlus.Examples\\DSharpPlus.Examples.Bots\\DSharpPlus.Examples.Bots.csproj",
         "packagesPath": "C:\\Users\\pkmor\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\pkmor\\source\\repos\\DSharpTest\\DSharpTestBot\\obj\\",
+        "outputPath": "C:\\Users\\pkmor\\source\\GitHub\\DSharpPlus.Examples.Bots\\DSharpPlus.Examples\\DSharpPlus.Examples.Bots\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "F:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

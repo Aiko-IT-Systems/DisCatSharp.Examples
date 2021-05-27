@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31205.134
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSharpPlus.Examples.Bots", "DSharpTestBot\DSharpPlus.Examples.Bots.csproj", "{10EA414A-AA65-459B-86C0-A88C79C8A0EB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSharpPlus.Examples.Bots", "DSharpPlus.Examples.Bots\DSharpPlus.Examples.Bots.csproj", "{10EA414A-AA65-459B-86C0-A88C79C8A0EB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
