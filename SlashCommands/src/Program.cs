@@ -49,6 +49,8 @@ namespace SlashCommands
             slashCommandsExtension.RegisterCommands<SlashCommands.Commands.RoleInfo>(832354798153236510);
             // Shows how to use enums in commands
             slashCommandsExtension.RegisterCommands<SlashCommands.Commands.RollRandom>(832354798153236510);
+            // Shows how to use Discord entities in commands
+            slashCommandsExtension.RegisterCommands<SlashCommands.Commands.Slap>(832354798153236510);
             // A group command which contains more thorough examples
             slashCommandsExtension.RegisterCommands<SlashCommands.Commands.Tags>(832354798153236510);
 
