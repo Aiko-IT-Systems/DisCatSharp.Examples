@@ -16,7 +16,6 @@ namespace SlashCommands
             Console.WriteLine("Starting bot...");
 
             // CHALLENGE: Try making sure the token is provided! Hint: A Try/Catch block may be needed!
-
             DiscordConfiguration discordConfiguration = new()
             {
                 // The token is recieved from the command line arguments (bad practice in production!)
