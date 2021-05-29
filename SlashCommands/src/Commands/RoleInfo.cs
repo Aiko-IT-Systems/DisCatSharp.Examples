@@ -9,7 +9,7 @@ namespace SlashCommands.Commands
     public class RoleInfo : SlashCommandModule
     {
         [SlashCommand("role_info", "Gets general information about a role.")]
-        public static async Task ByProgram(InteractionContext context,
+        public static async Task Command(InteractionContext context,
             // Option adds an argument to the command
             [Option("role", "The role to get information on.")] DiscordRole discordRole)
         {

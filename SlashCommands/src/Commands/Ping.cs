@@ -10,7 +10,7 @@ namespace SlashCommands.Commands
     {
         // Slash command registers the name and command description.
         [SlashCommand("ping", "Checks the latency between the bot and the Discord API. Best used to see if the bot is lagging.")]
-        public async Task Command(InteractionContext context)
+        public static async Task Command(InteractionContext context)
         {
             // Create the response message
             DiscordInteractionResponseBuilder discordInteractionResponseBuilder = new();

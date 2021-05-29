@@ -19,7 +19,7 @@ namespace SlashCommands.Commands
             public static List<Tag> Tags { get; private set; } = new();
 
             [SlashCommand("send", "Sends a premade message.")]
-            public async Task Send(InteractionContext context, [Option("name", "The name of the tag to send")] string tagName)
+            public static async Task Send(InteractionContext context, [Option("name", "The name of the tag to send")] string tagName)
             {
                 DiscordInteractionResponseBuilder discordInteractionResponseBuilder = new();
                 // This is a guild command, make sure nobody can execute this command in dm's
@@ -58,7 +58,7 @@ namespace SlashCommands.Commands
             }
 
             [SlashCommand("create", "Creates a new tag for everyone to use.")]
-            public async Task Create(InteractionContext context, [Option("name", "What to call the new tag.")] string tagName,
+            public static async Task Create(InteractionContext context, [Option("name", "What to call the new tag.")] string tagName,
                 // Be giving the tagContent an optional argument in C#, it becomes an optional argument in Discord too!
                 [Option("content", "What to fill the tag with.")] string tagContent = "I'm an empty tag :(")
             {
@@ -99,7 +99,7 @@ namespace SlashCommands.Commands
             }
 
             [SlashCommand("delete", "Deletes a tag from the guild.")]
-            public async Task Delete(InteractionContext context, [Option("name", "The name of the tag that should be deleted.")] string tagName)
+            public static async Task Delete(InteractionContext context, [Option("name", "The name of the tag that should be deleted.")] string tagName)
             {
                 DiscordInteractionResponseBuilder discordInteractionResponseBuilder = new();
                 if (context.Guild == null)
