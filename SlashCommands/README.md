@@ -3,6 +3,7 @@ This example bot shows you how to use the basic usage of slash commands. When le
 - [Program.cs](./src/Program.cs) (Setting up slash commands)
 - [Ping.cs](./src/Commands/Ping.cs) (Basic usage of slash commands)
 - [RoleInfo.cs](./src/Commands/RoleInfo.cs) (Slash commands with arguments)
+- [RollRandom.cs](./src/Commands/RollRandom.cs) (Slash commands with enums)
 - [Tags.cs](./src/Commands/Tags.cs) (Group slash commands + optional arguments)
 
 Throughout the project, you'll occasionally come across "challenge comments" which looks like such:
