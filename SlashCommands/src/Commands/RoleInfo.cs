@@ -10,8 +10,8 @@ namespace SlashCommands.Commands
     {
         [SlashCommand("role_info", "Gets general information about a role.")]
         public static async Task ByProgram(InteractionContext context,
-        // Option adds an argument to the command
-        [Option("role", "The role to get information on.")] DiscordRole discordRole)
+            // Option adds an argument to the command
+            [Option("role", "The role to get information on.")] DiscordRole discordRole)
         {
             // This is a guild command, make sure nobody can execute this command in dm's
             if (context.Guild == null)

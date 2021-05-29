@@ -48,7 +48,7 @@ namespace SlashCommands
             // Shows how to use arguments with slash commands
             slashCommandsExtension.RegisterCommands<SlashCommands.Commands.RoleInfo>(832354798153236510);
             // A group command which contains more thorough examples
-            //slashCommandsExtension.RegisterCommands<SlashCommands.Commands.Tags>();
+            slashCommandsExtension.RegisterCommands<SlashCommands.Commands.Tags>(832354798153236510);
 
             Console.WriteLine("Connecting to Discord...");
             await discordClient.ConnectAsync();
