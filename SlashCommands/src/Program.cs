@@ -52,6 +52,8 @@ namespace SlashCommands
             slashCommandsExtension.RegisterCommands<SlashCommands.Commands.Slap>(832354798153236510);
             // A group command which contains more thorough examples
             slashCommandsExtension.RegisterCommands<SlashCommands.Commands.Tags>(832354798153236510);
+            // Shows how to use choice attributes
+            slashCommandsExtension.RegisterCommands<SlashCommands.Commands.Tell>(832354798153236510);
             // Demonstrates how to use the IChoiceProvider interface. Complicated Reflection magic ahead.
             slashCommandsExtension.RegisterCommands<SlashCommands.Commands.TriggerHelp>(832354798153236510);
 
