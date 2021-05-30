@@ -7,6 +7,7 @@ This example bot shows you how to use the basic usage of slash commands. When le
 - [RollRandom.cs](./src/Commands/RollRandom.cs) (Slash commands with enums)
 - [Slap.cs](./src/Commands/Slap.cs) (Shows how to use DiscordEntities)
 - [Tags.cs](./src/Commands/Tags.cs) (Group slash commands + optional arguments)
+- [TriggerHelp.cs](./src/Commands/TriggerHelp.cs) (Shows advanced usage of ChoiceProvider attribute with Reflection)
 
 Throughout the project, you'll occasionally come across "challenge comments" which looks like such:
 
