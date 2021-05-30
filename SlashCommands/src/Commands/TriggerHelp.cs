@@ -23,7 +23,8 @@ namespace SlashCommands.Commands
             {
                 await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new()
                 {
-                    Content = $"Command {Formatter.InlineCode(Formatter.Sanitize(commandName))} not found!"
+                    Content = $"Error: Command {Formatter.InlineCode(Formatter.Sanitize(commandName))} not found!",
+                    IsEphemeral = true
                 });
                 return;
             }
