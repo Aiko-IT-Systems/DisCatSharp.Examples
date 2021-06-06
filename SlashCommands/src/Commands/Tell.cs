@@ -8,6 +8,20 @@ namespace SlashCommands.Commands
 {
     public class Tell : SlashCommandModule
     {
+        public override Task BeforeExecutionAsync(InteractionContext context)
+        {
+            if (context.Guild == null)
+            {
+                context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new()
+                {
+                    Content = "Error: This command can only be used in a guild!",
+                    IsEphemeral = true
+                });
+            }
+
+            return Task.CompletedTask;
+        }
+
         // Slash command registers the name and command description.
         [SlashCommand("tell", "Sends someone a message.")]
         public static async Task Command(InteractionContext context, [Option("victim", "Who the bot is messaging.")] DiscordUser victim,

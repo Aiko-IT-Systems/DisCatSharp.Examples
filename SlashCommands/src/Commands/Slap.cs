@@ -8,6 +8,20 @@ namespace SlashCommands.Commands
 {
     public class Slap : SlashCommandModule
     {
+        public override Task BeforeExecutionAsync(InteractionContext context)
+        {
+            if (context.Guild == null)
+            {
+                context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new()
+                {
+                    Content = "Error: This command can only be used in a guild!",
+                    IsEphemeral = true
+                });
+            }
+
+            return Task.CompletedTask;
+        }
+
         [SlashCommand("slap", "Slaps the user so hard, it kicks them out of the guild.")]
         public static async Task Command(InteractionContext context, [Option("victim", "Who should I slap?")] DiscordUser victim = null)
         {

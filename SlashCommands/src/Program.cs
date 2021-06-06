@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using DSharpPlus;
 using DSharpPlus.SlashCommands;
@@ -26,7 +28,7 @@ namespace SlashCommands
             };
 
             // Slash commands do not support sharding at this time.
-            DiscordClient discordClient = new(discordConfiguration);
+            DiscordShardedClient discordShardedClient = new(discordConfiguration);
 
             // Dependency injection does not currently work at this time, but if they did, this is how you would do it:
             //SlashCommandsConfiguration slashCommandsConfiguration = new()
@@ -34,33 +36,21 @@ namespace SlashCommands
             //    Services = new ServiceCollection().AddSingleton<Random>().BuildServiceProvider()
             //}
 
-            SlashCommandsExtension slashCommandsExtension = discordClient.UseSlashCommands();
-
             // Let the user know that we're registering the commands.
             Console.WriteLine("Registering slash commands...");
 
-            // Register commands manually, since they currently cannot be automatically picked from assembly like BaseCommandModule from CommandsNext
-            // TODO: Remove 832354798153236510 (guild id) when you want commands to be global!
-            //       It's recommended to register the command to a guild when testing, as the commands register much faster!
-            // A simple 1 off command with no arguments
-            slashCommandsExtension.RegisterCommands<SlashCommands.Commands.Ping>(832354798153236510);
-            // Shows how to use arguments with slash commands
-            slashCommandsExtension.RegisterCommands<SlashCommands.Commands.RoleInfo>(832354798153236510);
-            // Shows how to use enums in commands
-            slashCommandsExtension.RegisterCommands<SlashCommands.Commands.RollRandom>(832354798153236510);
-            // Shows how to use Discord entities in commands
-            slashCommandsExtension.RegisterCommands<SlashCommands.Commands.Slap>(832354798153236510);
-            // A group command which contains more thorough examples
-            slashCommandsExtension.RegisterCommands<SlashCommands.Commands.Tags>(832354798153236510);
-            // Shows how to use choice attributes
-            slashCommandsExtension.RegisterCommands<SlashCommands.Commands.Tell>(832354798153236510);
-            // Demonstrates how to use the IChoiceProvider interface. Complicated Reflection magic ahead.
-            slashCommandsExtension.RegisterCommands<SlashCommands.Commands.TriggerHelp>(832354798153236510);
+            foreach (SlashCommandsExtension slashCommandShardExtension in (await discordShardedClient.UseSlashCommandsAsync()).Values)
+            {
+                foreach (Type slashCommandClass in Assembly.GetEntryAssembly().GetTypes().Where(type => type?.GetCustomAttribute<SlashCommandAttribute>() != null && !type.IsNested))
+                {
+                    slashCommandShardExtension.RegisterCommands(slashCommandClass);
+                }
+            }
 
             Console.WriteLine("Connecting to Discord...");
-            await discordClient.ConnectAsync();
+            await discordShardedClient.StartAsync();
             // Use the default logger provided for easy reading
-            discordClient.Logger.LogInformation($"Connection success! Logged in as {discordClient.CurrentUser.Username}#{discordClient.CurrentUser.Discriminator} ({discordClient.CurrentUser.Id})");
+            discordShardedClient.Logger.LogInformation($"Connection success! Logged in as {discordShardedClient.CurrentUser.Username}#{discordShardedClient.CurrentUser.Discriminator} ({discordShardedClient.CurrentUser.Id})");
             // Listen for commands by putting this method to sleep and relying off of DiscordClient's event listeners
             await Task.Delay(-1);
         }
