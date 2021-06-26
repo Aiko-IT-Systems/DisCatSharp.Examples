@@ -5,7 +5,6 @@ VisualStudioVersion = 16.0.31205.134
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSharpPlus.Examples.Bots", "Basics\Basics.csproj", "{10EA414A-AA65-459B-86C0-A88C79C8A0EB}"
 EndProject
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBD}") = "SlashCommands", "SlashCommands\SlashCommands.csproj", "{D4AF1B7E-A8A4-45A2-9D22-CF1360D89D96}"
 EndProject
 Global
