@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using DSharpPlus;
 using DSharpPlus.SlashCommands;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace SlashCommands
@@ -27,30 +28,33 @@ namespace SlashCommands
                 Token = args[0]
             };
 
-            // Slash commands do not support sharding at this time.
             DiscordShardedClient discordShardedClient = new(discordConfiguration);
-
-            // Dependency injection does not currently work at this time, but if they did, this is how you would do it:
-            //SlashCommandsConfiguration slashCommandsConfiguration = new()
-            //{
-            //    Services = new ServiceCollection().AddSingleton<Random>().BuildServiceProvider()
-            //}
-
-            // Let the user know that we're registering the commands.
-            Console.WriteLine("Registering slash commands...");
-
-            foreach (SlashCommandsExtension slashCommandShardExtension in (await discordShardedClient.UseSlashCommandsAsync()).Values)
-            {
-                foreach (Type slashCommandClass in Assembly.GetEntryAssembly().GetTypes().Where(type => type?.GetCustomAttribute<SlashCommandAttribute>() != null && !type.IsNested))
-                {
-                    slashCommandShardExtension.RegisterCommands(slashCommandClass);
-                }
-            }
 
             Console.WriteLine("Connecting to Discord...");
             await discordShardedClient.StartAsync();
+
             // Use the default logger provided for easy reading
             discordShardedClient.Logger.LogInformation($"Connection success! Logged in as {discordShardedClient.CurrentUser.Username}#{discordShardedClient.CurrentUser.Discriminator} ({discordShardedClient.CurrentUser.Id})");
+
+            SlashCommandsConfiguration slashCommandsConfiguration = new()
+            {
+                Services = new ServiceCollection().AddSingleton<Random>().BuildServiceProvider()
+            };
+
+            // Let the user know that we're registering the commands.
+            discordShardedClient.Logger.LogInformation("Registering slash commands...");
+
+            Type slashCommandModule = typeof(SlashCommandModule);
+            foreach (DiscordClient discordClient in discordShardedClient.ShardClients.Values)
+            {
+                SlashCommandsExtension slashCommandShardExtension = discordClient.UseSlashCommands();
+                foreach (Type type in Assembly.GetEntryAssembly().GetTypes().Where(type => slashCommandModule.IsAssignableFrom(type) && !type.IsNested))
+                {
+                    slashCommandShardExtension.RegisterCommands(type, 832354798153236510);
+                    discordShardedClient.Logger.LogInformation($"Registered {type.Name} class...");
+                }
+            }
+
             // Listen for commands by putting this method to sleep and relying off of DiscordClient's event listeners
             await Task.Delay(-1);
         }

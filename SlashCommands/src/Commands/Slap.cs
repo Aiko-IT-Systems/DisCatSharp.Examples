@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading.Tasks;
 using DSharpPlus;
 using DSharpPlus.Entities;
@@ -8,18 +9,10 @@ namespace SlashCommands.Commands
 {
     public class Slap : SlashCommandModule
     {
-        public override Task BeforeExecutionAsync(InteractionContext context)
+        // Checks to see if the user has the KickMembers permission. If they do, it executes the command. If they don't, the command fails silently.
+        public override Task<bool> BeforeExecutionAsync(InteractionContext context)
         {
-            if (context.Guild == null)
-            {
-                context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new()
-                {
-                    Content = "Error: This command can only be used in a guild!",
-                    IsEphemeral = true
-                });
-            }
-
-            return Task.CompletedTask;
+            return Task.FromResult(context.Member.Roles.Any(role => role.Permissions.HasPermission(Permissions.KickMembers)));
         }
 
         [SlashCommand("slap", "Slaps the user so hard, it kicks them out of the guild.")]

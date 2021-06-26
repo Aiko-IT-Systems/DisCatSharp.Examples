@@ -67,7 +67,7 @@ namespace SlashCommands.Commands
 
     public class TriggerHelpChoiceProvider : IChoiceProvider
     {
-        public static Dictionary<string, MethodInfo> Commands = new();
+        internal static Dictionary<string, MethodInfo> Commands = new();
 
         public static void SearchCommands(Type type, string commandName = "")
         {
@@ -107,7 +107,7 @@ namespace SlashCommands.Commands
                         // /groupCommand delete
                         // /groupCommand create
                         string subCommand = commandName + ' ' + slashCommandAttribute.Name;
-                        Commands.Add(subCommand, command);
+                        Commands.Add(subCommand.Trim(), command);
                     }
                 }
             }

@@ -10,20 +10,6 @@ namespace SlashCommands.Commands
     // Notice how the GroupSlashCommand attribute isn't on this class, but the subclass
     public class Tags : SlashCommandModule
     {
-        public override Task BeforeExecutionAsync(InteractionContext context)
-        {
-            if (context.Guild == null)
-            {
-                context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new()
-                {
-                    Content = "Error: This command can only be used in a guild!",
-                    IsEphemeral = true
-                });
-            }
-
-            return Task.CompletedTask;
-        }
-
         // Also inherits SlashCommandModule
         // SlashCommandGroup is what makes group commands!
         [SlashCommandGroup("tag_test", "Sends, modifies or deletes a premade message.")]
