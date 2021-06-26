@@ -36,6 +36,7 @@ namespace SlashCommands
             // Use the default logger provided for easy reading
             discordShardedClient.Logger.LogInformation($"Connection success! Logged in as {discordShardedClient.CurrentUser.Username}#{discordShardedClient.CurrentUser.Discriminator} ({discordShardedClient.CurrentUser.Id})");
 
+            // Register a Random class instance now for use later over in RollRandom.cs
             SlashCommandsConfiguration slashCommandsConfiguration = new()
             {
                 Services = new ServiceCollection().AddSingleton<Random>().BuildServiceProvider()
