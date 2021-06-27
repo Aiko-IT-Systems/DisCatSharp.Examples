@@ -4,6 +4,6 @@
     <DebuggerFlavor>ProjectDebugger</DebuggerFlavor>
   </PropertyGroup>
   <PropertyGroup>
-    <ActiveDebugProfile>DSharpTestBot</ActiveDebugProfile>
+    <ActiveDebugProfile>Bots.Basic</ActiveDebugProfile>
   </PropertyGroup>
 </Project>
