@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DSharpPlus;
-using DSharpPlus.Entities;
-using DSharpPlus.SlashCommands;
+using DSharpPlusNextGen;
+using DSharpPlusNextGen.Entities;
+using DSharpPlusNextGen.SlashCommands;
 
 namespace SlashCommands.Commands
 {

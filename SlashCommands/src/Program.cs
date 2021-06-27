@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using DSharpPlus;
-using DSharpPlus.SlashCommands;
+using DSharpPlusNextGen;
+using DSharpPlusNextGen.SlashCommands;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -44,7 +44,7 @@ namespace SlashCommands
 
             // Let the user know that we're registering the commands.
             discordShardedClient.Logger.LogInformation("Registering slash commands...");
-
+            
             Type slashCommandModule = typeof(SlashCommandModule);
             foreach (DiscordClient discordClient in discordShardedClient.ShardClients.Values)
             {
