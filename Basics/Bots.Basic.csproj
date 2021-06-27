@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+    <Authors>Lulalaby (Lala Sabathil) &lt;aiko@aitsys.dev&gt; Ottero</Authors>
+    <Company>Aiko IT Systems</Company>
+    <Product>DSharpPlusNextGen Basic Example Bot</Product>
+    <PackageLicenseExpression>The Unlicense</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/Aiko-IT-Systems/DSharpPlusNextGen.Examples/tree/main/Bots.Basic</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Aiko-IT-Systems/DSharpPlusNextGen.Examples</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>dsharpplusnextgen,discord,examples,csharp,slashcommands,voice</PackageTags>
+    <Description>Example Bots written in DSharpPlus NextGen</Description>
+    <Copyright>2021 AITSYS</Copyright>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DSharpPlusNextGen" Version="6.0.1" />
+    <PackageReference Include="DSharpPlusNextGen.CommandsNext" Version="6.0.1" />
+    <PackageReference Include="DSharpPlusNextGen.Interactivity" Version="6.0.1" />
+    <PackageReference Include="DSharpPlusNextGen.VoiceNext" Version="6.0.1" />
+    <PackageReference Include="DSharpPlusNextGen.SlashCommands" Version="6.0.1" />
+  </ItemGroup>
+
+</Project>
