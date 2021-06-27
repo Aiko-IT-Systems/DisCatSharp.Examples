@@ -16,11 +16,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DSharpPlusNextGen" Version="6.0.1" />
-    <PackageReference Include="DSharpPlusNextGen.CommandsNext" Version="6.0.1" />
-    <PackageReference Include="DSharpPlusNextGen.Interactivity" Version="6.0.1" />
-    <PackageReference Include="DSharpPlusNextGen.VoiceNext" Version="6.0.1" />
-    <PackageReference Include="DSharpPlusNextGen.SlashCommands" Version="6.0.1" />
+    <PackageReference Include="DSharpPlusNextGen" Version="9.0.0" />
+    <PackageReference Include="DSharpPlusNextGen.CommandsNext" Version="9.0.0" />
+    <PackageReference Include="DSharpPlusNextGen.Interactivity" Version="9.0.0" />
+    <PackageReference Include="DSharpPlusNextGen.VoiceNext" Version="9.0.0" />
+    <PackageReference Include="DSharpPlusNextGen.SlashCommands" Version="9.0.0" />
   </ItemGroup>
 
 </Project>
