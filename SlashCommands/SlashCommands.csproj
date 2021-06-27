@@ -5,6 +5,6 @@
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="DSharpPlusNextGen" Version="9.0.0" />
-        <PackageReference Include="DSharpPlusNextGen.SlashCommands" Version="9.0.0" />
+        <PackageReference Include="DSharpPlusNextGen.SlashCommands" Version="9.1.0" />
     </ItemGroup>
 </Project>
