@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using DSharpPlusNextGen;
 using DSharpPlusNextGen.SlashCommands;
@@ -49,11 +47,13 @@ namespace SlashCommands
             foreach (DiscordClient discordClient in discordShardedClient.ShardClients.Values)
             {
                 SlashCommandsExtension slashCommandShardExtension = discordClient.UseSlashCommands();
-                foreach (Type type in Assembly.GetEntryAssembly().GetTypes().Where(type => slashCommandModule.IsAssignableFrom(type) && !type.IsNested))
-                {
-                    slashCommandShardExtension.RegisterCommands(type, 832354798153236510);
-                    discordShardedClient.Logger.LogInformation($"Registered {type.Name} class...");
-                }
+                slashCommandShardExtension.RegisterCommands<Commands.Ping>();
+                slashCommandShardExtension.RegisterCommands<Commands.RoleInfo>();
+                slashCommandShardExtension.RegisterCommands<Commands.RollRandom>();
+                slashCommandShardExtension.RegisterCommands<Commands.Slap>();
+                slashCommandShardExtension.RegisterCommands<Commands.Tags>();
+                slashCommandShardExtension.RegisterCommands<Commands.Tell>();
+                slashCommandShardExtension.RegisterCommands<Commands.TriggerHelp>();
             }
 
             // Listen for commands by putting this method to sleep and relying off of DiscordClient's event listeners

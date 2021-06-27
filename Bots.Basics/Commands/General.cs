@@ -21,7 +21,7 @@ namespace DSharpPlusNextGen.Examples.Bots.Basics.Commands
         [Command("yt"), Description("Generate YouTube Together Invite")]
         public async Task GenerateYouTubeTogetherInvite(CommandContext ctx, DiscordChannel channel)
         {
-            DiscordInvite invite = await channel.CreateInviteAsync(0, 0, TargetType.EmbeddedApplication, TargetActivity.YouTubeTogether);
+            DiscordInvite invite = await channel.CreateInviteAsync(0, 0, target_type: TargetType.EmbeddedApplication, target_application: TargetActivity.YouTubeTogether);
 
             await ctx.RespondAsync($"https://discord.gg/{invite.Code}");
         }
@@ -29,7 +29,7 @@ namespace DSharpPlusNextGen.Examples.Bots.Basics.Commands
         [Command("fish"), Description("Generate Fishington Invite")]
         public async Task GenerateFishingtonInvite(CommandContext ctx, DiscordChannel channel)
         {
-            DiscordInvite invite = await channel.CreateInviteAsync(0, 0, TargetType.EmbeddedApplication, TargetActivity.Fishington);
+            DiscordInvite invite = await channel.CreateInviteAsync(0, 0, target_type: TargetType.EmbeddedApplication, target_application: TargetActivity.Fishington);
 
             await ctx.RespondAsync($"https://discord.gg/{invite.Code}");
         }
@@ -74,7 +74,12 @@ namespace DSharpPlusNextGen.Examples.Bots.Basics.Commands
         {
             try
             {
-                await channel.ModifyParentAsync(parentId, null, reason: "Test");
+                DiscordChannel parent = null;
+                if (parentId.HasValue)
+                {
+                    parent = await ctx.Client.GetChannelAsync(parentId.Value);
+                }
+                await channel.ModifyParentAsync(parent, null, reason: "Test");
             } catch(Exception ex)
             {
                 Console.WriteLine(ex.Message);
@@ -242,7 +247,7 @@ namespace DSharpPlusNextGen.Examples.Bots.Basics.Commands
             if (channel.Type != ChannelType.Stage)
                 return;
 
-            await channel.ModifyStageAsync(topic);
+            await channel.ModifyStageAsync(topic, StagePrivacyLevel.GUILD_ONLY);
             await ctx.RespondAsync($"Modified stage {channel.Name} with new topic {topic}.");
         }
 
