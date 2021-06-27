@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
@@ -6,13 +6,13 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-using DSharpPlus;
-using DSharpPlus.CommandsNext;
-using DSharpPlus.CommandsNext.Attributes;
-using DSharpPlus.Entities;
-using DSharpPlus.VoiceNext;
+using DSharpPlusNextGen;
+using DSharpPlusNextGen.CommandsNext;
+using DSharpPlusNextGen.CommandsNext.Attributes;
+using DSharpPlusNextGen.Entities;
+using DSharpPlusNextGen.VoiceNext;
 
-namespace DSharpPlus.Examples.Bots.Commands
+namespace DSharpPlusNextGen.Examples.Bots.Basics.Commands
 {
     internal class General : BaseCommandModule
     {
