@@ -4,7 +4,7 @@
         <TargetFramework>net5.0</TargetFramework>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="DSharpPlusNextGen" Version="9.1.0" />
-        <PackageReference Include="DSharpPlusNextGen.SlashCommands" Version="9.1.0" />
+        <PackageReference Include="DSharpPlusNextGen" Version="9.4.1" />
+        <PackageReference Include="DSharpPlusNextGen.SlashCommands" Version="9.4.1" />
     </ItemGroup>
 </Project>
