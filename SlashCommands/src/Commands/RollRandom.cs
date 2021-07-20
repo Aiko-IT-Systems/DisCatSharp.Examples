@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DSharpPlusNextGen;
-using DSharpPlusNextGen.Entities;
-using DSharpPlusNextGen.SlashCommands;
+using DisCatSharp;
+using DisCatSharp.Entities;
+using DisCatSharp.SlashCommands;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace SlashCommands.Commands
+namespace DisCatSharp.Examples.Bots.SlashCommands.Commands
 {
     public class RollRandom : SlashCommandModule
     {

@@ -6,13 +6,13 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-using DSharpPlusNextGen;
-using DSharpPlusNextGen.CommandsNext;
-using DSharpPlusNextGen.CommandsNext.Attributes;
-using DSharpPlusNextGen.Entities;
-using DSharpPlusNextGen.VoiceNext;
+using DisCatSharp;
+using DisCatSharp.CommandsNext;
+using DisCatSharp.CommandsNext.Attributes;
+using DisCatSharp.Entities;
+using DisCatSharp.VoiceNext;
 
-namespace DSharpPlusNextGen.Examples.Bots.Basics.Commands
+namespace DisCatSharp.Examples.Bots.Basics.Commands
 {
     internal class General : BaseCommandModule
     {

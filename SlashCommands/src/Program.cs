@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
-using DSharpPlusNextGen;
-using DSharpPlusNextGen.SlashCommands;
+using DisCatSharp;
+using DisCatSharp.SlashCommands;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace SlashCommands
+namespace DisCatSharp.Examples.Bots.SlashCommands
 {
     public class Program
     {

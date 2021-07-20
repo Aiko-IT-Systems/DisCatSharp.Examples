@@ -1,8 +1,8 @@
-using DSharpPlusNextGen.Examples.Bots.Basics.Main;
+using DisCatSharp.Examples.Bots.Basics.Main;
 using System;
 using System.Reflection;
 
-namespace DSharpPlusNextGen.Examples.Bots.Basics
+namespace DisCatSharp.Examples.Bots.Basics
 {
     class Program
     {

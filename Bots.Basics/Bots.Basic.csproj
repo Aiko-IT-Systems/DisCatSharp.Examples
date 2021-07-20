@@ -5,21 +5,21 @@
     <TargetFramework>net5.0</TargetFramework>
     <Authors>Lulalaby (Lala Sabathil) &lt;aiko@aitsys.dev&gt; Ottero</Authors>
     <Company>Aiko IT Systems</Company>
-    <Product>DSharpPlusNextGen Basic Example Bot</Product>
+    <Product>DisCatSharp Basic Example Bot</Product>
     <PackageLicenseExpression>The Unlicense</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/Aiko-IT-Systems/DSharpPlusNextGen.Examples/tree/main/Bots.Basic</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/Aiko-IT-Systems/DSharpPlusNextGen.Examples</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/Aiko-IT-Systems/DisCatSharp.Examples/tree/main/Bots.Basic</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Aiko-IT-Systems/DisCatSharp.Examples</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageTags>dsharpplusnextgen,discord,examples,csharp,slashcommands,voice</PackageTags>
-    <Description>Example Bots written in DSharpPlus NextGen</Description>
+    <PackageTags>discatsharp,discord,examples,csharp,slashcommands,voice</PackageTags>
+    <Description>Example Bots written in DisCatSharp</Description>
     <Copyright>2021 AITSYS</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DSharpPlusNextGen" Version="9.4.2" />
-    <PackageReference Include="DSharpPlusNextGen.CommandsNext" Version="9.4.2" />
-    <PackageReference Include="DSharpPlusNextGen.Interactivity" Version="9.4.2" />
-    <PackageReference Include="DSharpPlusNextGen.VoiceNext" Version="9.4.2" />
+    <PackageReference Include="DisCatSharp" Version="9.5.8" />
+    <PackageReference Include="DisCatSharp.CommandsNext" Version="9.5.8" />
+    <PackageReference Include="DisCatSharp.Interactivity" Version="9.5.8" />
+    <PackageReference Include="DisCatSharp.VoiceNext" Version="9.5.8" />
   </ItemGroup>
 
 </Project>

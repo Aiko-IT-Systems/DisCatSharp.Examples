@@ -1,11 +1,11 @@
 using System.Linq;
 using System.Threading.Tasks;
-using DSharpPlusNextGen;
-using DSharpPlusNextGen.Entities;
-using DSharpPlusNextGen.Exceptions;
-using DSharpPlusNextGen.SlashCommands;
+using DisCatSharp;
+using DisCatSharp.Entities;
+using DisCatSharp.Exceptions;
+using DisCatSharp.SlashCommands;
 
-namespace SlashCommands.Commands
+namespace DisCatSharp.Examples.Bots.SlashCommands.Commands
 {
     public class Slap : SlashCommandModule
     {

@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DSharpPlusNextGen;
-using DSharpPlusNextGen.Entities;
-using DSharpPlusNextGen.SlashCommands;
+using DisCatSharp;
+using DisCatSharp.Entities;
+using DisCatSharp.SlashCommands;
 
-namespace SlashCommands.Commands
+namespace DisCatSharp.Examples.Bots.SlashCommands.Commands
 {
     // Notice how the GroupSlashCommand attribute isn't on this class, but the subclass
     public class Tags : SlashCommandModule

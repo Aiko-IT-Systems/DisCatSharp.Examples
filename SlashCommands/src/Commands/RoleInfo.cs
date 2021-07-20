@@ -1,10 +1,10 @@
 using System.Globalization;
 using System.Threading.Tasks;
-using DSharpPlusNextGen;
-using DSharpPlusNextGen.Entities;
-using DSharpPlusNextGen.SlashCommands;
+using DisCatSharp;
+using DisCatSharp.Entities;
+using DisCatSharp.SlashCommands;
 
-namespace SlashCommands.Commands
+namespace DisCatSharp.Examples.Bots.SlashCommands.Commands
 {
     public class RoleInfo : SlashCommandModule
     {

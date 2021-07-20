@@ -11,19 +11,19 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-using DSharpPlusNextGen;
-using DSharpPlusNextGen.CommandsNext;
-using DSharpPlusNextGen.Entities;
-using DSharpPlusNextGen.EventArgs;
-using DSharpPlusNextGen.Interactivity;
-using DSharpPlusNextGen.Interactivity.Extensions;
-using DSharpPlusNextGen.VoiceNext;
+using DisCatSharp;
+using DisCatSharp.CommandsNext;
+using DisCatSharp.Entities;
+using DisCatSharp.EventArgs;
+using DisCatSharp.Interactivity;
+using DisCatSharp.Interactivity.Extensions;
+using DisCatSharp.VoiceNext;
 
 using Microsoft.Extensions.Logging;
 #endregion
 
 
-namespace DSharpPlusNextGen.Examples.Bots.Basics.Main
+namespace DisCatSharp.Examples.Bots.Basics.Main
 {
     internal class Bot : IDisposable
     {
