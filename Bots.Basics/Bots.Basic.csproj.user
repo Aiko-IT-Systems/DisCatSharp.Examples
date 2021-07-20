@@ -4,6 +4,6 @@
     <DebuggerFlavor>ProjectDebugger</DebuggerFlavor>
   </PropertyGroup>
   <PropertyGroup>
-    <ActiveDebugProfile>DSharpPlusNextGen.Examples.Bots.Basics</ActiveDebugProfile>
+    <ActiveDebugProfile>DisCatSharp.Examples.Bots.Basics</ActiveDebugProfile>
   </PropertyGroup>
 </Project>
