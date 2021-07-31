@@ -16,10 +16,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DisCatSharp" Version="9.5.8" />
-    <PackageReference Include="DisCatSharp.CommandsNext" Version="9.5.8" />
-    <PackageReference Include="DisCatSharp.Interactivity" Version="9.5.8" />
-    <PackageReference Include="DisCatSharp.VoiceNext" Version="9.5.8" />
+    <PackageReference Include="DisCatSharp" Version="9.6.2" />
+    <PackageReference Include="DisCatSharp.CommandsNext" Version="9.6.2" />
+    <PackageReference Include="DisCatSharp.Interactivity" Version="9.6.2" />
+    <PackageReference Include="DisCatSharp.VoiceNext" Version="9.6.2" />
   </ItemGroup>
 
 </Project>
