@@ -22,11 +22,11 @@ namespace DisCatSharp.Examples.Basics.Main
     {
 
 #if DEBUG 
-        public static string prefix = "r!";
+        public static string prefix = "!";
 #else 
-        public static string prefix = "remz!";
+        public static string prefix = "%";
 #endif
-        public static ulong devguild = 870421632336945203;
+        //public static ulong devguild = ; //Set to register slash command on guild
 
         public static CancellationTokenSource ShutdownRequest;
         public static DiscordClient Client;
@@ -153,8 +153,8 @@ namespace DisCatSharp.Examples.Basics.Main
         private void RegisterCommands(CommandsNextExtension cnext, SlashCommandsExtension slash)
         {
             cnext.RegisterCommands<Commands.Main>(); // Commands.Main = Ordner.Class
-            slash.RegisterCommands<SlashCommands.Main>(devguild); // guild id
-            //slash.RegisterCommands<SlashCommands.Main>(); // global - SlashCommands.Main = Ordner.Class
+            //slash.RegisterCommands<SlashCommands.Main>(devguild); // use to register on guild
+            slash.RegisterCommands<SlashCommands.Main>(); // use to register global (can take up to an hour)
         }
 
         private static Task Client_Ready(DiscordClient dcl, ReadyEventArgs e)
