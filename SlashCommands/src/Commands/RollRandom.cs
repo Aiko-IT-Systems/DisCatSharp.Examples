@@ -7,7 +7,7 @@ using DisCatSharp.Entities;
 using DisCatSharp.SlashCommands;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DisCatSharp.Examples.Bots.SlashCommands.Commands
+namespace DisCatSharp.Examples.SlashCommands.Commands
 {
     public class RollRandom : SlashCommandModule
     {

@@ -4,7 +4,7 @@ using DisCatSharp.Entities;
 using DisCatSharp.Exceptions;
 using DisCatSharp.SlashCommands;
 
-namespace DisCatSharp.Examples.Bots.SlashCommands.Commands
+namespace DisCatSharp.Examples.SlashCommands.Commands
 {
     public class Tell : SlashCommandModule
     {

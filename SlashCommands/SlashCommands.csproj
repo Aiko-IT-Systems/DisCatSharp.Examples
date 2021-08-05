@@ -2,6 +2,19 @@
     <PropertyGroup>
         <OutputType>Exe</OutputType>
         <TargetFramework>net5.0</TargetFramework>
+        <Authors>Lala Sabathil &lt;aiko@aitsys.dev&gt;, Lunar Starstrum</Authors>
+        <Company>Aiko IT Systems</Company>
+        <PackageId>DisCatSharp.Examples.SlashCommands</PackageId>
+        <Product>DisCatSharp.Examples.SlashCommands</Product>
+        <Description>DisCatSharp SlashCommand Example Bot</Description>
+        <Copyright>2021 AITSYS</Copyright>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <RepositoryUrl>https://github.com/Aiko-IT-Systems/DisCatSharp.Examples</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageProjectUrl>https://examples.dcs.aitsys.dev</PackageProjectUrl>
+        <RootNamespace>DisCatSharp.Examples.SlashCommands</RootNamespace>
+        <AssemblyName>DisCatSharp.Examples.SlashCommands</AssemblyName>
+        <StartupObject>DisCatSharp.Examples.SlashCommands.Program</StartupObject>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="DisCatSharp" Version="9.6.2" />

@@ -7,7 +7,7 @@ using DisCatSharp;
 using DisCatSharp.Entities;
 using DisCatSharp.SlashCommands;
 
-namespace DisCatSharp.Examples.Bots.SlashCommands.Commands
+namespace DisCatSharp.Examples.SlashCommands.Commands
 {
     // Notice how Ping inherits the SlashCommandModule
     public class TriggerHelp : SlashCommandModule

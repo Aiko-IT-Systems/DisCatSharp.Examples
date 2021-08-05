@@ -5,7 +5,7 @@ using DisCatSharp;
 using DisCatSharp.Entities;
 using DisCatSharp.SlashCommands;
 
-namespace DisCatSharp.Examples.Bots.SlashCommands.Commands
+namespace DisCatSharp.Examples.SlashCommands.Commands
 {
     // Notice how the GroupSlashCommand attribute isn't on this class, but the subclass
     public class Tags : SlashCommandModule

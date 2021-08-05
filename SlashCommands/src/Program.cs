@@ -5,7 +5,7 @@ using DisCatSharp.SlashCommands;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace DisCatSharp.Examples.Bots.SlashCommands
+namespace DisCatSharp.Examples.SlashCommands
 {
     public class Program
     {

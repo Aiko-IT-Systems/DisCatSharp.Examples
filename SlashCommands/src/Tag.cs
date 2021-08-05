@@ -1,6 +1,6 @@
 using System;
 
-namespace SlashCommands
+namespace DisCatSharp.Examples.SlashCommands
 {
     public class Tag
     {
