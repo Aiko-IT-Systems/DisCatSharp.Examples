@@ -2,14 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DisCatSharp;
+using DisCatSharp.ApplicationCommands;
 using DisCatSharp.Entities;
-using DisCatSharp.SlashCommands;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DisCatSharp.Examples.SlashCommands.Commands
+namespace DisCatSharp.Examples.ApplicationCommands.Commands
 {
-    public class RollRandom : SlashCommandModule
+    public class RollRandom : ApplicationCommandsModule
     {
         // By using an enum with the ChoiceName attribute, we can allow users to pick from a list without having to deal with arbiturary user input.
         public enum RandomChoice

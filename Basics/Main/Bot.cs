@@ -1,15 +1,14 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-
+using DisCatSharp.ApplicationCommands;
+using DisCatSharp.ApplicationCommands.EventArgs;
 using DisCatSharp.CommandsNext;
 using DisCatSharp.Entities;
 using DisCatSharp.EventArgs;
 using DisCatSharp.Interactivity;
 using DisCatSharp.Interactivity.Enums;
 using DisCatSharp.Interactivity.Extensions;
-using DisCatSharp.SlashCommands;
-using DisCatSharp.SlashCommands.EventArgs;
 
 using Microsoft.Extensions.Logging;
 
@@ -26,11 +25,11 @@ namespace DisCatSharp.Examples.Basics.Main
 #else 
         public static string prefix = "%";
 #endif
-        //public static ulong devguild = ; //Set to register slash command on guild
+        //public static ulong devguild = ; //Set to register app command on guild
 
         public static CancellationTokenSource ShutdownRequest;
         public static DiscordClient Client;
-        public static SlashCommandsExtension Slash;
+        public static ApplicationCommandsExtension AppCommands;
         [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0052:Remove unread private members", Justification = "<Pending>")]
         private InteractivityExtension INext;
         private CommandsNextExtension CNext;
@@ -61,7 +60,7 @@ namespace DisCatSharp.Examples.Basics.Main
 
             Client = new DiscordClient(cfg);
 
-            Client.UseSlashCommands();
+            Client.UseApplicationCommands();
 
             CNext = Client.UseCommandsNext(new CommandsNextConfiguration
             {
@@ -74,7 +73,7 @@ namespace DisCatSharp.Examples.Basics.Main
                 EnableDms = true
             });
 
-            Slash = Client.GetSlashCommands();
+            AppCommands = Client.GetApplicationCommands();
 
             INext = Client.UseInteractivity(new InteractivityConfiguration
             {
@@ -83,8 +82,8 @@ namespace DisCatSharp.Examples.Basics.Main
                 PollBehaviour = PollBehaviour.DeleteEmojis,
                 ButtonBehavior = ButtonPaginationBehavior.Disable
             });
-            RegisterEventListener(Client, Slash, CNext);
-            RegisterCommands(CNext, Slash);
+            RegisterEventListener(Client, AppCommands, CNext);
+            RegisterCommands(CNext, AppCommands);
         }
 
         /// <summary>
@@ -96,7 +95,7 @@ namespace DisCatSharp.Examples.Basics.Main
             INext = null;
             CNext = null;
             Client = null;
-            Slash = null;
+            AppCommands = null;
             Environment.Exit(0);
         }
 
@@ -120,7 +119,7 @@ namespace DisCatSharp.Examples.Basics.Main
         /// </summary>
         /// <param name="client">The client.</param>
         /// <param name="cnext">The commandsnext extension.</param>
-        private void RegisterEventListener(DiscordClient client, SlashCommandsExtension slash, CommandsNextExtension cnext) {
+        private void RegisterEventListener(DiscordClient client, ApplicationCommandsExtension appCommands, CommandsNextExtension cnext) {
 
             /* Client Basic Events */
             client.SocketOpened += Client_SocketOpened;
@@ -141,20 +140,20 @@ namespace DisCatSharp.Examples.Basics.Main
             client.ApplicationCommandCreated += Discord_ApplicationCommandCreated;
             client.ApplicationCommandDeleted += Discord_ApplicationCommandDeleted;
             client.ApplicationCommandUpdated += Discord_ApplicationCommandUpdated;
-            slash.SlashCommandErrored += Slash_SlashCommandErrored;
-            slash.SlashCommandExecuted += Slash_SlashCommandExecuted;
+            appCommands.SlashCommandErrored += Slash_SlashCommandErrored;
+            appCommands.SlashCommandExecuted += Slash_SlashCommandExecuted;
         }
 
         /// <summary>
         /// Registers the commands.
         /// </summary>
         /// <param name="cnext">The commandsnext extension.</param>
-        /// <param name="slash">The slashcommands extension.</param>
-        private void RegisterCommands(CommandsNextExtension cnext, SlashCommandsExtension slash)
+        /// <param name="appCommands">The appcommands extension.</param>
+        private void RegisterCommands(CommandsNextExtension cnext, ApplicationCommandsExtension appCommands)
         {
             cnext.RegisterCommands<Commands.Main>(); // Commands.Main = Ordner.Class
-            //slash.RegisterCommands<SlashCommands.Main>(devguild); // use to register on guild
-            slash.RegisterCommands<SlashCommands.Main>(); // use to register global (can take up to an hour)
+            // appCommands.RegisterCommands<AppCommands.Main>(devguild); // use to register on guild
+            appCommands.RegisterCommands<AppCommands.Main>(); // use to register global (can take up to an hour)
         }
 
         private static Task Client_Ready(DiscordClient dcl, ReadyEventArgs e)
@@ -199,13 +198,13 @@ namespace DisCatSharp.Examples.Basics.Main
             sender.Logger.LogInformation($"Shard {sender.ShardId} sent application command created: {e.Command.Name}: {e.Command.Id} for {e.Command.ApplicationId}");
             return Task.CompletedTask;
         }
-        private static Task Slash_SlashCommandExecuted(SlashCommandsExtension sender, SlashCommandExecutedEventArgs e)
+        private static Task Slash_SlashCommandExecuted(ApplicationCommandsExtension sender, SlashCommandExecutedEventArgs e)
         {
             Console.WriteLine($"Slash/Info: {e.Context.CommandName}");
             return Task.CompletedTask;
         }
 
-        private static Task Slash_SlashCommandErrored(SlashCommandsExtension sender, SlashCommandErrorEventArgs e)
+        private static Task Slash_SlashCommandErrored(ApplicationCommandsExtension sender, SlashCommandErrorEventArgs e)
         {
             Console.WriteLine($"Slash/Error: {e.Exception.Message} | CN: {e.Context.CommandName} | IID: {e.Context.InteractionId}");
             return Task.CompletedTask;

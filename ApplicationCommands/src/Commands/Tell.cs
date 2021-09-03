@@ -1,25 +1,26 @@
 using System.Threading.Tasks;
-using DisCatSharp;
+using DisCatSharp.ApplicationCommands;
 using DisCatSharp.Entities;
 using DisCatSharp.Exceptions;
-using DisCatSharp.SlashCommands;
 
-namespace DisCatSharp.Examples.SlashCommands.Commands
+namespace DisCatSharp.Examples.ApplicationCommands.Commands
 {
-    public class Tell : SlashCommandModule
+    public class Tell : ApplicationCommandsModule
     {
-        public override Task BeforeExecutionAsync(InteractionContext context)
+        public override async Task<bool> BeforeSlashExecutionAsync(InteractionContext context)
         {
             if (context.Guild == null)
             {
-                context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new()
+                await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new()
                 {
                     Content = "Error: This command can only be used in a guild!",
                     IsEphemeral = true
                 });
+
+                return false;
             }
 
-            return Task.CompletedTask;
+            return true;
         }
 
         // Slash command registers the name and command description.
