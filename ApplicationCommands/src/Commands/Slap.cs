@@ -1,4 +1,3 @@
-using System.Linq;
 using System.Threading.Tasks;
 using DisCatSharp.ApplicationCommands;
 using DisCatSharp.Entities;
@@ -21,7 +20,7 @@ namespace DisCatSharp.Examples.ApplicationCommands.Commands
             return Task.FromResult(context.Member.Permissions.HasPermission(Permissions.KickMembers));
         }
 
-        [SlashCommand("slap", "Slaps the user so hard, it kicks them out of the guild.")]
+        [SlashCommand("slap", "Slaps the user so hard, it kicks them out of the guild.", false)]
         public static async Task Command(InteractionContext context, [Option("victim", "Who should I slap?")] DiscordUser victim = null)
         {
             // For the sake of examples, if the user didn't provide someone to kick, let's assume that they kicked themselves.
@@ -64,7 +63,7 @@ namespace DisCatSharp.Examples.ApplicationCommands.Commands
         }
         
         // Note that several types of commands (slash/user/message) can be used in one class.
-        [ContextMenu(ApplicationCommandType.User, "Slap")]
+        [ContextMenu(ApplicationCommandType.User, "Slap", false)]
         public static async Task Command(ContextMenuContext context)
         {
             if (context.Guild == null)

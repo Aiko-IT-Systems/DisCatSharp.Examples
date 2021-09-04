@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using DisCatSharp.ApplicationCommands;
 using DisCatSharp.ApplicationCommands.EventArgs;
+using DisCatSharp.Entities;
+using DisCatSharp.Examples.ApplicationCommands.Commands;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -15,7 +17,7 @@ namespace DisCatSharp.Examples.ApplicationCommands
         {
             // Logging! Let the user know that the bot started!
             Console.WriteLine("Starting bot...");
-
+            
             // CHALLENGE: Try making sure the token is provided! Hint: A Try/Catch block may be needed!
             DiscordConfiguration discordConfiguration = new()
             {
@@ -42,7 +44,14 @@ namespace DisCatSharp.Examples.ApplicationCommands
 
             // Let the user know that we're registering the commands.
             discordShardedClient.Logger.LogInformation("Registering application commands...");
-            
+
+            // If the guild ID is not provided, then register global commands.
+            ulong? guildId = null;
+            if (args.Length > 1)
+            {
+                guildId = ulong.Parse(args[1]);
+            }
+
             Type appCommandModule = typeof(ApplicationCommandsModule);
             foreach (DiscordClient discordClient in discordShardedClient.ShardClients.Values)
             {
@@ -54,17 +63,41 @@ namespace DisCatSharp.Examples.ApplicationCommands
                 appCommandShardExtension.ContextMenuExecuted += Context_ContextMenuCommandExecuted;
                 appCommandShardExtension.ContextMenuErrored += Context_ContextMenuCommandErrored;
                 
-                appCommandShardExtension.RegisterCommands<Commands.Ping>();
-                appCommandShardExtension.RegisterCommands<Commands.RoleInfo>();
-                appCommandShardExtension.RegisterCommands<Commands.RollRandom>();
-                appCommandShardExtension.RegisterCommands<Commands.Slap>();
-                appCommandShardExtension.RegisterCommands<Commands.Tags>();
-                appCommandShardExtension.RegisterCommands<Commands.Tell>();
-                appCommandShardExtension.RegisterCommands<Commands.TriggerHelp>();
-                
+                appCommandShardExtension.RegisterCommands<Ping>(guildId);
+                appCommandShardExtension.RegisterCommands<RoleInfo>(guildId);
+                appCommandShardExtension.RegisterCommands<RollRandom>(guildId);
+                appCommandShardExtension.RegisterCommands<Tags>(guildId);
+                appCommandShardExtension.RegisterCommands<Tell>(guildId);
+                appCommandShardExtension.RegisterCommands<TriggerHelp>(guildId);
+
+                // Currently, adding permissions to global commands during registration is not implemented
+                if (guildId != null)
+                {
+                    appCommandShardExtension.RegisterCommands<Slap>((ulong) guildId, context =>
+                    {
+                        // Allow members with the specified role from the arguments to execute the command
+                        if (args.Length > 2)
+                            context.AddRole(ulong.Parse(args[2]), true);
+                        
+                        // Allow owners of the bot to execute the command
+                        // foreach (DiscordUser user in discordClient.CurrentApplication.Owners)
+                        // {
+                        //     context.AddUser(user.Id, true);
+                        // }
+                    });
+                    appCommandShardExtension.RegisterCommands<ManagePermissions>((ulong) guildId, context =>
+                    {
+                        // Allow owners of the bot to execute the command
+                        foreach (DiscordUser user in discordClient.CurrentApplication.Owners)
+                        {
+                            context.AddUser(user.Id, true);
+                        }
+                    });
+                }
+
                 // Context menu commands
-                appCommandShardExtension.RegisterCommands<Commands.MessageCopy>();
-                appCommandShardExtension.RegisterCommands<Commands.UserInfo>();
+                appCommandShardExtension.RegisterCommands<MessageCopy>();
+                appCommandShardExtension.RegisterCommands<UserInfo>();
             }
             
             discordShardedClient.Logger.LogInformation("Application commands registered successfully");
