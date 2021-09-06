@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>exe</OutputType>
+        <TargetFramework>net5.0</TargetFramework>
+        <AssemblyName>DisCatSharp.Examples.Lavalink</AssemblyName>
+        <RootNamespace>DisCatSharp.Examples.Lavalink</RootNamespace>
+        <PackageId>DisCatSharp.Examples.Lavalink</PackageId>
+        <Description>DisCatSharp Lavalink Example Bot</Description>
+        <Copyright>2021 AITSYS</Copyright>
+        <PackageProjectUrl>https://examples.dcs.aitsys.dev</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/Aiko-IT-Systems/DisCatSharp.Examples</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <Company>Aiko IT Systems</Company>
+        <Product>DisCatSharp.Examples.Lavalink</Product>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="DisCatSharp.ApplicationCommands" Version="9.8.2-nightly-00082" />
+      <PackageReference Include="DisCatSharp.Lavalink" Version="9.8.2-nightly-00082" />
+    </ItemGroup>
+
+</Project>

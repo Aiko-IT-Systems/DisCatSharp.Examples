@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>exe</OutputType>
+        <TargetFramework>net5.0</TargetFramework>
+        <AssemblyName>DisCatSharp.Examples.VoiceNext</AssemblyName>
+        <RootNamespace>DisCatSharp.Examples.VoiceNext</RootNamespace>
+        <PackageId>DisCatSharp.Examples.VoiceNext</PackageId>
+        <Description>DisCatSharp Voice Example Bot</Description>
+        <Copyright>2021 AITSYS</Copyright>
+        <PackageProjectUrl>https://examples.dcs.aitsys.dev</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/Aiko-IT-Systems/DisCatSharp.Examples</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <Company>Aiko IT Systems</Company>
+        <Product>DisCatSharp.Examples.VoiceNext</Product>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="DisCatSharp" Version="9.8.2-nightly-00082" />
+      <PackageReference Include="DisCatSharp.ApplicationCommands" Version="9.8.2-nightly-00082" />
+      <PackageReference Include="DisCatSharp.VoiceNext" Version="9.8.2-nightly-00082" />
+    </ItemGroup>
+
+</Project>

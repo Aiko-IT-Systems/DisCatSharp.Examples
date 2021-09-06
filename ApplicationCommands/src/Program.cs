@@ -80,10 +80,10 @@ namespace DisCatSharp.Examples.ApplicationCommands
                             context.AddRole(ulong.Parse(args[2]), true);
                         
                         // Allow owners of the bot to execute the command
-                        // foreach (DiscordUser user in discordClient.CurrentApplication.Owners)
-                        // {
-                        //     context.AddUser(user.Id, true);
-                        // }
+                        foreach (DiscordUser user in discordClient.CurrentApplication.Owners)
+                        {
+                            context.AddUser(user.Id, true);
+                        }
                     });
                     appCommandShardExtension.RegisterCommands<ManagePermissions>((ulong) guildId, context =>
                     {
