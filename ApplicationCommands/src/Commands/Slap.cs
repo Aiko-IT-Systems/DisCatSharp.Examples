@@ -3,14 +3,14 @@ using System.Threading.Tasks;
 using DisCatSharp;
 using DisCatSharp.Entities;
 using DisCatSharp.Exceptions;
-using DisCatSharp.SlashCommands;
+using DisCatSharp.ApplicationCommands;
 
-namespace DisCatSharp.Examples.SlashCommands.Commands
+namespace DisCatSharp.Examples.ApplicationCommands.Commands
 {
-    public class Slap : SlashCommandModule
+    public class Slap : ApplicationCommandsModule
     {
         // Checks to see if the user has the KickMembers permission. If they do, it executes the command. If they don't, the command fails silently.
-        public override Task<bool> BeforeExecutionAsync(InteractionContext context)
+        public override Task<bool> BeforeSlashExecutionAsync(InteractionContext context)
         {
             return Task.FromResult(context.Member.Roles.Any(role => role.Permissions.HasPermission(Permissions.KickMembers)));
         }

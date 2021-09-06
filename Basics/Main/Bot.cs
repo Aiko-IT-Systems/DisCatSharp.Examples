@@ -8,8 +8,6 @@ using DisCatSharp.EventArgs;
 using DisCatSharp.Interactivity;
 using DisCatSharp.Interactivity.Enums;
 using DisCatSharp.Interactivity.Extensions;
-using DisCatSharp.SlashCommands;
-using DisCatSharp.SlashCommands.EventArgs;
 
 using Microsoft.Extensions.Logging;
 
@@ -30,8 +28,6 @@ namespace DisCatSharp.Examples.Basics.Main
 
         public static CancellationTokenSource ShutdownRequest;
         public static DiscordClient Client;
-        public static SlashCommandsExtension Slash;
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0052:Remove unread private members", Justification = "<Pending>")]
         private InteractivityExtension INext;
         private CommandsNextExtension CNext;
 
@@ -61,8 +57,6 @@ namespace DisCatSharp.Examples.Basics.Main
 
             Client = new DiscordClient(cfg);
 
-            Client.UseSlashCommands();
-
             CNext = Client.UseCommandsNext(new CommandsNextConfiguration
             {
                 StringPrefixes = new string[] { prefix },
@@ -74,8 +68,6 @@ namespace DisCatSharp.Examples.Basics.Main
                 EnableDms = true
             });
 
-            Slash = Client.GetSlashCommands();
-
             INext = Client.UseInteractivity(new InteractivityConfiguration
             {
                 PaginationBehaviour = PaginationBehaviour.WrapAround,
@@ -83,8 +75,8 @@ namespace DisCatSharp.Examples.Basics.Main
                 PollBehaviour = PollBehaviour.DeleteEmojis,
                 ButtonBehavior = ButtonPaginationBehavior.Disable
             });
-            RegisterEventListener(Client, Slash, CNext);
-            RegisterCommands(CNext, Slash);
+            RegisterEventListener(Client, CNext);
+            RegisterCommands(CNext);
         }
 
         /// <summary>
@@ -96,7 +88,6 @@ namespace DisCatSharp.Examples.Basics.Main
             INext = null;
             CNext = null;
             Client = null;
-            Slash = null;
             Environment.Exit(0);
         }
 
@@ -120,7 +111,7 @@ namespace DisCatSharp.Examples.Basics.Main
         /// </summary>
         /// <param name="client">The client.</param>
         /// <param name="cnext">The commandsnext extension.</param>
-        private void RegisterEventListener(DiscordClient client, SlashCommandsExtension slash, CommandsNextExtension cnext) {
+        private void RegisterEventListener(DiscordClient client, CommandsNextExtension cnext) {
 
             /* Client Basic Events */
             client.SocketOpened += Client_SocketOpened;
@@ -141,8 +132,6 @@ namespace DisCatSharp.Examples.Basics.Main
             client.ApplicationCommandCreated += Discord_ApplicationCommandCreated;
             client.ApplicationCommandDeleted += Discord_ApplicationCommandDeleted;
             client.ApplicationCommandUpdated += Discord_ApplicationCommandUpdated;
-            slash.SlashCommandErrored += Slash_SlashCommandErrored;
-            slash.SlashCommandExecuted += Slash_SlashCommandExecuted;
         }
 
         /// <summary>
@@ -150,11 +139,9 @@ namespace DisCatSharp.Examples.Basics.Main
         /// </summary>
         /// <param name="cnext">The commandsnext extension.</param>
         /// <param name="slash">The slashcommands extension.</param>
-        private void RegisterCommands(CommandsNextExtension cnext, SlashCommandsExtension slash)
+        private void RegisterCommands(CommandsNextExtension cnext)
         {
             cnext.RegisterCommands<Commands.Main>(); // Commands.Main = Ordner.Class
-            //slash.RegisterCommands<SlashCommands.Main>(devguild); // use to register on guild
-            slash.RegisterCommands<SlashCommands.Main>(); // use to register global (can take up to an hour)
         }
 
         private static Task Client_Ready(DiscordClient dcl, ReadyEventArgs e)
@@ -197,17 +184,6 @@ namespace DisCatSharp.Examples.Basics.Main
         private static Task Discord_ApplicationCommandCreated(DiscordClient sender, ApplicationCommandEventArgs e)
         {
             sender.Logger.LogInformation($"Shard {sender.ShardId} sent application command created: {e.Command.Name}: {e.Command.Id} for {e.Command.ApplicationId}");
-            return Task.CompletedTask;
-        }
-        private static Task Slash_SlashCommandExecuted(SlashCommandsExtension sender, SlashCommandExecutedEventArgs e)
-        {
-            Console.WriteLine($"Slash/Info: {e.Context.CommandName}");
-            return Task.CompletedTask;
-        }
-
-        private static Task Slash_SlashCommandErrored(SlashCommandsExtension sender, SlashCommandErrorEventArgs e)
-        {
-            Console.WriteLine($"Slash/Error: {e.Exception.Message} | CN: {e.Context.CommandName} | IID: {e.Context.InteractionId}");
             return Task.CompletedTask;
         }
 

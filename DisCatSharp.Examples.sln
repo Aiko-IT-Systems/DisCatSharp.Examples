@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31205.134
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SlashCommands", "SlashCommands\SlashCommands.csproj", "{D4AF1B7E-A8A4-45A2-9D22-CF1360D89D96}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApplicationCommands", "ApplicationCommands\ApplicationCommands.csproj", "{D4AF1B7E-A8A4-45A2-9D22-CF1360D89D96}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Basics", "Basics\Basics.csproj", "{4AA570F4-AF0F-44A7-99F6-3EE15A0B6824}"
 EndProject

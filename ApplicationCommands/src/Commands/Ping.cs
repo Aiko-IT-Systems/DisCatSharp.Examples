@@ -1,12 +1,12 @@
 using System.Threading.Tasks;
 using DisCatSharp;
 using DisCatSharp.Entities;
-using DisCatSharp.SlashCommands;
+using DisCatSharp.ApplicationCommands;
 
-namespace DisCatSharp.Examples.SlashCommands.Commands
+namespace DisCatSharp.Examples.ApplicationCommands.Commands
 {
     // Notice how Ping inherits the SlashCommandModule
-    public class Ping : SlashCommandModule
+    public class Ping : ApplicationCommandsModule
     {
         // Slash command registers the name and command description.
         [SlashCommand("ping", "Checks the latency between the bot and the Discord API. Best used to see if the bot is lagging.")]

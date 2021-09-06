@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
 using DisCatSharp;
-using DisCatSharp.SlashCommands;
+using DisCatSharp.ApplicationCommands;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace DisCatSharp.Examples.SlashCommands
+namespace DisCatSharp.Examples.ApplicationCommands
 {
     public class Program
     {
@@ -35,7 +35,7 @@ namespace DisCatSharp.Examples.SlashCommands
             discordShardedClient.Logger.LogInformation($"Connection success! Logged in as {discordShardedClient.CurrentUser.Username}#{discordShardedClient.CurrentUser.Discriminator} ({discordShardedClient.CurrentUser.Id})");
 
             // Register a Random class instance now for use later over in RollRandom.cs
-            SlashCommandsConfiguration slashCommandsConfiguration = new()
+            ApplicationCommandsConfiguration applicationCommandsConfiguration = new()
             {
                 Services = new ServiceCollection().AddSingleton<Random>().BuildServiceProvider()
             };
@@ -43,17 +43,17 @@ namespace DisCatSharp.Examples.SlashCommands
             // Let the user know that we're registering the commands.
             discordShardedClient.Logger.LogInformation("Registering slash commands...");
             
-            Type slashCommandModule = typeof(SlashCommandModule);
+            Type applicationCommandsModule = typeof(ApplicationCommandsModule);
             foreach (DiscordClient discordClient in discordShardedClient.ShardClients.Values)
             {
-                SlashCommandsExtension slashCommandShardExtension = discordClient.UseSlashCommands();
-                slashCommandShardExtension.RegisterCommands<Commands.Ping>();
-                slashCommandShardExtension.RegisterCommands<Commands.RoleInfo>();
-                slashCommandShardExtension.RegisterCommands<Commands.RollRandom>();
-                slashCommandShardExtension.RegisterCommands<Commands.Slap>();
-                slashCommandShardExtension.RegisterCommands<Commands.Tags>();
-                slashCommandShardExtension.RegisterCommands<Commands.Tell>();
-                slashCommandShardExtension.RegisterCommands<Commands.TriggerHelp>();
+                ApplicationCommandsExtension applicationCommandsShardExtension = discordClient.UseApplicationCommands();
+                applicationCommandsShardExtension.RegisterCommands<Commands.Ping>();
+                applicationCommandsShardExtension.RegisterCommands<Commands.RoleInfo>();
+                applicationCommandsShardExtension.RegisterCommands<Commands.RollRandom>();
+                applicationCommandsShardExtension.RegisterCommands<Commands.Slap>();
+                applicationCommandsShardExtension.RegisterCommands<Commands.Tags>();
+                applicationCommandsShardExtension.RegisterCommands<Commands.Tell>();
+                applicationCommandsShardExtension.RegisterCommands<Commands.TriggerHelp>();
             }
 
             // Listen for commands by putting this method to sleep and relying off of DiscordClient's event listeners

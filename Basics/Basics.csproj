@@ -15,10 +15,9 @@
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="DisCatSharp" Version="9.6.3-nightly-00046" />
-    <PackageReference Include="DisCatSharp.CommandsNext" Version="9.6.3-nightly-00046" />
-    <PackageReference Include="DisCatSharp.Common" Version="9.6.3-nightly-00046" />
-    <PackageReference Include="DisCatSharp.SlashCommands" Version="9.6.3-nightly-00046" />
-    <PackageReference Include="DisCatSharp.Interactivity" Version="9.6.3-nightly-00046" />
+    <PackageReference Include="DisCatSharp" Version="9.8.1" />
+    <PackageReference Include="DisCatSharp.CommandsNext" Version="9.8.1" />
+    <PackageReference Include="DisCatSharp.Common" Version="9.8.1" />
+    <PackageReference Include="DisCatSharp.Interactivity" Version="9.8.1" />
   </ItemGroup>
 </Project>

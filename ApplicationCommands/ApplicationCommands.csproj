@@ -12,12 +12,12 @@
         <RepositoryUrl>https://github.com/Aiko-IT-Systems/DisCatSharp.Examples</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <PackageProjectUrl>https://examples.dcs.aitsys.dev</PackageProjectUrl>
-        <RootNamespace>DisCatSharp.Examples.SlashCommands</RootNamespace>
-        <AssemblyName>DisCatSharp.Examples.SlashCommands</AssemblyName>
-        <StartupObject>DisCatSharp.Examples.SlashCommands.Program</StartupObject>
+        <RootNamespace>DisCatSharp.Examples.ApplicationCommands</RootNamespace>
+        <AssemblyName>DisCatSharp.Examples.ApplicationCommands</AssemblyName>
+        <StartupObject>DisCatSharp.Examples.ApplicationCommands.Program</StartupObject>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="DisCatSharp" Version="9.6.2" />
-        <PackageReference Include="DisCatSharp.SlashCommands" Version="9.6.2" />
+        <PackageReference Include="DisCatSharp" Version="9.8.1" />
+        <PackageReference Include="DisCatSharp.ApplicationCommands" Version="9.8.1" />
     </ItemGroup>
 </Project>

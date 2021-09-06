@@ -5,12 +5,12 @@ using System.Reflection;
 using System.Threading.Tasks;
 using DisCatSharp;
 using DisCatSharp.Entities;
-using DisCatSharp.SlashCommands;
+using DisCatSharp.ApplicationCommands;
 
-namespace DisCatSharp.Examples.SlashCommands.Commands
+namespace DisCatSharp.Examples.ApplicationCommands.Commands
 {
     // Notice how Ping inherits the SlashCommandModule
-    public class TriggerHelp : SlashCommandModule
+    public class TriggerHelp : ApplicationCommandsModule
     {
         // Slash command registers the name and command description.
         [SlashCommand("trigger_help", "Sends the help menu for the bot.")]
@@ -114,15 +114,15 @@ namespace DisCatSharp.Examples.SlashCommands.Commands
         }
 
         /// <summary>
-        /// Using Reflection, we search our program for SlashCommandModules and register them as commands.
+        /// Using Reflection, we search our program for ApplicationCommandsModule and register them as commands.
         /// </summary>
-        /// <returns>A list of application slash commands.</returns>
+        /// <returns>A list of application application commands.</returns>
         public Task<IEnumerable<DiscordApplicationCommandOptionChoice>> Provider()
         {
             List<DiscordApplicationCommandOptionChoice> discordApplicationCommandOptionChoices = new();
 
             // All top level command classes
-            IEnumerable<Type> commandClasses = Assembly.GetEntryAssembly().GetTypes().Where(type => type.IsSubclassOf(typeof(SlashCommandModule)) && !type.IsNested);
+            IEnumerable<Type> commandClasses = Assembly.GetEntryAssembly().GetTypes().Where(type => type.IsSubclassOf(typeof(ApplicationCommandsModule)) && !type.IsNested);
 
             // Find all command or subgroup commands from the classes
             foreach (Type command in commandClasses)

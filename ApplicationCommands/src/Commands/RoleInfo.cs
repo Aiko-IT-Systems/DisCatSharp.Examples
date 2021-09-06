@@ -2,11 +2,11 @@ using System.Globalization;
 using System.Threading.Tasks;
 using DisCatSharp;
 using DisCatSharp.Entities;
-using DisCatSharp.SlashCommands;
+using DisCatSharp.ApplicationCommands;
 
-namespace DisCatSharp.Examples.SlashCommands.Commands
+namespace DisCatSharp.Examples.ApplicationCommands.Commands
 {
-    public class RoleInfo : SlashCommandModule
+    public class RoleInfo : ApplicationCommandsModule
     {
         [SlashCommand("role_info", "Gets general information about a role.")]
         public static async Task Command(InteractionContext context,

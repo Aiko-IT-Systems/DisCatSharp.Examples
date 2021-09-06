@@ -3,17 +3,17 @@ using System.Linq;
 using System.Threading.Tasks;
 using DisCatSharp;
 using DisCatSharp.Entities;
-using DisCatSharp.SlashCommands;
+using DisCatSharp.ApplicationCommands;
 
-namespace DisCatSharp.Examples.SlashCommands.Commands
+namespace DisCatSharp.Examples.ApplicationCommands.Commands
 {
     // Notice how the GroupSlashCommand attribute isn't on this class, but the subclass
-    public class Tags : SlashCommandModule
+    public class Tags : ApplicationCommandsModule
     {
         // Also inherits SlashCommandModule
         // SlashCommandGroup is what makes group commands!
         [SlashCommandGroup("tag_test", "Sends, modifies or deletes a premade message.")]
-        public class RealTags : SlashCommandModule
+        public class RealTags : ApplicationCommandsModule
         {
             // Tags will be cleared when the bot restarts
             public static List<Tag> Tags { get; private set; } = new();
