@@ -1,3 +1,8 @@
+using DisCatSharp.ApplicationCommands;
+using DisCatSharp.Entities;
+using DisCatSharp.Enums;
+using DisCatSharp.Interactivity.Extensions;
+
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

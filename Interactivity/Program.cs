@@ -1,6 +1,14 @@
 ﻿using System;
 using System.Threading.Tasks;
+
+using DisCatSharp.ApplicationCommands;
+using DisCatSharp.ApplicationCommands.EventArgs;
+using DisCatSharp.EventArgs;
 using DisCatSharp.Examples.Interactivity.Commands;
+using DisCatSharp.Interactivity.Extensions;
+using DisCatSharp.VoiceNext;
+
+using Microsoft.Extensions.Logging;
 
 namespace DisCatSharp.Examples.Interactivity
 {

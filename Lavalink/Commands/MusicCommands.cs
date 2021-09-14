@@ -1,9 +1,10 @@
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 using DisCatSharp.ApplicationCommands;
 using DisCatSharp.Enums;
 using DisCatSharp.Lavalink;
+
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace DisCatSharp.Examples.Lavalink.Commands
 {

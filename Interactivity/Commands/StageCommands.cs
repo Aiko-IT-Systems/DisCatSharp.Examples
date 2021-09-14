@@ -1,5 +1,11 @@
+using DisCatSharp.ApplicationCommands;
+using DisCatSharp.Entities;
+using DisCatSharp.Exceptions;
+using DisCatSharp.VoiceNext;
+
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DisCatSharp.Examples.Interactivity.Commands

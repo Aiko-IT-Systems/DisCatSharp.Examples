@@ -1,6 +1,7 @@
-using System.Threading.Tasks;
 using DisCatSharp.ApplicationCommands;
 using DisCatSharp.VoiceNext;
+
+using System.Threading.Tasks;
 
 namespace DisCatSharp.Examples.VoiceNext.Commands
 {

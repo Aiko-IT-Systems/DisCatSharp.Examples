@@ -10,7 +10,7 @@ namespace DisCatSharp.Examples.VoiceNext.Commands
     public class MusicCommands : ApplicationCommandsModule
     {
         // Since we want to be able to pause and stop playback without waiting for the end, we need to store the streams somewhere
-        private static Dictionary<ulong, Stream> PlayBacks = new();
+        private static readonly Dictionary<ulong, Stream> PlayBacks = new();
         
         [SlashCommand("play", "Play local file asynchronously")]
         public static async Task Play(InteractionContext ctx, [Option("path", "Path to the audio file")] string path)

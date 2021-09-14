@@ -1,3 +1,6 @@
+using DisCatSharp.ApplicationCommands;
+using DisCatSharp.Entities;
+
 using System.Threading.Tasks;
 
 namespace DisCatSharp.Examples.Interactivity.Commands

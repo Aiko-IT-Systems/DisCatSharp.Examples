@@ -1,10 +1,12 @@
-﻿using System;
-using System.Threading.Tasks;
-using DisCatSharp.ApplicationCommands;
+﻿using DisCatSharp.ApplicationCommands;
 using DisCatSharp.ApplicationCommands.EventArgs;
 using DisCatSharp.Examples.VoiceNext.Commands;
 using DisCatSharp.VoiceNext;
+
 using Microsoft.Extensions.Logging;
+
+using System;
+using System.Threading.Tasks;
 
 namespace DisCatSharp.Examples.VoiceNext
 {
