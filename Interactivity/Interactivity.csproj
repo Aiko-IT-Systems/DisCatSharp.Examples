@@ -6,7 +6,7 @@
         <AssemblyName>DisCatSharp.Examples.Interactivity</AssemblyName>
         <RootNamespace>DisCatSharp.Examples.Interactivity</RootNamespace>
         <PackageId>DisCatSharp.Examples.Interactivity</PackageId>
-        <Authors>DisCatSharp.Examples.Interactivity</Authors>
+        <Authors>Lala Sabathil &lt;aiko@aitsys.dev&gt;, mortAlice</Authors>
         <Description>DisCatSharp Interactivity Example Bot</Description>
         <Copyright>2021 AITSYS</Copyright>
         <PackageProjectUrl>https://examples.dcs.aitsys.dev</PackageProjectUrl>

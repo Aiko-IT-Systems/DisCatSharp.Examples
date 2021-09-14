@@ -6,6 +6,7 @@
         <AssemblyName>DisCatSharp.Examples.Lavalink</AssemblyName>
         <RootNamespace>DisCatSharp.Examples.Lavalink</RootNamespace>
         <PackageId>DisCatSharp.Examples.Lavalink</PackageId>
+        <Authors>Lala Sabathil &lt;aiko@aitsys.dev&gt;, mortAlice</Authors>
         <Description>DisCatSharp Lavalink Example Bot</Description>
         <Copyright>2021 AITSYS</Copyright>
         <PackageProjectUrl>https://examples.dcs.aitsys.dev</PackageProjectUrl>

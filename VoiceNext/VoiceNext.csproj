@@ -7,6 +7,7 @@
         <RootNamespace>DisCatSharp.Examples.VoiceNext</RootNamespace>
         <PackageId>DisCatSharp.Examples.VoiceNext</PackageId>
         <Description>DisCatSharp Voice Example Bot</Description>
+        <Authors>Lala Sabathil &lt;aiko@aitsys.dev&gt;, mortAlice</Authors>
         <Copyright>2021 AITSYS</Copyright>
         <PackageProjectUrl>https://examples.dcs.aitsys.dev</PackageProjectUrl>
         <RepositoryUrl>https://github.com/Aiko-IT-Systems/DisCatSharp.Examples</RepositoryUrl>
