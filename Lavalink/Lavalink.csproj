@@ -16,8 +16,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="DisCatSharp.ApplicationCommands" Version="9.8.2-nightly-00082" />
-      <PackageReference Include="DisCatSharp.Lavalink" Version="9.8.2-nightly-00082" />
+      <PackageReference Include="DisCatSharp" Version="9.8.2-nightly-00096" />
+      <PackageReference Include="DisCatSharp.ApplicationCommands" Version="9.8.2-nightly-00096" />
+      <PackageReference Include="DisCatSharp.Lavalink" Version="9.8.2-nightly-00096" />
     </ItemGroup>
 
 </Project>
