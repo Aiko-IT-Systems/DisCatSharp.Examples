@@ -61,7 +61,7 @@ namespace DisCatSharp.Examples.Basics.Main
             Client = new DiscordClient(cfg);
 
             Client.UseApplicationCommands();
-
+            
             CNext = Client.UseCommandsNext(new CommandsNextConfiguration
             {
                 StringPrefixes = new string[] { prefix },
@@ -74,7 +74,7 @@ namespace DisCatSharp.Examples.Basics.Main
             });
 
             AppCommands = Client.GetApplicationCommands();
-
+            
             INext = Client.UseInteractivity(new InteractivityConfiguration
             {
                 PaginationBehaviour = PaginationBehaviour.WrapAround,
@@ -82,6 +82,7 @@ namespace DisCatSharp.Examples.Basics.Main
                 PollBehaviour = PollBehaviour.DeleteEmojis,
                 ButtonBehavior = ButtonPaginationBehavior.Disable
             });
+            
             RegisterEventListener(Client, AppCommands, CNext);
             RegisterCommands(CNext, AppCommands);
         }

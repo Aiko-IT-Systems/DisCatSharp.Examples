@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using DisCatSharp.ApplicationCommands;
 using DisCatSharp.ApplicationCommands.EventArgs;
@@ -17,7 +17,7 @@ namespace DisCatSharp.Examples.ApplicationCommands
         {
             // Logging! Let the user know that the bot started!
             Console.WriteLine("Starting bot...");
-            
+          
             // CHALLENGE: Try making sure the token is provided! Hint: A Try/Catch block may be needed!
             DiscordConfiguration discordConfiguration = new()
             {
@@ -101,11 +101,10 @@ namespace DisCatSharp.Examples.ApplicationCommands
             }
             
             discordShardedClient.Logger.LogInformation("Application commands registered successfully");
-
             // Listen for commands by putting this method to sleep and relying off of DiscordClient's event listeners
             await Task.Delay(-1);
         }
-        
+      
         private static Task Slash_SlashCommandExecuted(ApplicationCommandsExtension sender, SlashCommandExecutedEventArgs e)
         {
             Console.WriteLine($"Slash/Info: {e.Context.CommandName}");

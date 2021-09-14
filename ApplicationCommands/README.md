@@ -1,5 +1,3 @@
-# Application Commands
-
 This example bot shows you how to use the basic usage of application commands. When learning how to use app commands, it's intended to look through the files in the following order:
 - [Program.cs](./src/Program.cs) (Setting up application commands)
 - [Ping.cs](./src/Commands/Ping.cs) (Basic usage of slash commands)
