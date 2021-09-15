@@ -6,7 +6,10 @@ using DisCatSharp.VoiceNext;
 using Microsoft.Extensions.Logging;
 
 using System;
+using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
+using Serilog;
 
 namespace DisCatSharp.Examples.VoiceNext
 {
@@ -17,6 +20,12 @@ namespace DisCatSharp.Examples.VoiceNext
             // Logging! Let the user know that the bot started!
             Console.WriteLine("Starting bot...");
             
+            // Create logger
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Information()
+                .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}")
+                .CreateLogger();
+
             // CHALLENGE: Try making sure the token is provided! Hint: A Try/Catch block may be needed!
             DiscordConfiguration discordConfiguration = new()
             {
@@ -24,7 +33,8 @@ namespace DisCatSharp.Examples.VoiceNext
                 // Example: dotnet run <someBotTokenHere>
                 // CHALLENGE: Make it read from a file, optionally from a json file using System.Text.Json
                 // CHALLENGE #2: Try retriving the token from environment variables
-                Token = args[0]
+                Token = args[0],
+                LoggerFactory = new LoggerFactory().AddSerilog(Log.Logger)
             };
 
             DiscordClient discordClient = new(discordConfiguration);
@@ -41,14 +51,20 @@ namespace DisCatSharp.Examples.VoiceNext
             // Let the user know that we're registering the commands.
             discordClient.Logger.LogInformation("Registering application commands...");
 
+            // In order not to list all the commands when adding, you can create a list of all commands with this.
+            Type appCommandModule = typeof(ApplicationCommandsModule);
+            var commands = Assembly.GetExecutingAssembly().GetTypes().Where(t => appCommandModule.IsAssignableFrom(t) && !t.IsNested).ToList();
+
             var appCommandExt = discordClient.UseApplicationCommands();
 
             // Register event handlers
             appCommandExt.SlashCommandExecuted += Slash_SlashCommandExecuted;
             appCommandExt.SlashCommandErrored += Slash_SlashCommandErrored;
-            
-            appCommandExt.RegisterCommands<ConnectionCommands>();
-            appCommandExt.RegisterCommands<MusicCommands>();
+
+            foreach (var command in commands)
+            {
+                appCommandExt.RegisterCommands(command, 885510395295584289);
+            }
             
             discordClient.Logger.LogInformation("Application commands registered successfully");
 
@@ -56,15 +72,25 @@ namespace DisCatSharp.Examples.VoiceNext
             await Task.Delay(-1);
         }
         
+        /// <summary>
+        /// Fires when the user uses the slash command.
+        /// </summary>
+        /// <param name="sender">Application commands ext.</param>
+        /// <param name="e">Event arguments.</param>
         private static Task Slash_SlashCommandExecuted(ApplicationCommandsExtension sender, SlashCommandExecutedEventArgs e)
         {
-            Console.WriteLine($"Slash/Info: {e.Context.CommandName}");
+            Log.Logger.Information($"Slash: {e.Context.CommandName}");
             return Task.CompletedTask;
         }
 
+        /// <summary>
+        /// Fires when an exception is thrown in the slash command.
+        /// </summary>
+        /// <param name="sender">Application commands ext.</param>
+        /// <param name="e">Event arguments.</param>
         private static Task Slash_SlashCommandErrored(ApplicationCommandsExtension sender, SlashCommandErrorEventArgs e)
         {
-            Console.WriteLine($"Slash/Error: {e.Exception.Message} | CN: {e.Context.CommandName} | IID: {e.Context.InteractionId}");
+            Log.Logger.Error($"Slash: {e.Exception.Message} | CN: {e.Context.CommandName} | IID: {e.Context.InteractionId}");
             return Task.CompletedTask;
         }
     }

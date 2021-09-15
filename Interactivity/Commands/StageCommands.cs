@@ -29,11 +29,8 @@ namespace DisCatSharp.Examples.Interactivity.Commands
         }
         
         [SlashCommand("close_stage", "Close stage without deleting")]
-        public static async Task CreateStage(InteractionContext ctx, [Option("id", "Stage channel id")] string stageId)
+        public static async Task CreateStage(InteractionContext ctx, [Option("id", "Stage channel id", ChannelType.Stage)] DiscordChannel stage)
         {
-            // Get the stage channel from its Id
-            var stage = ctx.Guild.GetChannel(ulong.Parse(stageId));
-            
             // Check whether the desired stage channel was found.
             if (stage == null)
             {
@@ -65,11 +62,8 @@ namespace DisCatSharp.Examples.Interactivity.Commands
         }
 
         [SlashCommand("delete_stage", "Permanently delete stage channel")]
-        public static async Task DeleteStage(InteractionContext ctx, [Option("id", "Stage channel id")] string stageId)
+        public static async Task DeleteStage(InteractionContext ctx, [Option("id", "Stage channel id", ChannelType.Stage)] DiscordChannel stage)
         {
-            // Get the stage channel from its Id
-            var stage = ctx.Guild.GetChannel(ulong.Parse(stageId));
-            
             // Check whether the desired stage channel was found.
             if (stage == null)
             {
@@ -89,11 +83,8 @@ namespace DisCatSharp.Examples.Interactivity.Commands
         }
         
         [SlashCommand("get_stage", "Get stage channel info")]
-        public static async Task GetStage(InteractionContext ctx, [Option("id", "Stage channel id")] string stageId)
+        public static async Task GetStage(InteractionContext ctx, [Option("id", "Stage channel id", ChannelType.Stage)] DiscordChannel stage)
         {
-            // Get the stage channel from its Id
-            var stage = ctx.Guild.GetChannel(ulong.Parse(stageId));
-            
             // Check whether the desired stage channel was found.
             if (stage == null)
             {
@@ -126,12 +117,9 @@ namespace DisCatSharp.Examples.Interactivity.Commands
         }
         
         [SlashCommand("modify_stage", "Update topic and stage channel publicity")]
-        public static async Task ModifyStage(InteractionContext ctx, [Option("id", "Stage channel id")] string stageId, [Option("topic", "New topic")] string topic,
+        public static async Task ModifyStage(InteractionContext ctx, [Option("id", "Stage channel id", ChannelType.Stage)] DiscordChannel stage, [Option("topic", "New topic")] string topic,
             [Option("public", "Whether the stage channel will be private or public")] bool isPublic)
         {
-            // Get the stage channel from its Id
-            var stage = ctx.Guild.GetChannel(ulong.Parse(stageId));
-            
             // Check whether the desired stage channel was found.
             if (stage == null)
             {
