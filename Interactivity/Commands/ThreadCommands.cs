@@ -5,8 +5,17 @@ using System.Threading.Tasks;
 
 namespace DisCatSharp.Examples.Interactivity.Commands
 {
+    /// <summary>
+    /// Shows how to create, archive and delete threads.
+    /// </summary>
     public class ThreadCommands : ApplicationCommandsModule
     {
+        /// <summary>
+        /// Create a thread in a specific channel.
+        /// </summary>
+        /// <param name="ctx">Interaction context</param>
+        /// <param name="name">Thread name</param>
+        /// <param name="channel">The channel where the thread should be created</param>
         [SlashCommand("create_thread", "Create a thread in a specific channel")]
         public static async Task CreateThread(InteractionContext ctx, [Option("name", "Thread name")] string name, [Option("channel", "The channel where the thread should be created")] DiscordChannel channel = null)
         {
@@ -21,6 +30,11 @@ namespace DisCatSharp.Examples.Interactivity.Commands
             }));
         }
         
+        /// <summary>
+        /// Archive thread.
+        /// </summary>
+        /// <param name="ctx">Interaction context</param>
+        /// <param name="threadId">Thread Id</param>
         [SlashCommand("archive_thread", "Archive thread")]
         public static async Task ArchiveThread(InteractionContext ctx, [Option("thread", "Thread id")] string threadId)
         {
@@ -45,6 +59,11 @@ namespace DisCatSharp.Examples.Interactivity.Commands
             });
         }
         
+        /// <summary>
+        /// Permanently delete thread.
+        /// </summary>
+        /// <param name="ctx">Interaction context</param>
+        /// <param name="threadId">Thread Id</param>
         [SlashCommand("delete_thread", "Permanently delete thread (deletes all content of the thread)")]
         public static async Task DeleteThread(InteractionContext ctx, [Option("thread", "Thread id")] string threadId)
         {

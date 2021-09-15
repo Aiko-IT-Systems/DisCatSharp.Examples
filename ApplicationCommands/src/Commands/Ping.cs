@@ -4,10 +4,15 @@ using DisCatSharp.Entities;
 
 namespace DisCatSharp.Examples.ApplicationCommands.Commands
 {
-    // Notice how Ping inherits the ApplicationCommandsModule
+    /// <summary>
+    /// Notice how Ping inherits the ApplicationCommandsModule
+    /// </summary>
     public class Ping : ApplicationCommandsModule
     {
-        // Slash command registers the name and command description.
+        /// <summary>
+        /// Slash command registers the name and command description.
+        /// </summary>
+        /// <param name="context">Interaction context</param>
         [SlashCommand("ping", "Checks the latency between the bot and the Discord API. Best used to see if the bot is lagging.")]
         public static async Task Command(InteractionContext context)
         {

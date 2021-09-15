@@ -9,8 +9,15 @@ using System.Threading.Tasks;
 
 namespace DisCatSharp.Examples.Interactivity.Commands
 {
+    /// <summary>
+    /// Demonstration of interactive commands.
+    /// </summary>
     public class InteractivityCommands : ApplicationCommandsModule
     {
+        /// <summary>
+        /// Wait for message.
+        /// </summary>
+        /// <param name="ctx">Interaction context</param>
         [SlashCommand("message", "Wait for message")]
         public static async Task Message(InteractionContext ctx)
         {
@@ -46,6 +53,10 @@ namespace DisCatSharp.Examples.Interactivity.Commands
             await result.Result.DeleteAsync();
         }
         
+        /// <summary>
+        /// Wait for reaction.
+        /// </summary>
+        /// <param name="ctx">Interaction context</param>
         [SlashCommand("reaction", "Wait for reaction")]
         public static async Task Reaction(InteractionContext ctx)
         {
@@ -86,6 +97,10 @@ namespace DisCatSharp.Examples.Interactivity.Commands
             });
         }
         
+        /// <summary>
+        /// Wait for button.
+        /// </summary>
+        /// <param name="ctx">Interaction context</param>
         [SlashCommand("button", "Wait for button")]
         public static async Task Button(InteractionContext ctx)
         {
@@ -133,6 +148,10 @@ namespace DisCatSharp.Examples.Interactivity.Commands
             });
         }
         
+        /// <summary>
+        /// Wait for select menu.
+        /// </summary>
+        /// <param name="ctx">Interaction context</param>
         [SlashCommand("select_menu", "Wait for select menu")]
         public static async Task SelectMenu(InteractionContext ctx)
         {
@@ -179,6 +198,10 @@ namespace DisCatSharp.Examples.Interactivity.Commands
             });
         }
         
+        /// <summary>
+        /// Waiting for a button to be pressed after executing a command.
+        /// </summary>
+        /// <param name="ctx">Interaction context</param>
         [SlashCommand("random", "Waiting for a button to be pressed after executing a command")]
         public static async Task Random(InteractionContext ctx)
         {

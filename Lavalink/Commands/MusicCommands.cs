@@ -8,8 +8,16 @@ using System.Threading.Tasks;
 
 namespace DisCatSharp.Examples.Lavalink.Commands
 {
+    /// <summary>
+    /// Playback control with these commands.
+    /// </summary>
     public class MusicCommands : ApplicationCommandsModule
     {
+        /// <summary>
+        /// Play music asynchronously.
+        /// </summary>
+        /// <param name="ctx">Interaction context</param>
+        /// <param name="query">Search string or Youtube link</param>
         [SlashCommand("play", "Play music asynchronously")]
         public static async Task Play(InteractionContext ctx, [Option("query", "Search string or Youtube link")] string query)
         {
@@ -76,6 +84,10 @@ namespace DisCatSharp.Examples.Lavalink.Commands
             });
         }
         
+        /// <summary>
+        /// Pause playback
+        /// </summary>
+        /// <param name="ctx">Interaction context</param>
         [SlashCommand("pause", "Pause playback")]
         public static async Task Pause(InteractionContext ctx)
         {
@@ -111,6 +123,10 @@ namespace DisCatSharp.Examples.Lavalink.Commands
             });
         }
         
+        /// <summary>
+        /// Resume playback
+        /// </summary>
+        /// <param name="ctx">Interaction context</param>
         [SlashCommand("resume", "Resume playback")]
         public static async Task Resume(InteractionContext ctx)
         {
@@ -146,6 +162,10 @@ namespace DisCatSharp.Examples.Lavalink.Commands
             });
         }
 
+        /// <summary>
+        /// Stop playback
+        /// </summary>
+        /// <param name="ctx">Interaction context</param>
         [SlashCommand("stop", "Stop playback")]
         public static async Task Stop(InteractionContext ctx)
         {
@@ -180,7 +200,10 @@ namespace DisCatSharp.Examples.Lavalink.Commands
             });
         }
         
-        // BONUS: play music through the context menu!
+        /// <summary>
+        /// BONUS: play music through the context menu!
+        /// </summary>
+        /// <param name="ctx">Interaction context</param>
         [ContextMenu(ApplicationCommandType.Message, "Play")]
         public static async Task Play(ContextMenuContext ctx)
         {

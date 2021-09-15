@@ -10,9 +10,18 @@ using System.Threading.Tasks;
 
 namespace DisCatSharp.Examples.Interactivity.Commands
 {
+    /// <summary>
+    /// Stage channel management.
+    /// </summary>
     public class StageCommands : ApplicationCommandsModule
     {
-        [SlashCommand("create_stage", "The command for creating a stage channel. Without permissions and topic")]
+        /// <summary>
+        /// The command for creating a stage channel.
+        /// </summary>
+        /// <param name="ctx">Interaction context</param>
+        /// <param name="name">Stage channel name</param>
+        /// <param name="topic">Topic of the new stage</param>
+        [SlashCommand("create_stage", "The command for creating a stage channel")]
         public static async Task CreateStage(InteractionContext ctx, [Option("name", "Stage channel name")] string name, 
             [Option("topic", "Topic of the new stage")] string topic)
         {
@@ -28,8 +37,13 @@ namespace DisCatSharp.Examples.Interactivity.Commands
             });
         }
         
+        /// <summary>
+        /// Close stage without deleting.
+        /// </summary>
+        /// <param name="ctx">Interaction context</param>
+        /// <param name="stage">Stage channel</param>
         [SlashCommand("close_stage", "Close stage without deleting")]
-        public static async Task CreateStage(InteractionContext ctx, [Option("id", "Stage channel id", ChannelType.Stage)] DiscordChannel stage)
+        public static async Task CloseStage(InteractionContext ctx, [Option("id", "Stage channel", ChannelType.Stage)] DiscordChannel stage)
         {
             // Check whether the desired stage channel was found.
             if (stage == null)
@@ -61,8 +75,13 @@ namespace DisCatSharp.Examples.Interactivity.Commands
 
         }
 
+        /// <summary>
+        /// Permanently delete stage channel.
+        /// </summary>
+        /// <param name="ctx">Interaction context</param>
+        /// <param name="stage">Stage channel</param>
         [SlashCommand("delete_stage", "Permanently delete stage channel")]
-        public static async Task DeleteStage(InteractionContext ctx, [Option("id", "Stage channel id", ChannelType.Stage)] DiscordChannel stage)
+        public static async Task DeleteStage(InteractionContext ctx, [Option("id", "Stage channel", ChannelType.Stage)] DiscordChannel stage)
         {
             // Check whether the desired stage channel was found.
             if (stage == null)
@@ -82,8 +101,13 @@ namespace DisCatSharp.Examples.Interactivity.Commands
             });
         }
         
+        /// <summary>
+        /// Get stage channel info.
+        /// </summary>
+        /// <param name="ctx">Interaction context</param>
+        /// <param name="stage">Stage channel</param>
         [SlashCommand("get_stage", "Get stage channel info")]
-        public static async Task GetStage(InteractionContext ctx, [Option("id", "Stage channel id", ChannelType.Stage)] DiscordChannel stage)
+        public static async Task GetStage(InteractionContext ctx, [Option("id", "Stage channel", ChannelType.Stage)] DiscordChannel stage)
         {
             // Check whether the desired stage channel was found.
             if (stage == null)
@@ -116,8 +140,15 @@ namespace DisCatSharp.Examples.Interactivity.Commands
             }
         }
         
+        /// <summary>
+        /// Update topic and stage channel publicity.
+        /// </summary>
+        /// <param name="ctx">Interaction context</param>
+        /// <param name="stage">Stage channel</param>
+        /// <param name="topic">New topic</param>
+        /// <param name="isPublic">Whether the stage channel will be private or public</param>
         [SlashCommand("modify_stage", "Update topic and stage channel publicity")]
-        public static async Task ModifyStage(InteractionContext ctx, [Option("id", "Stage channel id", ChannelType.Stage)] DiscordChannel stage, [Option("topic", "New topic")] string topic,
+        public static async Task ModifyStage(InteractionContext ctx, [Option("id", "Stage channel", ChannelType.Stage)] DiscordChannel stage, [Option("topic", "New topic")] string topic,
             [Option("public", "Whether the stage channel will be private or public")] bool isPublic)
         {
             // Check whether the desired stage channel was found.
@@ -149,6 +180,11 @@ namespace DisCatSharp.Examples.Interactivity.Commands
             }
         }
         
+        /// <summary>
+        /// Make a member a speaker, or move them to an audience.
+        /// </summary>
+        /// <param name="ctx">Interaction context</param>
+        /// <param name="user">The user who needs to change the voice state</param>
         [SlashCommand("speaker", "Make a member a speaker, or move them to an audience")]
         public static async Task SpeakerStage(InteractionContext ctx, [Option("user", "The user who needs to change the voice state")] DiscordUser user = null)
         {
@@ -177,6 +213,11 @@ namespace DisCatSharp.Examples.Interactivity.Commands
             });
         }
         
+        /// <summary>
+        /// Play audio in stage channel.
+        /// </summary>
+        /// <param name="ctx">Interaction context</param>
+        /// <param name="path">Path to the audio file</param>
         [SlashCommand("play_stage", "Play audio in stage channel")]
         public static async Task PlayStage(InteractionContext ctx, [Option("path", "Path to the audio file")] string path)
         {

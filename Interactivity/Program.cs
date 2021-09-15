@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using DisCatSharp.ApplicationCommands;
 using DisCatSharp.ApplicationCommands.EventArgs;
 using DisCatSharp.EventArgs;
-using DisCatSharp.Examples.Interactivity.Commands;
 using DisCatSharp.Interactivity.Extensions;
 using DisCatSharp.VoiceNext;
 
@@ -15,8 +14,15 @@ using Serilog;
 
 namespace DisCatSharp.Examples.Interactivity
 {
+    /// <summary>
+    /// The program.
+    /// </summary>
     class Program
     {
+        /// <summary>
+        /// Entry point. Initializes the bot.
+        /// </summary>
+        /// <param name="args">The args.</param>
         static async Task Main(string[] args)
         {
             // Logging! Let the user know that the bot started!
@@ -102,11 +108,14 @@ namespace DisCatSharp.Examples.Interactivity
             return Task.CompletedTask;
         }
 
+        /// <summary>
+        /// You can create messages with buttons or select menus that will always work, even after the commands are completed.
+        /// This example for the 'random' command.
+        /// </summary>
+        /// <param name="sender">Discord client</param>
+        /// <param name="e">Event arguments</param>
         private static async Task ComponentInteraction(DiscordClient sender, ComponentInteractionCreateEventArgs e)
         {
-            // You can create messages with buttons or select menus that will always work, even after the commands are completed.
-            // This example for the 'random' command.
-            
             if (e.Id == "rand_next")
                 await e.Message.ModifyAsync(new Random().Next(0, 100).ToString());
             if (e.Id == "rand_cancel")

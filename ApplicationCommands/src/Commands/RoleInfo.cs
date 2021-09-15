@@ -5,8 +5,16 @@ using DisCatSharp.Entities;
 
 namespace DisCatSharp.Examples.ApplicationCommands.Commands
 {
+    /// <summary>
+    /// Slash commands with arguments
+    /// </summary>
     public class RoleInfo : ApplicationCommandsModule
     {
+        /// <summary>
+        /// Get information about the role.
+        /// </summary>
+        /// <param name="context">Interaction context</param>
+        /// <param name="discordRole">The role to get information on</param>
         [SlashCommand("role_info", "Gets general information about a role.")]
         public static async Task Command(InteractionContext context,
             // Option adds an argument to the command

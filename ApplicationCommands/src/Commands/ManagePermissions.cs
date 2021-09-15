@@ -9,11 +9,23 @@ using DisCatSharp.Exceptions;
 
 namespace DisCatSharp.Examples.ApplicationCommands.Commands
 {
+    /// <summary>
+    /// Commands to demonstrate overwriting permissions after registering commands.
+    /// </summary>
     public class ManagePermissions : ApplicationCommandsModule
     {
+        /// <summary>
+        /// The manage_permissions command group.
+        /// </summary>
         [SlashCommandGroup("manage_permissions", "Allows to add/remove permissions to execute commands to users/roles", false)]
         public class Command : ApplicationCommandsModule
         {
+            /// <summary>
+            /// Add permission for a user to use a specific command.
+            /// </summary>
+            /// <param name="context">Interaction context.</param>
+            /// <param name="user">User to be added.</param>
+            /// <param name="commandName">The command to which we must give access.</param>
             [SlashCommand("add_user", "Add permission to user.")]
             public static async Task UserAdd(InteractionContext context, [Option("user", "User to be added")] DiscordUser user,
                 [ChoiceProvider(typeof(ManagePermissionsChoiceProvider)), Option("command", "The command to which we must give access")] string commandName)
@@ -44,6 +56,12 @@ namespace DisCatSharp.Examples.ApplicationCommands.Commands
                 await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, discordInteractionResponseBuilder.WithContent("User added successfully!"));
             }
             
+            /// <summary>
+            /// Add permission for a role to use a specific command.
+            /// </summary>
+            /// <param name="context">Interaction context.</param>
+            /// <param name="role">Role to be added.</param>
+            /// <param name="commandName">The command to which we must give access.</param>
             [SlashCommand("add_role", "Add permission to role.")]
             public static async Task RoleAdd(InteractionContext context, [Option("role", "Role to be added")] DiscordRole role,
                 [ChoiceProvider(typeof(ManagePermissionsChoiceProvider)), Option("command", "The command to which we must give access")] string commandName)
@@ -81,6 +99,12 @@ namespace DisCatSharp.Examples.ApplicationCommands.Commands
                 await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, discordInteractionResponseBuilder.WithContent("Role added successfully!"));
             }
             
+            /// <summary>
+            /// Revoke permission from a user.
+            /// </summary>
+            /// <param name="context">Interaction context.</param>
+            /// <param name="user">User to revoke permission.</param>
+            /// <param name="commandName">Command name.</param>
             [SlashCommand("del_user", "Revoke permission from a user.")]
             public static async Task UserDel(InteractionContext context, [Option("user", "User to revoke permission")] DiscordUser user,
                 [ChoiceProvider(typeof(ManagePermissionsChoiceProvider)), Option("command", "Command name")] string commandName)
@@ -104,6 +128,12 @@ namespace DisCatSharp.Examples.ApplicationCommands.Commands
                 await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, discordInteractionResponseBuilder.WithContent("Permission revoked!"));
             }
 
+            /// <summary>
+            /// Revoke permission from a role.
+            /// </summary>
+            /// <param name="context">Interaction context.</param>
+            /// <param name="role">Role to revoke permission.</param>
+            /// <param name="commandName">Command name.</param>
             [SlashCommand("del_role", "Revoke permission from a role.")]
             public static async Task UserDel(InteractionContext context, [Option("role", "Role to revoke permission")] DiscordRole role,
                 [ChoiceProvider(typeof(ManagePermissionsChoiceProvider)), Option("command", "Command name")] string commandName)
@@ -127,6 +157,12 @@ namespace DisCatSharp.Examples.ApplicationCommands.Commands
                 await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, discordInteractionResponseBuilder.WithContent("Permission revoked!"));
             }
 
+            /// <summary>
+            /// Get command by name.
+            /// </summary>
+            /// <param name="context">Interaction context.</param>
+            /// <param name="commandName">Command name.</param>
+            /// <returns>DiscordApplicationCommand if exist, otherwise - null.</returns>
             private static DiscordApplicationCommand GetCommand(InteractionContext context, string commandName)
             {
                 // Find the command in global and guild commands
@@ -142,10 +178,18 @@ namespace DisCatSharp.Examples.ApplicationCommands.Commands
         }
     }
     
+    /// <summary>
+    /// Choice provider for manage_permissions command
+    /// </summary>
     public class ManagePermissionsChoiceProvider : IChoiceProvider
     {
         internal static Dictionary<string, MethodInfo> Commands = new();
 
+        /// <summary>
+        /// Adding all commands and subcommands to Commands field.
+        /// </summary>
+        /// <param name="type">Type of the command.</param>
+        /// <param name="commandName">Name of the command.</param>
         public static void SearchCommands(Type type, string commandName = "")
         {
             // Get all nested group commands in the type variable/class

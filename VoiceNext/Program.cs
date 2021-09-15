@@ -1,6 +1,5 @@
 ﻿using DisCatSharp.ApplicationCommands;
 using DisCatSharp.ApplicationCommands.EventArgs;
-using DisCatSharp.Examples.VoiceNext.Commands;
 using DisCatSharp.VoiceNext;
 
 using Microsoft.Extensions.Logging;
@@ -13,8 +12,15 @@ using Serilog;
 
 namespace DisCatSharp.Examples.VoiceNext
 {
+    /// <summary>
+    /// The program.
+    /// </summary>
     class Program
     {
+        /// <summary>
+        /// Entry point. Initializes the bot.
+        /// </summary>
+        /// <param name="args">The args.</param>
         static async Task Main(string[] args)
         {
             // Logging! Let the user know that the bot started!

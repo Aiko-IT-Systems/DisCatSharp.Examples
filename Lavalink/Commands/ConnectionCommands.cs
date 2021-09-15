@@ -6,8 +6,15 @@ using System.Threading.Tasks;
 
 namespace DisCatSharp.Examples.Lavalink.Commands
 {
+    /// <summary>
+    /// Commands to connect and disconnect to the voice channel.
+    /// </summary>
     public class ConnectionCommands : ApplicationCommandsModule
     {
+        /// <summary>
+        /// Connect to the voice channel.
+        /// </summary>
+        /// <param name="ctx">Interaction context</param>
         [SlashCommand("connect", "Join the voice channel")]
         public static async Task Connect(InteractionContext ctx)
         {
@@ -46,6 +53,10 @@ namespace DisCatSharp.Examples.Lavalink.Commands
             });
         }
         
+        /// <summary>
+        /// Disconnect from the voice channel.
+        /// </summary>
+        /// <param name="ctx">Interaction context</param>
         [SlashCommand("leave", "Leave the voice channel")]
         public static async Task Leave(InteractionContext ctx)
         {

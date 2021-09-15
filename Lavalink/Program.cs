@@ -1,6 +1,5 @@
 ﻿using DisCatSharp.ApplicationCommands;
 using DisCatSharp.ApplicationCommands.EventArgs;
-using DisCatSharp.Examples.Lavalink.Commands;
 using DisCatSharp.Lavalink;
 using DisCatSharp.Net;
 
@@ -14,8 +13,15 @@ using Serilog;
 
 namespace DisCatSharp.Examples.Lavalink
 {
+    /// <summary>
+    /// The program.
+    /// </summary>
     class Program
     {
+        /// <summary>
+        /// Entry point. Initializes the bot.
+        /// </summary>
+        /// <param name="args">The args.</param>
         static async Task Main(string[] args)
         {
             // Logging! Let the user know that the bot started!

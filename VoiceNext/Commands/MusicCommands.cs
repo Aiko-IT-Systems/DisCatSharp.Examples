@@ -7,11 +7,21 @@ using DisCatSharp.VoiceNext;
 
 namespace DisCatSharp.Examples.VoiceNext.Commands
 {
+    /// <summary>
+    /// Playback control with these commands.
+    /// </summary>
     public class MusicCommands : ApplicationCommandsModule
     {
-        // Since we want to be able to pause and stop playback without waiting for the end, we need to store the streams somewhere
+        /// <summary>
+        /// Since we want to be able to pause and stop playback without waiting for the end, we need to store the streams somewhere
+        /// </summary>
         private static readonly Dictionary<ulong, Stream> PlayBacks = new();
         
+        /// <summary>
+        /// Play local file asynchronously.
+        /// </summary>
+        /// <param name="ctx">Interaction context</param>
+        /// <param name="path">Path to the audio file</param>
         [SlashCommand("play", "Play local file asynchronously")]
         public static async Task Play(InteractionContext ctx, [Option("path", "Path to the audio file")] string path)
         {
@@ -72,6 +82,10 @@ namespace DisCatSharp.Examples.VoiceNext.Commands
             });
         }
         
+        /// <summary>
+        /// Pause playback
+        /// </summary>
+        /// <param name="ctx">Interaction context</param>
         [SlashCommand("pause", "Pause playback")]
         public static async Task Pause(InteractionContext ctx)
         {
@@ -107,6 +121,10 @@ namespace DisCatSharp.Examples.VoiceNext.Commands
             });
         }
         
+        /// <summary>
+        /// Resume playback
+        /// </summary>
+        /// <param name="ctx">Interaction context</param>
         [SlashCommand("resume", "Resume playback")]
         public static async Task Resume(InteractionContext ctx)
         {
@@ -143,6 +161,10 @@ namespace DisCatSharp.Examples.VoiceNext.Commands
             });
         }
 
+        /// <summary>
+        /// Stop playback
+        /// </summary>
+        /// <param name="ctx">Interaction context</param>
         [SlashCommand("stop", "Stop playback")]
         public static async Task Stop(InteractionContext ctx)
         {

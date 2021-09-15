@@ -5,9 +5,15 @@ using DisCatSharp.Enums;
 
 namespace DisCatSharp.Examples.ApplicationCommands.Commands
 {
-    // This simple command shows how to use the message context menu
+    /// <summary>
+    /// This simple command shows how to use the message context menu.
+    /// </summary>
     public class MessageCopy : ApplicationCommandsModule
     {
+        /// <summary>
+        /// Copies the message and sends it on its own username.
+        /// </summary>
+        /// <param name="context">Context menu context.</param>
         [ContextMenu(ApplicationCommandType.Message, "Copy message")]
         public static async Task Command(ContextMenuContext context)
         {

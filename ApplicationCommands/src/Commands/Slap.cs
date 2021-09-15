@@ -6,20 +6,34 @@ using DisCatSharp.Exceptions;
 
 namespace DisCatSharp.Examples.ApplicationCommands.Commands
 {
+    /// <summary>
+    /// Shows how to use DiscordEntities + permissions.
+    /// </summary>
     public class Slap : ApplicationCommandsModule
     {
-        // Checks to see if the user has the KickMembers permission. If they do, it executes the command. If they don't, the command fails silently.
+        /// <summary>
+        /// Checks to see if the user has the KickMembers permission. If they do, it executes the command. If they don't, the command fails silently.
+        /// </summary>
+        /// <param name="context">Interaction context</param>
         public override Task<bool> BeforeSlashExecutionAsync(InteractionContext context)
         {
             return Task.FromResult(context.Member.Permissions.HasPermission(Permissions.KickMembers));
         }
         
-        // Checks to see if the user has the KickMembers permission. If they do, it executes the command. If they don't, the command fails silently.
+        /// <summary>
+        /// Checks to see if the user has the KickMembers permission. If they do, it executes the command. If they don't, the command fails silently.
+        /// </summary>
+        /// <param name="context">Interaction context</param>
         public override Task<bool> BeforeContextMenuExecutionAsync(ContextMenuContext context)
         {
             return Task.FromResult(context.Member.Permissions.HasPermission(Permissions.KickMembers));
         }
-
+        
+        /// <summary>
+        /// Kick user from the server.
+        /// </summary>
+        /// <param name="context">Interaction context</param>
+        /// <param name="victim">User to be kicked</param>
         [SlashCommand("slap", "Slaps the user so hard, it kicks them out of the guild.", false)]
         public static async Task Command(InteractionContext context, [Option("victim", "Who should I slap?")] DiscordUser victim = null)
         {
@@ -62,7 +76,11 @@ namespace DisCatSharp.Examples.ApplicationCommands.Commands
             await context.EditResponseAsync(discordWebhookBuilder);
         }
         
-        // Note that several types of commands (slash/user/message) can be used in one class.
+        /// <summary>
+        /// Kick user from the server (context menu version).
+        /// Note that several types of commands (slash/user/message) can be used in one class.
+        /// </summary>
+        /// <param name="context">Context menu context</param>
         [ContextMenu(ApplicationCommandType.User, "Slap", false)]
         public static async Task Command(ContextMenuContext context)
         {

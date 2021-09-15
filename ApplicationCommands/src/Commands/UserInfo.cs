@@ -5,10 +5,16 @@ using DisCatSharp.Enums;
 
 namespace DisCatSharp.Examples.ApplicationCommands.Commands
 {
-    // This simple command shows how to use the user context menu
+    /// <summary>
+    /// This simple command shows how to use the user context menu
+    /// </summary>
     public class UserInfo : ApplicationCommandsModule
     {
-        // Unlike slash commands that use BeforeSlashExecutionAsync/AfterSlashExecutionAsync, context menu commands use BeforeContextMenuExecutionAsync/AfterContextMenuExecutionAsync
+        /// <summary>
+        /// Unlike slash commands that use BeforeSlashExecutionAsync/AfterSlashExecutionAsync,
+        /// context menu commands use BeforeContextMenuExecutionAsync/AfterContextMenuExecutionAsync
+        /// </summary>
+        /// <param name="context">Context menu context</param>
         public override async Task<bool> BeforeContextMenuExecutionAsync(ContextMenuContext context)
         {
             if (context.Guild == null)
@@ -29,6 +35,10 @@ namespace DisCatSharp.Examples.ApplicationCommands.Commands
             return true;
         }
 
+        /// <summary>
+        /// Get information about the user.
+        /// </summary>
+        /// <param name="context"></param>
         [ContextMenu(ApplicationCommandType.User, "Get info")]
         public static async Task Command(ContextMenuContext context)
         {
