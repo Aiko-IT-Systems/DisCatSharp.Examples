@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>exe</OutputType>
+        <TargetFramework>net5.0</TargetFramework>
+        <AssemblyName>DisCatSharp.Examples.Lavalink</AssemblyName>
+        <RootNamespace>DisCatSharp.Examples.Lavalink</RootNamespace>
+        <PackageId>DisCatSharp.Examples.Lavalink</PackageId>
+        <Authors>Lala Sabathil &lt;aiko@aitsys.dev&gt;, mortAlice</Authors>
+        <Description>DisCatSharp Lavalink Example Bot</Description>
+        <Copyright>2021 AITSYS</Copyright>
+        <PackageProjectUrl>https://examples.dcs.aitsys.dev</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/Aiko-IT-Systems/DisCatSharp.Examples</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <Company>Aiko IT Systems</Company>
+        <Product>DisCatSharp.Examples.Lavalink</Product>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="DisCatSharp" Version="9.8.3-nightly-00104" />
+      <PackageReference Include="DisCatSharp.ApplicationCommands" Version="9.8.3-nightly-00104" />
+      <PackageReference Include="DisCatSharp.Lavalink" Version="9.8.3-nightly-00104" />
+      <PackageReference Include="Serilog" Version="2.11.0-dev-01371" />
+      <PackageReference Include="Serilog.Extensions.Logging" Version="3.0.2-dev-10289" />
+      <PackageReference Include="Serilog.Sinks.Console" Version="4.0.1-dev-00876" />
+    </ItemGroup>
+
+</Project>

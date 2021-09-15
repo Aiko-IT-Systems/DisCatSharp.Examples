@@ -2,16 +2,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DisCatSharp;
-using DisCatSharp.Entities;
 using DisCatSharp.ApplicationCommands;
+using DisCatSharp.Entities;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DisCatSharp.Examples.ApplicationCommands.Commands
 {
+    /// <summary>
+    /// Slash commands with enums.
+    /// </summary>
     public class RollRandom : ApplicationCommandsModule
     {
-        // By using an enum with the ChoiceName attribute, we can allow users to pick from a list without having to deal with arbiturary user input.
+        /// <summary>
+        /// By using an enum with the ChoiceName attribute, we can allow users to pick from a list without having to deal with arbiturary user input.
+        /// </summary>
         public enum RandomChoice
         {
             [ChoiceName("Number")]
@@ -22,6 +26,11 @@ namespace DisCatSharp.Examples.ApplicationCommands.Commands
             DiscordUser
         }
 
+        /// <summary>
+        /// Random command.
+        /// </summary>
+        /// <param name="context">Interaction context</param>
+        /// <param name="randomChoice">Should a random number, role or user be picked?</param>
         [SlashCommand("roll_random", "Gets a random person, role or number.")]
         public async Task Command(InteractionContext context, [Option("random_choice", "Should a random number, role or user be picked?")] RandomChoice randomChoice = RandomChoice.Number)
         {

@@ -1,29 +1,42 @@
 using System.Threading.Tasks;
-using DisCatSharp;
+using DisCatSharp.ApplicationCommands;
 using DisCatSharp.Entities;
 using DisCatSharp.Exceptions;
-using DisCatSharp.ApplicationCommands;
 
 namespace DisCatSharp.Examples.ApplicationCommands.Commands
 {
+    /// <summary>
+    /// Shows usage of the ChoiceAttribute.
+    /// </summary>
     public class Tell : ApplicationCommandsModule
     {
-        public override Task<bool> BeforeSlashExecutionAsync(InteractionContext context)
+        /// <summary>
+        /// Shows advanced usage of ChoiceProvider attribute with Reflection
+        /// Check if this command is executed in the guild.
+        /// </summary>
+        /// <param name="context">Interaction context</param>
+        public override async Task<bool> BeforeSlashExecutionAsync(InteractionContext context)
         {
             if (context.Guild == null)
             {
-                context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new()
+                await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new()
                 {
                     Content = "Error: This command can only be used in a guild!",
                     IsEphemeral = true
                 });
-                return Task.FromResult(false);
+
+                return false;
             }
 
-            return Task.FromResult(true);
+            return true;
         }
 
-        // Slash command registers the name and command description.
+        /// <summary>
+        /// Slash command registers the name and command description.
+        /// </summary>
+        /// <param name="context">Interaction context</param>
+        /// <param name="victim">Who the bot is messaging</param>
+        /// <param name="phrase">What to message to the victim</param>
         [SlashCommand("tell", "Sends someone a message.")]
         public static async Task Command(InteractionContext context, [Option("victim", "Who the bot is messaging.")] DiscordUser victim,
             [Choice("ModMail", "Please contact ModMail.")]

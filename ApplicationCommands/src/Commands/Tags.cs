@@ -1,23 +1,34 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DisCatSharp;
-using DisCatSharp.Entities;
 using DisCatSharp.ApplicationCommands;
+using DisCatSharp.Entities;
 
 namespace DisCatSharp.Examples.ApplicationCommands.Commands
 {
-    // Notice how the GroupSlashCommand attribute isn't on this class, but the subclass
+    /// <summary>
+    /// Group slash commands + optional arguments.
+    /// Notice how the GroupSlashCommand attribute isn't on this class, but the subclass.
+    /// </summary>
     public class Tags : ApplicationCommandsModule
     {
-        // Also inherits SlashCommandModule
-        // SlashCommandGroup is what makes group commands!
+        /// <summary>
+        /// Also inherits ApplicationCommandsModule
+        /// SlashCommandGroup is what makes group commands!
+        /// </summary>
         [SlashCommandGroup("tag_test", "Sends, modifies or deletes a premade message.")]
         public class RealTags : ApplicationCommandsModule
         {
-            // Tags will be cleared when the bot restarts
+            /// <summary>
+            /// Tags will be cleared when the bot restarts.
+            /// </summary>
             public static List<Tag> Tags { get; private set; } = new();
 
+            /// <summary>
+            /// Sends a premade message.
+            /// </summary>
+            /// <param name="context">Interaction context</param>
+            /// <param name="tagName">The name of the tag to send</param>
             [SlashCommand("send", "Sends a premade message.")]
             public static async Task Send(InteractionContext context, [Option("name", "The name of the tag to send")] string tagName)
             {
@@ -57,6 +68,12 @@ namespace DisCatSharp.Examples.ApplicationCommands.Commands
                 await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, discordInteractionResponseBuilder);
             }
 
+            /// <summary>
+            /// Creates a new tag for everyone to use.
+            /// </summary>
+            /// <param name="context">Interaction context</param>
+            /// <param name="tagName">What to call the new tag</param>
+            /// <param name="tagContent">What to fill the tag with</param>
             [SlashCommand("create", "Creates a new tag for everyone to use.")]
             public static async Task Create(InteractionContext context, [Option("name", "What to call the new tag.")] string tagName,
                 // Be giving the tagContent an optional argument in C#, it becomes an optional argument in Discord too!
@@ -98,6 +115,11 @@ namespace DisCatSharp.Examples.ApplicationCommands.Commands
                 await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, discordInteractionResponseBuilder);
             }
 
+            /// <summary>
+            /// Deletes a tag from the guild.
+            /// </summary>
+            /// <param name="context">Interaction context</param>
+            /// <param name="tagName">The name of the tag that should be deleted</param>
             [SlashCommand("delete", "Deletes a tag from the guild.")]
             public static async Task Delete(InteractionContext context, [Option("name", "The name of the tag that should be deleted.")] string tagName)
             {

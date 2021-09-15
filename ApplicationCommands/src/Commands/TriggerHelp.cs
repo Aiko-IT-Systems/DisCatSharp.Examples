@@ -3,16 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using DisCatSharp;
-using DisCatSharp.Entities;
 using DisCatSharp.ApplicationCommands;
+using DisCatSharp.Entities;
 
 namespace DisCatSharp.Examples.ApplicationCommands.Commands
 {
-    // Notice how Ping inherits the SlashCommandModule
+    /// <summary>
+    /// Shows advanced usage of ChoiceProvider attribute with Reflection.
+    /// Notice how Ping inherits the ApplicationCommandsModule.
+    /// </summary>
     public class TriggerHelp : ApplicationCommandsModule
     {
-        // Slash command registers the name and command description.
+        /// <summary>
+        /// Slash command registers the name and command description.
+        /// </summary>
+        /// <param name="context">Interaction context</param>
+        /// <param name="commandName">The name of the command to get help on</param>
         [SlashCommand("trigger_help", "Sends the help menu for the bot.")]
         public static async Task Command(InteractionContext context,
             // ChoiceProvider calls the Provider() method, which gives a list of slash commands. This is called once, when commands are being registered to Discord.
@@ -65,10 +71,18 @@ namespace DisCatSharp.Examples.ApplicationCommands.Commands
         }
     }
 
+    /// <summary>
+    /// Choice provider for manage_permissions command
+    /// </summary>
     public class TriggerHelpChoiceProvider : IChoiceProvider
     {
         internal static Dictionary<string, MethodInfo> Commands = new();
 
+        /// <summary>
+        /// Adding all commands and subcommands to Commands field.
+        /// </summary>
+        /// <param name="type">Type of the command.</param>
+        /// <param name="commandName">Name of the command.</param>
         public static void SearchCommands(Type type, string commandName = "")
         {
             // Get all nested group commands in the type variable/class
@@ -114,9 +128,9 @@ namespace DisCatSharp.Examples.ApplicationCommands.Commands
         }
 
         /// <summary>
-        /// Using Reflection, we search our program for ApplicationCommandsModule and register them as commands.
+        /// Using Reflection, we search our program for ApplicationCommandsModules and register them as commands.
         /// </summary>
-        /// <returns>A list of application application commands.</returns>
+        /// <returns>A list of application slash commands.</returns>
         public Task<IEnumerable<DiscordApplicationCommandOptionChoice>> Provider()
         {
             List<DiscordApplicationCommandOptionChoice> discordApplicationCommandOptionChoices = new();
