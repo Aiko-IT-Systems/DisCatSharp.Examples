@@ -20,6 +20,9 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Compile Include="AppCommands\AppCommands.fs" />
+        <Compile Include="Commands\CommandsNext.fs" />
+        <Compile Include="Bot.fs" />
         <Compile Include="Program.fs" />
     </ItemGroup>
 
