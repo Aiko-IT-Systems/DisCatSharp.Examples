@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DisCatSharp.ApplicationCommands;
+using DisCatSharp.ApplicationCommands.Attributes;
 using DisCatSharp.Entities;
 
 namespace DisCatSharp.Examples.ApplicationCommands.Commands
@@ -157,6 +158,75 @@ namespace DisCatSharp.Examples.ApplicationCommands.Commands
                     await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, discordInteractionResponseBuilder);
                 }
             }
+        }
+
+        /// <summary>
+        /// Simple example for autocomplete.
+        /// Autocomplete doesn't work with subcommands right now.
+        /// </summary>
+        [SlashCommand("send_tag", "Sends a premade message")]
+        public static async Task SendTag(InteractionContext context, 
+            [Autocomplete(typeof(TagsAutocompleteProvider)), Option("tag", "The name of the tag to send", true)] string tagName)
+        {
+            DiscordInteractionResponseBuilder discordInteractionResponseBuilder = new();
+            // This is a guild command, make sure nobody can execute this command in dm's
+            if (context.Guild == null)
+            {
+                discordInteractionResponseBuilder.Content = "Error: This is a guild command!";
+                discordInteractionResponseBuilder.IsEphemeral = true;
+                await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, discordInteractionResponseBuilder);
+                return;
+            }
+
+            // Since everyone around the world uses Discord
+            tagName = tagName.ToLowerInvariant();
+
+            // Sort through the created tags.
+            Tag tag = RealTags.Tags.FirstOrDefault(listTag => listTag.GuildId == context.Guild.Id && listTag.Name == tagName);
+
+            // If the tag wasn't found, let the user know.
+            if (tag == null)
+            {
+                discordInteractionResponseBuilder.Content = $"Error: Tag {Formatter.InlineCode(Formatter.Sanitize(tagName))} not found!";
+
+                // Hide the message from everyone else to prevent public embarassment and to create a cleaner chat for everyone else.
+                discordInteractionResponseBuilder.IsEphemeral = true;
+
+                // Send the error message.
+                await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, discordInteractionResponseBuilder);
+                return;
+            }
+
+            // The tag was found, send it!
+            discordInteractionResponseBuilder.Content = tag.Content;
+
+            // Send the tag!
+            await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, discordInteractionResponseBuilder);
+        }
+    }
+    
+    /// <summary>
+    /// Generates a list of options.
+    /// Unlike the ChoiceProvider, which generates it once during the registration of commands, this generates it whenever someone writes a command.
+    /// </summary>
+    internal class TagsAutocompleteProvider : IAutocompleteProvider
+    {
+        /// <summary>
+        /// The method in which the list is generated. You can do whatever you want here, the main thing is to get a list with options.
+        /// </summary>
+        /// <param name="context">Special context of autocomplete.</param>
+        /// <returns>List of the options</returns>
+#pragma warning disable 1998
+        public async Task<IEnumerable<DiscordApplicationCommandAutocompleteChoice>> Provider(AutocompleteContext context)
+#pragma warning restore 1998
+        {
+            if (context.FocusedOption == null)
+            {
+                return null;
+            }
+            
+            return Tags.RealTags.Tags.Where(listTag => listTag.GuildId == context.Interaction.Guild.Id)
+                .Select(item => new DiscordApplicationCommandAutocompleteChoice(item.Name, item.Name)).ToList();
         }
     }
 }
