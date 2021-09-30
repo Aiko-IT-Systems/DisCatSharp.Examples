@@ -31,7 +31,7 @@ namespace DisCatSharp.Examples.ApplicationCommands.Commands
             /// <param name="context">Interaction context</param>
             /// <param name="tagName">The name of the tag to send</param>
             [SlashCommand("send", "Sends a premade message.")]
-            public static async Task Send(InteractionContext context, [Option("name", "The name of the tag to send")] string tagName)
+            public static async Task Send(InteractionContext context, [Autocomplete(typeof(TagsAutocompleteProvider)), Option("name", "The name of the tag to send", true)] string tagName)
             {
                 DiscordInteractionResponseBuilder discordInteractionResponseBuilder = new();
                 // This is a guild command, make sure nobody can execute this command in dm's
@@ -158,50 +158,6 @@ namespace DisCatSharp.Examples.ApplicationCommands.Commands
                     await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, discordInteractionResponseBuilder);
                 }
             }
-        }
-
-        /// <summary>
-        /// Simple example for autocomplete.
-        /// Autocomplete doesn't work with subcommands right now.
-        /// </summary>
-        [SlashCommand("send_tag", "Sends a premade message")]
-        public static async Task SendTag(InteractionContext context, 
-            [Autocomplete(typeof(TagsAutocompleteProvider)), Option("tag", "The name of the tag to send", true)] string tagName)
-        {
-            DiscordInteractionResponseBuilder discordInteractionResponseBuilder = new();
-            // This is a guild command, make sure nobody can execute this command in dm's
-            if (context.Guild == null)
-            {
-                discordInteractionResponseBuilder.Content = "Error: This is a guild command!";
-                discordInteractionResponseBuilder.IsEphemeral = true;
-                await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, discordInteractionResponseBuilder);
-                return;
-            }
-
-            // Since everyone around the world uses Discord
-            tagName = tagName.ToLowerInvariant();
-
-            // Sort through the created tags.
-            Tag tag = RealTags.Tags.FirstOrDefault(listTag => listTag.GuildId == context.Guild.Id && listTag.Name == tagName);
-
-            // If the tag wasn't found, let the user know.
-            if (tag == null)
-            {
-                discordInteractionResponseBuilder.Content = $"Error: Tag {Formatter.InlineCode(Formatter.Sanitize(tagName))} not found!";
-
-                // Hide the message from everyone else to prevent public embarassment and to create a cleaner chat for everyone else.
-                discordInteractionResponseBuilder.IsEphemeral = true;
-
-                // Send the error message.
-                await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, discordInteractionResponseBuilder);
-                return;
-            }
-
-            // The tag was found, send it!
-            discordInteractionResponseBuilder.Content = tag.Content;
-
-            // Send the tag!
-            await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, discordInteractionResponseBuilder);
         }
     }
     
