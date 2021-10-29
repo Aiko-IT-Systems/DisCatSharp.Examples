@@ -9,3 +9,4 @@ Example Discord Bots written in CSharp with DisCatSharp. Includes examples like 
 | **Interactivity**       | Interactivity, components (buttons, select menus), threads, stages.                               |
 | **VoiceNext**           | Play local audio files in voice channels.                                                         |
 | **Lavalink**            | Play audio from YouTube in voice channels.                                                        |
+| **Hosting**             | Initialize a bot as a service.                                                                    |
