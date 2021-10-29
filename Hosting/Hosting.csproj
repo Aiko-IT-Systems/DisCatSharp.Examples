@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DisCatSharp" Version="9.8.4-nightly-00185" />
+    <PackageReference Include="DisCatSharp.CommandsNext" Version="9.8.4-nightly-00185" />
+    <PackageReference Include="DisCatSharp.Hosting" Version="9.8.4-nightly-00185" />
+    <PackageReference Include="DisCatSharp.Hosting.DependencyInjection" Version="9.8.4-nightly-00185" />
+    <PackageReference Include="DisCatSharp.Interactivity" Version="9.8.4-nightly-00185" />
+  </ItemGroup>
+
+</Project>
