@@ -7,7 +7,7 @@
         <RootNamespace>DisCatSharp.Examples.VoiceNext</RootNamespace>
         <PackageId>DisCatSharp.Examples.VoiceNext</PackageId>
         <Description>DisCatSharp Voice Example Bot</Description>
-        <Authors>Lala Sabathil &lt;aiko@aitsys.dev&gt;, mortAlice</Authors>
+        <Authors>Lala Sabathil &lt;aiko@aitsys.dev&gt;, QuantuChi</Authors>
         <Copyright>2021 AITSYS</Copyright>
         <PackageProjectUrl>https://examples.dcs.aitsys.dev</PackageProjectUrl>
         <RepositoryUrl>https://github.com/Aiko-IT-Systems/DisCatSharp.Examples</RepositoryUrl>
@@ -17,12 +17,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="DisCatSharp" Version="9.8.3-nightly-00140" />
-      <PackageReference Include="DisCatSharp.ApplicationCommands" Version="9.8.3-nightly-00140" />
-      <PackageReference Include="DisCatSharp.VoiceNext" Version="9.8.3-nightly-00140" />
+      <PackageReference Include="DisCatSharp" Version="9.8.4-nightly-00185" />
+      <PackageReference Include="DisCatSharp.ApplicationCommands" Version="9.8.4-nightly-00185" />
+      <PackageReference Include="DisCatSharp.VoiceNext" Version="9.8.4-nightly-00185" />
       <PackageReference Include="Serilog" Version="2.11.0-dev-01371" />
       <PackageReference Include="Serilog.Extensions.Logging" Version="3.0.2-dev-10289" />
-      <PackageReference Include="Serilog.Sinks.Console" Version="4.0.1-dev-00876" />
+      <PackageReference Include="Serilog.Sinks.Console" Version="4.0.1-dev-00879" />
     </ItemGroup>
 
 </Project>

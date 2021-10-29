@@ -6,7 +6,7 @@
         <AssemblyName>DisCatSharp.Examples.Interactivity</AssemblyName>
         <RootNamespace>DisCatSharp.Examples.Interactivity</RootNamespace>
         <PackageId>DisCatSharp.Examples.Interactivity</PackageId>
-        <Authors>Lala Sabathil &lt;aiko@aitsys.dev&gt;, mortAlice</Authors>
+        <Authors>Lala Sabathil &lt;aiko@aitsys.dev&gt;, QuantuChi</Authors>
         <Description>DisCatSharp Interactivity Example Bot</Description>
         <Copyright>2021 AITSYS</Copyright>
         <PackageProjectUrl>https://examples.dcs.aitsys.dev</PackageProjectUrl>
@@ -17,13 +17,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="DisCatSharp" Version="9.8.3-nightly-00140" />
-      <PackageReference Include="DisCatSharp.ApplicationCommands" Version="9.8.3-nightly-00140" />
-      <PackageReference Include="DisCatSharp.Interactivity" Version="9.8.3-nightly-00140" />
-      <PackageReference Include="DisCatSharp.VoiceNext" Version="9.8.3-nightly-00140" />
+      <PackageReference Include="DisCatSharp" Version="9.8.4-nightly-00185" />
+      <PackageReference Include="DisCatSharp.ApplicationCommands" Version="9.8.4-nightly-00185" />
+      <PackageReference Include="DisCatSharp.Interactivity" Version="9.8.4-nightly-00185" />
+      <PackageReference Include="DisCatSharp.VoiceNext" Version="9.8.4-nightly-00185" />
       <PackageReference Include="Serilog" Version="2.11.0-dev-01371" />
       <PackageReference Include="Serilog.Extensions.Logging" Version="3.0.2-dev-10289" />
-      <PackageReference Include="Serilog.Sinks.Console" Version="4.0.1-dev-00876" />
+      <PackageReference Include="Serilog.Sinks.Console" Version="4.0.1-dev-00879" />
     </ItemGroup>
 
 </Project>
