@@ -6,7 +6,7 @@ This example bot shows you how to use the basic usage of application commands. W
 - [RoleInfo.cs](./src/Commands/RoleInfo.cs) (Slash commands with arguments)
 - [RollRandom.cs](./src/Commands/RollRandom.cs) (Slash commands with enums)
 - [Slap.cs](./src/Commands/Slap.cs) (Shows how to use DiscordEntities + permissions)
-- [Tags.cs](./src/Commands/Tags.cs) (Group slash commands + optional arguments)
+- [Tags.cs](./src/Commands/Tags.cs) (Group slash commands + optional arguments + usage of AutocompleteProvider)
 - [Tell.cs](./src/Commands/Tell.cs) (Shows usage of the ChoiceAttribute)
 - [TriggerHelp.cs](./src/Commands/TriggerHelp.cs) (Shows advanced usage of ChoiceProvider attribute with Reflection)
 - [ManagePermissions.cs](./src/Commands/ManagePermissions.cs) (Shows how to change command permissions after they are registered)

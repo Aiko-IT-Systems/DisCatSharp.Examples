@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DisCatSharp.ApplicationCommands;
+using DisCatSharp.ApplicationCommands.Attributes;
 using DisCatSharp.Entities;
 
 namespace DisCatSharp.Examples.ApplicationCommands.Commands
@@ -30,7 +31,7 @@ namespace DisCatSharp.Examples.ApplicationCommands.Commands
             /// <param name="context">Interaction context</param>
             /// <param name="tagName">The name of the tag to send</param>
             [SlashCommand("send", "Sends a premade message.")]
-            public static async Task Send(InteractionContext context, [Option("name", "The name of the tag to send")] string tagName)
+            public static async Task Send(InteractionContext context, [Autocomplete(typeof(TagsAutocompleteProvider)), Option("name", "The name of the tag to send", true)] string tagName)
             {
                 DiscordInteractionResponseBuilder discordInteractionResponseBuilder = new();
                 // This is a guild command, make sure nobody can execute this command in dm's
@@ -157,6 +158,31 @@ namespace DisCatSharp.Examples.ApplicationCommands.Commands
                     await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, discordInteractionResponseBuilder);
                 }
             }
+        }
+    }
+    
+    /// <summary>
+    /// Generates a list of options.
+    /// Unlike the ChoiceProvider, which generates it once during the registration of commands, this generates it whenever someone writes a command.
+    /// </summary>
+    internal class TagsAutocompleteProvider : IAutocompleteProvider
+    {
+        /// <summary>
+        /// The method in which the list is generated. You can do whatever you want here, the main thing is to get a list with options.
+        /// </summary>
+        /// <param name="context">Special context of autocomplete.</param>
+        /// <returns>List of the options</returns>
+#pragma warning disable 1998
+        public async Task<IEnumerable<DiscordApplicationCommandAutocompleteChoice>> Provider(AutocompleteContext context)
+#pragma warning restore 1998
+        {
+            if (context.FocusedOption == null)
+            {
+                return null;
+            }
+            
+            return Tags.RealTags.Tags.Where(listTag => listTag.GuildId == context.Interaction.Guild.Id)
+                .Select(item => new DiscordApplicationCommandAutocompleteChoice(item.Name, item.Name)).ToList();
         }
     }
 }

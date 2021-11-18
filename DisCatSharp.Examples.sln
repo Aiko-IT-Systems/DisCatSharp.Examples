@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lavalink", "Lavalink\Lavali
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interactivity", "Interactivity\Interactivity.csproj", "{9CF94855-CEBC-4930-83A4-83F19B1D113D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hosting", "Hosting\Hosting.csproj", "{4C1DB643-D60A-4E8E-9DF9-37DB988EED77}"
+EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "ApplicationCommands", "FSharp\ApplicationCommands\ApplicationCommands.fsproj", "{9BC0C87F-DCBD-4806-82ED-C4FECD745498}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Basics", "FSharp\Basics\Basics.fsproj", "{D9606C76-0B5D-482A-8461-CB62D34AC18F}"
@@ -51,6 +53,10 @@ Global
 		{9CF94855-CEBC-4930-83A4-83F19B1D113D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9CF94855-CEBC-4930-83A4-83F19B1D113D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9CF94855-CEBC-4930-83A4-83F19B1D113D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C1DB643-D60A-4E8E-9DF9-37DB988EED77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C1DB643-D60A-4E8E-9DF9-37DB988EED77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C1DB643-D60A-4E8E-9DF9-37DB988EED77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C1DB643-D60A-4E8E-9DF9-37DB988EED77}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9BC0C87F-DCBD-4806-82ED-C4FECD745498}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9BC0C87F-DCBD-4806-82ED-C4FECD745498}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9BC0C87F-DCBD-4806-82ED-C4FECD745498}.Release|Any CPU.ActiveCfg = Release|Any CPU
