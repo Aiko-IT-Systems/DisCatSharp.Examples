@@ -16,6 +16,12 @@
         <AssemblyName>DisCatSharp.Examples.ApplicationCommands</AssemblyName>
         <StartupObject>DisCatSharp.Examples.ApplicationCommands.Program</StartupObject>
     </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+      <NoWarn>1701;1702;DV2001</NoWarn>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+      <NoWarn>1701;1702;DV2001</NoWarn>
+    </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="DisCatSharp" Version="9.8.4" />
         <PackageReference Include="DisCatSharp.ApplicationCommands" Version="9.8.4" />

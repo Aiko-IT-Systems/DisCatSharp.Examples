@@ -128,7 +128,7 @@ namespace DisCatSharp.Examples.Interactivity.Commands
             
                 await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new()
                 {
-                    Content = $"Topic: {instance.Topic}\nPublic: {instance.PrivacyLevel == StagePrivacyLevel.PUBLIC}\nId: {instance.ChannelId}\n" +
+                    Content = $"Topic: {instance.Topic}\nPublic: {instance.PrivacyLevel == StagePrivacyLevel.Public}\nId: {instance.ChannelId}\n" +
                               $"Speakers: {string.Join(", ", stage.Users.Where(m => !m.VoiceState.IsSuppressed).Select(m => m.DisplayName))}"
                 });
             }
@@ -165,7 +165,7 @@ namespace DisCatSharp.Examples.Interactivity.Commands
             // Any methods associated with updating a stage instance can throw a NotFoundException if stage is not currently open
             try
             {
-                await stage.ModifyStageAsync(topic, isPublic ? StagePrivacyLevel.PUBLIC : StagePrivacyLevel.GUILD_ONLY);
+                await stage.ModifyStageAsync(topic, isPublic ? StagePrivacyLevel.Public : StagePrivacyLevel.GuildOnly);
             
                 await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new()
                 {

@@ -58,10 +58,7 @@ namespace DisCatSharp.Examples.ApplicationCommands
             discordShardedClient.Logger.LogInformation($"Connection success! Logged in as {discordShardedClient.CurrentUser.Username}#{discordShardedClient.CurrentUser.Discriminator} ({discordShardedClient.CurrentUser.Id})");
 
             // Register a Random class instance now for use later over in RollRandom.cs
-            ApplicationCommandsConfiguration appCommandsConfiguration = new()
-            {
-                Services = new ServiceCollection().AddSingleton<Random>().BuildServiceProvider()
-            };
+            ApplicationCommandsConfiguration appCommandsConfiguration = new(new ServiceCollection().AddSingleton<Random>().BuildServiceProvider());
 
             // Let the user know that we're registering the commands.
             discordShardedClient.Logger.LogInformation("Registering application commands...");
