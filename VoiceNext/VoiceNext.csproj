@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <OutputType>exe</OutputType>
-        <TargetFramework>net5.0</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
         <AssemblyName>DisCatSharp.Examples.VoiceNext</AssemblyName>
         <RootNamespace>DisCatSharp.Examples.VoiceNext</RootNamespace>
         <PackageId>DisCatSharp.Examples.VoiceNext</PackageId>
