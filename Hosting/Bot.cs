@@ -32,7 +32,7 @@ namespace DisCatSharp.Examples.Hosting
 
             var ext = Client.UseApplicationCommands();
             
-            ext.RegisterCommands<AppCommands>();
+            ext.RegisterGlobalCommands<AppCommands>();
         }
 
         protected override void OnInitializationError(Exception ex)

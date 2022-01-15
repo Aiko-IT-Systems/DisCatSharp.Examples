@@ -94,7 +94,7 @@ namespace DisCatSharp.Examples.ApplicationCommands
                         {
                             if (command == typeof(Slap))
                             {
-                                appCommandShardExtension.RegisterCommands(command, (ulong)guildId, context =>
+                                appCommandShardExtension.RegisterGuildCommands(command, (ulong)guildId, context =>
                                 {
                                     // Allow members with the specified role from the arguments to execute the command
                                     if (args.Length > 2)
@@ -110,7 +110,7 @@ namespace DisCatSharp.Examples.ApplicationCommands
 
                             if (command == typeof(ManagePermissions))
                             {
-                                appCommandShardExtension.RegisterCommands(command, (ulong)guildId, context =>
+                                appCommandShardExtension.RegisterGuildCommands(command, (ulong)guildId, context =>
                                 {
                                     // Allow owners of the bot to execute the command
                                     foreach (DiscordUser user in discordClient.CurrentApplication.Owners)
@@ -124,7 +124,10 @@ namespace DisCatSharp.Examples.ApplicationCommands
                         continue;
                     }
 
-                    appCommandShardExtension.RegisterCommands(command, guildId);
+                    if (guildId != null)
+                        appCommandShardExtension.RegisterGuildCommands(command, (ulong)guildId);
+                    else
+                        appCommandShardExtension.RegisterGlobalCommands(command);
                 }
             }
             

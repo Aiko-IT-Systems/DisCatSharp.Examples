@@ -69,7 +69,7 @@ namespace DisCatSharp.Examples.VoiceNext
 
             foreach (var command in commands)
             {
-                appCommandExt.RegisterCommands(command, 885510395295584289);
+                appCommandExt.RegisterGuildCommands(command, 885510395295584289);
             }
             
             discordClient.Logger.LogInformation("Application commands registered successfully");

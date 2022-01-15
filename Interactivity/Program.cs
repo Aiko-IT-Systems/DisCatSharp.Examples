@@ -77,7 +77,7 @@ namespace DisCatSharp.Examples.Interactivity
 
             foreach (var command in commands)
             {
-                appCommandExt.RegisterCommands(command);
+                appCommandExt.RegisterGlobalCommands(command);
             }
             
             discordClient.Logger.LogInformation("Application commands registered successfully");

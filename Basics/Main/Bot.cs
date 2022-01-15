@@ -154,7 +154,7 @@ namespace DisCatSharp.Examples.Basics.Main
         {
             cnext.RegisterCommands<Commands.Main>(); // Commands.Main = Ordner.Class
             // appCommands.RegisterCommands<AppCommands.Main>(devguild); // use to register on guild
-            appCommands.RegisterCommands<AppCommands.Main>(); // use to register global (can take up to an hour)
+            appCommands.RegisterGlobalCommands<AppCommands.Main>(); // use to register global (can take up to an hour)
         }
 
         private static Task Client_Ready(DiscordClient dcl, ReadyEventArgs e)
