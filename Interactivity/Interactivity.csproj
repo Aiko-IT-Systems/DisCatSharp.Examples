@@ -25,7 +25,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="DisCatSharp" Version="9.8.6" />
+      <PackageReference Include="DisCatSharp" Version="9.9.1" />
       <PackageReference Include="DisCatSharp.ApplicationCommands" Version="9.8.6" />
       <PackageReference Include="DisCatSharp.Interactivity" Version="9.8.6" />
       <PackageReference Include="DisCatSharp.VoiceNext" Version="9.8.6" />
