@@ -128,7 +128,7 @@ namespace DisCatSharp.Examples.Interactivity.Commands
             
                 await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new()
                 {
-                    Content = $"Topic: {instance.Topic}\nPublic: {instance.PrivacyLevel == StagePrivacyLevel.Public}\nId: {instance.ChannelId}\n" +
+                    Content = $"Topic: {instance.Topic}\nId: {instance.ChannelId}\n" +
                               $"Speakers: {string.Join(", ", stage.Users.Where(m => !m.VoiceState.IsSuppressed).Select(m => m.DisplayName))}"
                 });
             }
