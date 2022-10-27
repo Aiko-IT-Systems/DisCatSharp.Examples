@@ -1,8 +1,10 @@
-using System.Linq;
-using System.Threading.Tasks;
 using DisCatSharp.ApplicationCommands;
+using DisCatSharp.ApplicationCommands.Attributes;
+using DisCatSharp.ApplicationCommands.Context;
 using DisCatSharp.Entities;
 using DisCatSharp.Enums;
+using System.Linq;
+using System.Threading.Tasks;
 using static DisCatSharp.Examples.Basics.Main.Bot;
 
 namespace DisCatSharp.Examples.Basics.AppCommands
@@ -53,7 +55,7 @@ namespace DisCatSharp.Examples.Basics.AppCommands
         [SlashCommand("say", "Say something via embed")]
         public static async Task Repeat(InteractionContext ctx, [Option("message", "Message to repeat")] string message)
         {
-            await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder().AsEphemeral(false).AddEmbed(new DiscordEmbedBuilder()
+            await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder().AddEmbed(new DiscordEmbedBuilder()
                         .WithTitle("Repeat Message")
                         .WithDescription($"{message}\n" +
                         $"User: {ctx.Interaction.User.Username}\n").Build()));
@@ -75,7 +77,7 @@ namespace DisCatSharp.Examples.Basics.AppCommands
             }.
             WithFooter($"Requested by {ctx.Member.DisplayName}", ctx.Member.AvatarUrl).
             WithAuthor($"{user.Username}", user.AvatarUrl, user.AvatarUrl);
-            await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder().AddEmbed(embed.Build()));
+            await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder().AsEphemeral(false).AddEmbed(embed.Build()));
         }
         
         /// <summary>
