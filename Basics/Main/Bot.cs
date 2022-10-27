@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using DisCatSharp.ApplicationCommands;
@@ -64,7 +65,7 @@ namespace DisCatSharp.Examples.Basics.Main
             
             CNext = Client.UseCommandsNext(new CommandsNextConfiguration
             {
-                StringPrefixes = new string[] { prefix },
+                StringPrefixes = new List<string> { prefix },
                 CaseSensitive = true,
                 EnableMentionPrefix = true,
                 IgnoreExtraArguments = true,
