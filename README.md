@@ -1,5 +1,5 @@
 # DisCatSharp.Examples
-Example Discord Bots written in CSharp with DisCatSharp. Includes examples like music bots supporting appcommands.
+Example Discord Bots written in C# with DisCatSharp. Includes examples like music bots supporting app commands.
 
 ### Examples
 | **Example**             | **Description**                                                                                   |
