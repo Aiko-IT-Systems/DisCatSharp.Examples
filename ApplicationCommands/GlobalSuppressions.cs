@@ -5,5 +5,4 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-[assembly: SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "<Pending>", Scope = "member", Target = "~M:DisCatSharp.Examples.ApplicationCommands.Commands.RollRandom.Command(DisCatSharp.ApplicationCommands.InteractionContext,DisCatSharp.Examples.ApplicationCommands.Commands.RollRandom.RandomChoice)~System.Threading.Tasks.Task")]
 [assembly: SuppressMessage("Usage", "CA2254:Template should be a static expression", Justification = "<Pending>", Scope = "member", Target = "~M:DisCatSharp.Examples.ApplicationCommands.Program.MainAsync(System.String[])~System.Threading.Tasks.Task")]
