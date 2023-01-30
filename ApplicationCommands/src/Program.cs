@@ -35,7 +35,7 @@ namespace DisCatSharp.Examples.ApplicationCommands
 
 			// Create logger
 			Log.Logger = new LoggerConfiguration()
-				.MinimumLevel.Information()
+				.MinimumLevel.Debug()
 				.WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}")
 				.CreateLogger();
 
@@ -59,7 +59,10 @@ namespace DisCatSharp.Examples.ApplicationCommands
 			discordShardedClient.Logger.LogInformation($"Connection success! Logged in as {discordShardedClient.CurrentUser.Username}#{discordShardedClient.CurrentUser.Discriminator} ({discordShardedClient.CurrentUser.Id})");
 
 			// Register a Random class instance now for use later over in RollRandom.cs
-			ApplicationCommandsConfiguration appCommandsConfiguration = new(new ServiceCollection().AddSingleton<Random>().BuildServiceProvider());
+			ApplicationCommandsConfiguration appCommandsConfiguration = new(new ServiceCollection().AddSingleton<Random>().BuildServiceProvider())
+			{
+				DebugStartup = true
+			};
 
 			// Let the user know that we're registering the commands.
 			discordShardedClient.Logger.LogInformation("Registering application commands...");
@@ -72,8 +75,8 @@ namespace DisCatSharp.Examples.ApplicationCommands
 			}
 
 			// In order not to list all the commands when adding, you can create a list of all commands with this.
-			Type appCommandModule = typeof(ApplicationCommandsModule);
-			var commands = Assembly.GetExecutingAssembly().GetTypes().Where(t => appCommandModule.IsAssignableFrom(t) && !t.IsNested).ToList();
+			/*Type appCommandModule = typeof(ApplicationCommandsModule);
+			var commands = Assembly.GetExecutingAssembly().GetTypes().Where(t => appCommandModule.IsAssignableFrom(t) && !t.IsNested).ToList();*/
 
 			foreach (DiscordClient discordClient in discordShardedClient.ShardClients.Values)
 			{
@@ -85,13 +88,17 @@ namespace DisCatSharp.Examples.ApplicationCommands
 				appCommandShardExtension.ContextMenuExecuted += Context_ContextMenuCommandExecuted;
 				appCommandShardExtension.ContextMenuErrored += Context_ContextMenuCommandErrored;
 
-				foreach (var command in commands)
+				/*foreach (var command in commands)
 				{
 					if (guildId != null)
 						appCommandShardExtension.RegisterGuildCommands(command, (ulong)guildId);
 					else
 						appCommandShardExtension.RegisterGlobalCommands(command);
-				}
+				}*/
+				if (guildId != null)
+					appCommandShardExtension.RegisterGuildCommands(Assembly.GetExecutingAssembly(), (ulong)guildId);
+				else
+					appCommandShardExtension.RegisterGlobalCommands(Assembly.GetExecutingAssembly());
 			}
 
 			discordShardedClient.Logger.LogInformation("Application commands registered successfully");

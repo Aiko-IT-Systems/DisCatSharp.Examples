@@ -32,7 +32,7 @@ namespace DisCatSharp.Examples.Interactivity.Commands
 			var channel = await ctx.Guild.CreateStageChannelAsync(name);
 
 			// Secondly, open stage in the channel you just created
-			await channel.OpenStageAsync(topic);
+			await channel.OpenStageAsync(topic, false, null);
 
 			await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new()
 			{
