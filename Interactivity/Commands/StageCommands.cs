@@ -166,7 +166,7 @@ namespace DisCatSharp.Examples.Interactivity.Commands
 			// Any methods associated with updating a stage instance can throw a NotFoundException if stage is not currently open
 			try
 			{
-				await stage.ModifyStageAsync(topic, Optional.None);
+				await stage.ModifyStageAsync(topic);
 
 				await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new()
 				{
@@ -264,7 +264,7 @@ namespace DisCatSharp.Examples.Interactivity.Commands
 			});
 
 			// We change the topic of the stage so people know which audio file is currently playing.
-			await ctx.Member.VoiceState.Channel.ModifyStageAsync(Path.GetFileNameWithoutExtension(path), Optional.None);
+			await ctx.Member.VoiceState.Channel.ModifyStageAsync(Path.GetFileNameWithoutExtension(path));
 		}
 	}
 }

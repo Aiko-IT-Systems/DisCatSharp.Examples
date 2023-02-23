@@ -64,17 +64,17 @@ namespace DisCatSharp.Examples.ApplicationCommands.Commands
             }
 
             // Add fields to the embed, giving general information about the role that isn't typically available through the normal client.
-            embedBuilder.AddField("Color", discordRole.Color.ToString(), true);
+            embedBuilder.AddField(new DiscordEmbedField("Color", discordRole.Color.ToString(), true));
 
             // We use CultureInfo.InvariantCulture since Discord is used by everyone around the world.
-            embedBuilder.AddField("Created At", discordRole.CreationTimestamp.UtcDateTime.ToString("MMMM dd, yyyy HH:mm:ss 'UTC'", CultureInfo.InvariantCulture), true);
-            embedBuilder.AddField("Hoisted", discordRole.IsHoisted.ToString(), true);
-            embedBuilder.AddField("Is Managed", discordRole.IsManaged.ToString(), true);
-            embedBuilder.AddField("Is Mentionable", discordRole.IsMentionable.ToString(), true);
-            embedBuilder.AddField("Role Id", discordRole.Id.ToString(CultureInfo.InvariantCulture), true);
-            embedBuilder.AddField("Role Name", discordRole.Name, true);
-            embedBuilder.AddField("Role Position", discordRole.Position.ToString(), true);
-            embedBuilder.AddField("Permissions", discordRole.Permissions.ToPermissionString(), false);
+            embedBuilder.AddField(new DiscordEmbedField("Created At", discordRole.CreationTimestamp.UtcDateTime.ToString("MMMM dd, yyyy HH:mm:ss 'UTC'", CultureInfo.InvariantCulture), true));
+            embedBuilder.AddField(new DiscordEmbedField("Hoisted", discordRole.IsHoisted.ToString(), true));
+            embedBuilder.AddField(new DiscordEmbedField("Is Managed", discordRole.IsManaged.ToString(), true));
+            embedBuilder.AddField(new DiscordEmbedField("Is Mentionable", discordRole.IsMentionable.ToString(), true));
+            embedBuilder.AddField(new DiscordEmbedField("Role Id", discordRole.Id.ToString(CultureInfo.InvariantCulture), true));
+            embedBuilder.AddField(new DiscordEmbedField("Role Name", discordRole.Name, true));
+            embedBuilder.AddField(new DiscordEmbedField("Role Position", discordRole.Position.ToString(), true));
+            embedBuilder.AddField(new DiscordEmbedField("Permissions", discordRole.Permissions.ToPermissionString(), false));
 
             // Create the message builder.
             DiscordWebhookBuilder messageBuilder = new();
