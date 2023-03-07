@@ -35,7 +35,7 @@ namespace DisCatSharp.Examples.Basics.AppCommands
 		[SlashCommand("shutdown", "Bot shutdown (restricted)")]
 		public static async Task Shutdown(InteractionContext ctx)
 		{
-			await ctx.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource, new DiscordInteractionResponseBuilder().AsEphemeral(false).WithContent("Shutdown request"));
+			await ctx.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource, new DiscordInteractionResponseBuilder().WithContent("Shutdown request"));
 			if (ctx.Client.CurrentApplication.Owners.Any(x => x == ctx.User))
 			{
 				await Task.Delay(5000);
@@ -79,7 +79,7 @@ namespace DisCatSharp.Examples.Basics.AppCommands
 			}.
 			WithFooter($"Requested by {ctx.Member.DisplayName}", ctx.Member.AvatarUrl).
 			WithAuthor($"{user.Username}", user.AvatarUrl, user.AvatarUrl);
-			await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder().AsEphemeral(false).AddEmbed(embed.Build()));
+			await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder().AddEmbed(embed.Build()));
 		}
 
 		/// <summary>
@@ -96,7 +96,7 @@ namespace DisCatSharp.Examples.Basics.AppCommands
 			}.
 				WithFooter($"Requested by {ctx.Member.DisplayName}", ctx.Member.AvatarUrl).
 				WithAuthor($"{ctx.TargetUser.Username}", ctx.TargetUser.AvatarUrl, ctx.TargetUser.AvatarUrl);
-			await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder().AsEphemeral(false).AddEmbed(embed.Build()));
+			await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder().AddEmbed(embed.Build()));
 		}
 	}
 }
