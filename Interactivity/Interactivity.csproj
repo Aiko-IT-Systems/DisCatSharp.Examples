@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <OutputType>exe</OutputType>
-        <TargetFramework>net6.0</TargetFramework>
+        <TargetFramework>net7.0</TargetFramework>
         <AssemblyName>DisCatSharp.Examples.Interactivity</AssemblyName>
         <RootNamespace>DisCatSharp.Examples.Interactivity</RootNamespace>
         <PackageId>DisCatSharp.Examples.Interactivity</PackageId>
