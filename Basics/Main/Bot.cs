@@ -25,7 +25,7 @@ internal class Bot : IDisposable
 #if DEBUG
 	public static readonly string Prefix = "!";
 #else
-        public static string prefix = "%";
+        public static string Prefix = "%";
 #endif
 	//public static ulong devguild = ; //Set to register app command on guild
 
