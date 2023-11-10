@@ -1,21 +1,20 @@
 using DisCatSharp.Examples.Basics.Main;
 
-namespace DisCatSharp.Examples.Basics
+namespace DisCatSharp.Examples.Basics;
+
+/// <summary>
+/// The program.
+/// </summary>
+internal class Program
 {
 	/// <summary>
-	/// The program.
+	/// Entry point.
 	/// </summary>
-	class Program
+	/// <param name="args">The args.</param>
+	private static void Main(string[] args)
 	{
-		/// <summary>
-		/// Entry point.
-		/// </summary>
-		/// <param name="args">The args.</param>
-		static void Main(string[] args)
-		{
-			string token = args[0];
-			using var bot = new Bot(token);
-			bot.RunAsync().Wait();
-		}
+		var token = args[0];
+		using var bot = new Bot(token);
+		bot.RunAsync().Wait();
 	}
 }

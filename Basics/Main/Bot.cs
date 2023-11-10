@@ -11,251 +11,253 @@ using DisCatSharp.Interactivity.Extensions;
 using Microsoft.Extensions.Logging;
 
 using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Reflection;
 
-namespace DisCatSharp.Examples.Basics.Main
+namespace DisCatSharp.Examples.Basics.Main;
+
+/// <summary>
+/// The bot.
+/// </summary>
+internal class Bot : IDisposable
 {
-	/// <summary>
-	/// The bot.
-	/// </summary>
-	internal class Bot : IDisposable
-	{
-
 #if DEBUG
-		public static string prefix = "!";
+	public static readonly string Prefix = "!";
 #else
         public static string prefix = "%";
 #endif
-		//public static ulong devguild = ; //Set to register app command on guild
+	//public static ulong devguild = ; //Set to register app command on guild
 
-		public static CancellationTokenSource ShutdownRequest;
-		public static DiscordClient Client;
-		public static ApplicationCommandsExtension AppCommands;
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0052:Remove unread private members", Justification = "<Pending>")]
-		private InteractivityExtension INext;
-		private CommandsNextExtension CNext;
+	public static CancellationTokenSource ShutdownRequest;
+	public static DiscordClient Client;
+	public static ApplicationCommandsExtension AppCommands;
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="Bot"/> class.
-		/// </summary>
-		/// <param name="Token">The token.</param>
-		public Bot(string Token)
-		{
-			ShutdownRequest = new CancellationTokenSource();
+	[System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0052:Remove unread private members", Justification = "<Pending>")]
+	private InteractivityExtension _next;
 
-			LogLevel logLevel;
+	private CommandsNextExtension _cNext;
+
+	/// <summary>
+	/// Initializes a new instance of the <see cref="Bot"/> class.
+	/// </summary>
+	/// <param name="token">The token.</param>
+	public Bot(string token)
+	{
+		ShutdownRequest = new();
+
+		LogLevel logLevel;
 #if DEBUG
-			logLevel = LogLevel.Debug;
+		logLevel = LogLevel.Debug;
 #else
             logLevel = LogLevel.Error;
 #endif
-			var cfg = new DiscordConfiguration
-			{
-				Token = Token,
-				TokenType = TokenType.Bot,
-				AutoReconnect = true,
-				MinimumLogLevel = logLevel,
-				Intents = DiscordIntents.AllUnprivileged,
-				MessageCacheSize = 2048
-			};
-
-			Client = new DiscordClient(cfg);
-
-			Client.UseApplicationCommands();
-
-			CNext = Client.UseCommandsNext(new CommandsNextConfiguration
-			{
-				StringPrefixes = new List<string> { prefix },
-				CaseSensitive = true,
-				EnableMentionPrefix = true,
-				IgnoreExtraArguments = true,
-				DefaultHelpChecks = null,
-				EnableDefaultHelp = true,
-				EnableDms = true
-			});
-
-			AppCommands = Client.GetApplicationCommands();
-
-			INext = Client.UseInteractivity(new InteractivityConfiguration
-			{
-				PaginationBehaviour = PaginationBehaviour.WrapAround,
-				PaginationDeletion = PaginationDeletion.DeleteMessage,
-				PollBehaviour = PollBehaviour.DeleteEmojis,
-				ButtonBehavior = ButtonPaginationBehavior.Disable
-			});
-
-			RegisterEventListener(Client, AppCommands, CNext);
-			RegisterCommands(CNext, AppCommands);
-		}
-
-		/// <summary>
-		/// Disposes the Bot.
-		/// </summary>
-		public void Dispose()
+		var cfg = new DiscordConfiguration
 		{
-			Client.Dispose();
-			INext = null;
-			CNext = null;
-			Client = null;
-			AppCommands = null;
-			Environment.Exit(0);
-		}
+			Token = token,
+			TokenType = TokenType.Bot,
+			AutoReconnect = true,
+			MinimumLogLevel = logLevel,
+			Intents = DiscordIntents.AllUnprivileged,
+			MessageCacheSize = 2048
+		};
 
-		/// <summary>
-		/// Starts the Bot.
-		/// </summary>
-		public async Task RunAsync()
+		Client = new(cfg);
+
+		Client.UseApplicationCommands();
+
+		this._cNext = Client.UseCommandsNext(new()
 		{
-			await Client.ConnectAsync();
-			while (!ShutdownRequest.IsCancellationRequested)
-			{
-				await Task.Delay(2000);
-			}
-			await Client.UpdateStatusAsync(activity: null, userStatus: UserStatus.Offline, idleSince: null);
-			await Client.DisconnectAsync();
-			await Task.Delay(2500);
-			Dispose();
-		}
+			StringPrefixes = new()
+				{ Prefix },
+			CaseSensitive = true,
+			EnableMentionPrefix = true,
+			IgnoreExtraArguments = true,
+			DefaultHelpChecks = null,
+			EnableDefaultHelp = true,
+			EnableDms = true
+		});
 
-		/// <summary>
-		/// Registers the event listener.
-		/// </summary>
-		/// <param name="client">The client.</param>
-		/// <param name="cnext">The commandsnext extension.</param>
-		private void RegisterEventListener(DiscordClient client, ApplicationCommandsExtension appCommands, CommandsNextExtension cnext)
+		AppCommands = Client.GetApplicationCommands();
+
+		this._next = Client.UseInteractivity(new()
 		{
+			PaginationBehaviour = PaginationBehaviour.WrapAround,
+			PaginationDeletion = PaginationDeletion.DeleteMessage,
+			PollBehaviour = PollBehaviour.DeleteEmojis,
+			ButtonBehavior = ButtonPaginationBehavior.Disable
+		});
 
-			/* Client Basic Events */
-			client.SocketOpened += Client_SocketOpened;
-			client.SocketClosed += Client_SocketClosed;
-			client.SocketErrored += Client_SocketErrored;
-			client.Heartbeated += Client_Heartbeated;
-			client.Ready += Client_Ready;
-			client.Resumed += Client_Resumed;
+		this.RegisterEventListener(Client, AppCommands, this._cNext);
+		this.RegisterCommands(this._cNext, AppCommands);
+	}
 
-			/* Client Events */
-			//client.GuildUnavailable += Client_GuildUnavailable;
-			//client.GuildAvailable += Client_GuildAvailable;
+	/// <summary>
+	/// Disposes the Bot.
+	/// </summary>
+	public void Dispose()
+	{
+		Client.Dispose();
+		this._next = null;
+		this._cNext = null;
+		Client = null;
+		AppCommands = null;
+		Environment.Exit(0);
+	}
 
-			/* CommandsNext Error */
-			cnext.CommandErrored += CNext_CommandErrored;
-
-			/* Slash Infos */
-			client.ApplicationCommandCreated += Discord_ApplicationCommandCreated;
-			client.ApplicationCommandDeleted += Discord_ApplicationCommandDeleted;
-			client.ApplicationCommandUpdated += Discord_ApplicationCommandUpdated;
-			appCommands.SlashCommandErrored += Slash_SlashCommandErrored;
-			appCommands.SlashCommandExecuted += Slash_SlashCommandExecuted;
-		}
-
-		/// <summary>
-		/// Registers the commands.
-		/// </summary>
-		/// <param name="cnext">The commandsnext extension.</param>
-		/// <param name="appCommands">The appcommands extension.</param>
-		private void RegisterCommands(CommandsNextExtension cnext, ApplicationCommandsExtension appCommands)
+	/// <summary>
+	/// Starts the Bot.
+	/// </summary>
+	public async Task RunAsync()
+	{
+		await Client.ConnectAsync();
+		while (!ShutdownRequest.IsCancellationRequested)
 		{
-			cnext.RegisterCommands<Commands.Main>(); // Commands.Main = Ordner.Class
-													 // appCommands.RegisterCommands<AppCommands.Main>(devguild); // use to register on guild
-			appCommands.RegisterGlobalCommands<AppCommands.Main>(); // use to register global (can take up to an hour)
+			await Task.Delay(2000);
 		}
 
-		private static Task Client_Ready(DiscordClient dcl, ReadyEventArgs e)
+		await Client.UpdateStatusAsync(null, UserStatus.Offline, null);
+		await Client.DisconnectAsync();
+		await Task.Delay(2500);
+		this.Dispose();
+	}
+
+	/// <summary>
+	/// Registers the event listener.
+	/// </summary>
+	/// <param name="client">The client.</param>
+	/// <param name="cnext">The commandsnext extension.</param>
+	private void RegisterEventListener(DiscordClient client, ApplicationCommandsExtension appCommands, CommandsNextExtension cnext)
+	{
+		/* Client Basic Events */
+		client.SocketOpened += Client_SocketOpenedAsync;
+		client.SocketClosed += Client_SocketClosedAsync;
+		client.SocketErrored += Client_SocketErroredAsync;
+		client.Heartbeated += Client_HeartbeatedAsync;
+		client.Ready += Client_ReadyAsync;
+		client.Resumed += Client_ResumedAsync;
+
+		/* Client Events */
+		//client.GuildUnavailable += Client_GuildUnavailable;
+		//client.GuildAvailable += Client_GuildAvailable;
+
+		/* CommandsNext Error */
+		cnext.CommandErrored += CNext_CommandErroredAsync;
+
+		/* Slash Infos */
+		client.ApplicationCommandCreated += Discord_ApplicationCommandCreatedAsync;
+		client.ApplicationCommandDeleted += Discord_ApplicationCommandDeletedAsync;
+		client.ApplicationCommandUpdated += Discord_ApplicationCommandUpdatedAsync;
+		appCommands.SlashCommandErrored += Slash_SlashCommandErroredAsync;
+		appCommands.SlashCommandExecuted += Slash_SlashCommandExecutedAsync;
+	}
+
+	/// <summary>
+	/// Registers the commands.
+	/// </summary>
+	/// <param name="cnext">The commandsnext extension.</param>
+	/// <param name="appCommands">The appcommands extension.</param>
+	private void RegisterCommands(CommandsNextExtension cnext, ApplicationCommandsExtension appCommands)
+	{
+		cnext.RegisterCommands<Commands.Main>(); // Commands.Main = Ordner.Class
+		// appCommands.RegisterCommands<AppCommands.Main>(devguild); // use to register on guild
+		appCommands.RegisterGlobalCommands<AppCommands.Main>(); // use to register global (can take up to an hour)
+	}
+
+	private static Task Client_ReadyAsync(DiscordClient dcl, ReadyEventArgs e)
+	{
+		Console.ForegroundColor = ConsoleColor.Yellow;
+		Console.WriteLine($"Starting with Prefix {Prefix} :3");
+		Console.WriteLine($"Starting {Client.CurrentUser.Username}");
+		Console.WriteLine("Client ready!");
+		Console.WriteLine($"Shard {dcl.ShardId}");
+		Console.ForegroundColor = ConsoleColor.Yellow;
+		Console.WriteLine("Loading Commands...");
+		Console.ForegroundColor = ConsoleColor.Magenta;
+		var commandlist = dcl.GetCommandsNext().RegisteredCommands;
+		foreach (var command in commandlist)
 		{
-			Console.ForegroundColor = ConsoleColor.Yellow;
-			Console.WriteLine($"Starting with Prefix {prefix} :3");
-			Console.WriteLine($"Starting {Client.CurrentUser.Username}");
-			Console.WriteLine("Client ready!");
-			Console.WriteLine($"Shard {dcl.ShardId}");
-			Console.ForegroundColor = ConsoleColor.Yellow;
-			Console.WriteLine("Loading Commands...");
-			Console.ForegroundColor = ConsoleColor.Magenta;
-			var commandlist = dcl.GetCommandsNext().RegisteredCommands;
-			foreach (var command in commandlist)
-			{
-				Console.WriteLine($"Command {command.Value.Name} loaded.");
-			}
-			Console.ForegroundColor = ConsoleColor.Green;
-			Console.WriteLine("Bot ready!");
-			return Task.CompletedTask;
+			Console.WriteLine($"Command {command.Value.Name} loaded.");
 		}
 
-		private static Task Client_Resumed(DiscordClient dcl, ReadyEventArgs e)
-		{
-			Console.ForegroundColor = ConsoleColor.Yellow;
-			Console.WriteLine("Bot resumed!");
-			return Task.CompletedTask;
-		}
+		Console.ForegroundColor = ConsoleColor.Green;
+		Console.WriteLine("Bot ready!");
+		return Task.CompletedTask;
+	}
 
-		private static Task Discord_ApplicationCommandUpdated(DiscordClient sender, ApplicationCommandEventArgs e)
-		{
-			sender.Logger.LogInformation($"Shard {sender.ShardId} sent application command updated: {e.Command.Name}: {e.Command.Id} for {e.Command.ApplicationId}");
-			return Task.CompletedTask;
-		}
-		private static Task Discord_ApplicationCommandDeleted(DiscordClient sender, ApplicationCommandEventArgs e)
-		{
-			sender.Logger.LogInformation($"Shard {sender.ShardId} sent application command deleted: {e.Command.Name}: {e.Command.Id} for {e.Command.ApplicationId}");
-			return Task.CompletedTask;
-		}
-		private static Task Discord_ApplicationCommandCreated(DiscordClient sender, ApplicationCommandEventArgs e)
-		{
-			sender.Logger.LogInformation($"Shard {sender.ShardId} sent application command created: {e.Command.Name}: {e.Command.Id} for {e.Command.ApplicationId}");
-			return Task.CompletedTask;
-		}
-		private static Task Slash_SlashCommandExecuted(ApplicationCommandsExtension sender, SlashCommandExecutedEventArgs e)
-		{
-			Console.WriteLine($"Slash/Info: {e.Context.CommandName}");
-			return Task.CompletedTask;
-		}
+	private static Task Client_ResumedAsync(DiscordClient dcl, ReadyEventArgs e)
+	{
+		Console.ForegroundColor = ConsoleColor.Yellow;
+		Console.WriteLine("Bot resumed!");
+		return Task.CompletedTask;
+	}
 
-		private static Task Slash_SlashCommandErrored(ApplicationCommandsExtension sender, SlashCommandErrorEventArgs e)
-		{
-			Console.WriteLine($"Slash/Error: {e.Exception.Message} | CN: {e.Context.CommandName} | IID: {e.Context.InteractionId}");
-			return Task.CompletedTask;
-		}
+	private static Task Discord_ApplicationCommandUpdatedAsync(DiscordClient sender, ApplicationCommandEventArgs e)
+	{
+		sender.Logger.LogInformation("Shard {SenderShardId} sent application command updated: {CommandName}: {CommandId} for {CommandApplicationId}", sender.ShardId, e.Command.Name, e.Command.Id, e.Command.ApplicationId);
+		return Task.CompletedTask;
+	}
 
-		private static Task CNext_CommandErrored(CommandsNextExtension ex, CommandErrorEventArgs e)
-		{
-			if (e.Command == null)
-			{
-				Console.WriteLine($"{e.Exception.Message}");
-			}
-			else
-			{
-				Console.WriteLine($"{e.Command.Name}: {e.Exception.Message}");
-			}
-			return Task.CompletedTask;
-		}
+	private static Task Discord_ApplicationCommandDeletedAsync(DiscordClient sender, ApplicationCommandEventArgs e)
+	{
+		sender.Logger.LogInformation("Shard {SenderShardId} sent application command deleted: {CommandName}: {CommandId} for {CommandApplicationId}", sender.ShardId, e.Command.Name, e.Command.Id, e.Command.ApplicationId);
+		return Task.CompletedTask;
+	}
 
-		private static Task Client_SocketOpened(DiscordClient dcl, SocketEventArgs e)
-		{
-			Console.ForegroundColor = ConsoleColor.Yellow;
-			Console.WriteLine("Socket opened");
-			return Task.CompletedTask;
-		}
+	private static Task Discord_ApplicationCommandCreatedAsync(DiscordClient sender, ApplicationCommandEventArgs e)
+	{
+		sender.Logger.LogInformation("Shard {SenderShardId} sent application command created: {CommandName}: {CommandId} for {CommandApplicationId}", sender.ShardId, e.Command.Name, e.Command.Id, e.Command.ApplicationId);
+		return Task.CompletedTask;
+	}
 
-		private static Task Client_SocketErrored(DiscordClient dcl, SocketErrorEventArgs e)
-		{
-			Console.ForegroundColor = ConsoleColor.DarkRed;
-			Console.WriteLine("Socket has an error! " + e.Exception.Message.ToString());
-			return Task.CompletedTask;
-		}
+	private static Task Slash_SlashCommandExecutedAsync(ApplicationCommandsExtension sender, SlashCommandExecutedEventArgs e)
+	{
+		sender.Client.Logger.LogInformation("Slash/Info: {ContextCommandName}", e.Context.CommandName);
+		return Task.CompletedTask;
+	}
 
-		private static Task Client_SocketClosed(DiscordClient dcl, SocketCloseEventArgs e)
-		{
-			Console.ForegroundColor = ConsoleColor.Red;
-			Console.WriteLine("Socket closed: " + e.CloseMessage);
-			return Task.CompletedTask;
-		}
+	private static Task Slash_SlashCommandErroredAsync(ApplicationCommandsExtension sender, SlashCommandErrorEventArgs e)
+	{
+		sender.Client.Logger.LogError("Slash/Error: {ExceptionMessage} | CN: {ContextCommandName} | IID: {ContextInteractionId}", e.Exception.Message, e.Context.CommandName, e.Context.InteractionId);
+		return Task.CompletedTask;
+	}
 
-		private static Task Client_Heartbeated(DiscordClient dcl, HeartbeatEventArgs e)
-		{
-			Console.ForegroundColor = ConsoleColor.Yellow;
-			Console.WriteLine("Received Heartbeat:" + e.Ping);
-			Console.ForegroundColor = ConsoleColor.Gray;
-			return Task.CompletedTask;
-		}
+	private static Task CNext_CommandErroredAsync(CommandsNextExtension sender, CommandErrorEventArgs e)
+	{
+		if (e.Command == null)
+			sender.Client.Logger.LogInformation("{ExceptionMessage}", e.Exception.Message);
+		else
+			sender.Client.Logger.LogInformation("{CommandName}: {ExceptionMessage}", e.Command.Name, e.Exception.Message);
+
+		return Task.CompletedTask;
+	}
+
+	private static Task Client_SocketOpenedAsync(DiscordClient dcl, SocketEventArgs e)
+	{
+		Console.ForegroundColor = ConsoleColor.Yellow;
+		Console.WriteLine("Socket opened");
+		return Task.CompletedTask;
+	}
+
+	private static Task Client_SocketErroredAsync(DiscordClient dcl, SocketErrorEventArgs e)
+	{
+		Console.ForegroundColor = ConsoleColor.DarkRed;
+		Console.WriteLine("Socket has an error! " + e.Exception.Message.ToString());
+		return Task.CompletedTask;
+	}
+
+	private static Task Client_SocketClosedAsync(DiscordClient dcl, SocketCloseEventArgs e)
+	{
+		Console.ForegroundColor = ConsoleColor.Red;
+		Console.WriteLine("Socket closed: " + e.CloseMessage);
+		return Task.CompletedTask;
+	}
+
+	private static Task Client_HeartbeatedAsync(DiscordClient dcl, HeartbeatEventArgs e)
+	{
+		Console.ForegroundColor = ConsoleColor.Yellow;
+		Console.WriteLine("Received Heartbeat:" + e.Ping);
+		Console.ForegroundColor = ConsoleColor.Gray;
+		return Task.CompletedTask;
 	}
 }

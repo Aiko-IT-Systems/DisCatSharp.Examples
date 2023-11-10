@@ -6,89 +6,88 @@ using DisCatSharp.Enums;
 
 using System.Threading.Tasks;
 
-namespace DisCatSharp.Examples.Interactivity.Commands
+namespace DisCatSharp.Examples.Interactivity.Commands;
+
+/// <summary>
+/// Shows how to create, archive and delete threads.
+/// </summary>
+public class ThreadCommands : ApplicationCommandsModule
 {
 	/// <summary>
-	/// Shows how to create, archive and delete threads.
+	/// Create a thread in a specific channel.
 	/// </summary>
-	public class ThreadCommands : ApplicationCommandsModule
+	/// <param name="ctx">Interaction context</param>
+	/// <param name="name">Thread name</param>
+	/// <param name="channel">The channel where the thread should be created</param>
+	[SlashCommand("create_thread", "Create a thread in a specific channel")]
+	public static async Task CreateThread(InteractionContext ctx, [Option("name", "Thread name")] string name, [Option("channel", "The channel where the thread should be created")] DiscordChannel channel = null)
 	{
-		/// <summary>
-		/// Create a thread in a specific channel.
-		/// </summary>
-		/// <param name="ctx">Interaction context</param>
-		/// <param name="name">Thread name</param>
-		/// <param name="channel">The channel where the thread should be created</param>
-		[SlashCommand("create_thread", "Create a thread in a specific channel")]
-		public static async Task CreateThread(InteractionContext ctx, [Option("name", "Thread name")] string name, [Option("channel", "The channel where the thread should be created")] DiscordChannel channel = null)
+		channel ??= ctx.Channel;
+
+		// Create a thread without a message
+		await channel.CreateThreadAsync(name);
+
+		await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new(new()
 		{
-			channel ??= ctx.Channel;
+			Content = $"{name} was successfully created in the {channel.Mention}."
+		}));
+	}
 
-			// Create a thread without a message
-			await channel.CreateThreadAsync(name);
+	/// <summary>
+	/// Archive thread.
+	/// </summary>
+	/// <param name="ctx">Interaction context</param>
+	/// <param name="threadId">Thread Id</param>
+	[SlashCommand("archive_thread", "Archive thread")]
+	public static async Task ArchiveThread(InteractionContext ctx, [Option("thread", "Thread id")] string threadId)
+	{
+		// Get the thread from its Id
+		var thread = ctx.Guild.GetThread(ulong.Parse(threadId));
 
-			await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new(new()
-			{
-				Content = $"{name} was successfully created in the {channel.Mention}."
-			}));
-		}
-
-		/// <summary>
-		/// Archive thread.
-		/// </summary>
-		/// <param name="ctx">Interaction context</param>
-		/// <param name="threadId">Thread Id</param>
-		[SlashCommand("archive_thread", "Archive thread")]
-		public static async Task ArchiveThread(InteractionContext ctx, [Option("thread", "Thread id")] string threadId)
+		// Check whether the desired thread was found.
+		if (thread == null)
 		{
-			// Get the thread from its Id
-			var thread = ctx.Guild.GetThread(ulong.Parse(threadId));
-
-			// Check whether the desired thread was found.
-			if (thread == null)
-			{
-				await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new()
-				{
-					Content = "Thread not found."
-				});
-				return;
-			}
-
-			await thread.ArchiveAsync();
-
 			await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new()
 			{
-				Content = $"{thread.Name} has been successfully archived."
+				Content = "Thread not found."
 			});
+			return;
 		}
 
-		/// <summary>
-		/// Permanently delete thread.
-		/// </summary>
-		/// <param name="ctx">Interaction context</param>
-		/// <param name="threadId">Thread Id</param>
-		[SlashCommand("delete_thread", "Permanently delete thread (deletes all content of the thread)")]
-		public static async Task DeleteThread(InteractionContext ctx, [Option("thread", "Thread id")] string threadId)
+		await thread.ArchiveAsync();
+
+		await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new()
 		{
-			// Get the thread from its Id
-			var thread = ctx.Guild.GetThread(ulong.Parse(threadId));
+			Content = $"{thread.Name} has been successfully archived."
+		});
+	}
 
-			// Check whether the desired thread was found.
-			if (thread == null)
-			{
-				await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new()
-				{
-					Content = "Thread not found."
-				});
-				return;
-			}
+	/// <summary>
+	/// Permanently delete thread.
+	/// </summary>
+	/// <param name="ctx">Interaction context</param>
+	/// <param name="threadId">Thread Id</param>
+	[SlashCommand("delete_thread", "Permanently delete thread (deletes all content of the thread)")]
+	public static async Task DeleteThread(InteractionContext ctx, [Option("thread", "Thread id")] string threadId)
+	{
+		// Get the thread from its Id
+		var thread = ctx.Guild.GetThread(ulong.Parse(threadId));
 
-			await thread.DeleteAsync();
-
+		// Check whether the desired thread was found.
+		if (thread == null)
+		{
 			await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new()
 			{
-				Content = $"{thread.Name} has been successfully deleted."
+				Content = "Thread not found."
 			});
+			return;
 		}
+
+		await thread.DeleteAsync();
+
+		await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new()
+		{
+			Content = $"{thread.Name} has been successfully deleted."
+		});
 	}
 }

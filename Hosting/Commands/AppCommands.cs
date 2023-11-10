@@ -6,26 +6,25 @@ using DisCatSharp.Enums;
 
 using System.Threading.Tasks;
 
-namespace DisCatSharp.Examples.Hosting.Commands
+namespace DisCatSharp.Examples.Hosting.Commands;
+
+/// <summary>
+/// Notice how Ping inherits the ApplicationCommandsModule
+/// </summary>
+public class AppCommands : ApplicationCommandsModule
 {
 	/// <summary>
-	/// Notice how Ping inherits the ApplicationCommandsModule
+	/// Slash command registers the name and command description.
 	/// </summary>
-	public class AppCommands : ApplicationCommandsModule
+	/// <param name="context">Interaction context</param>
+	[SlashCommand("ping", "Test command for Hosting.")]
+	public static async Task CommandAsync(InteractionContext context)
 	{
-		/// <summary>
-		/// Slash command registers the name and command description.
-		/// </summary>
-		/// <param name="context">Interaction context</param>
-		[SlashCommand("ping", "Test command for Hosting.")]
-		public static async Task Command(InteractionContext context)
+		DiscordInteractionResponseBuilder discordInteractionResponseBuilder = new()
 		{
-			DiscordInteractionResponseBuilder discordInteractionResponseBuilder = new()
-			{
-				Content = $"Pong! Webhook latency is {context.Client.Ping}ms"
-			};
+			Content = $"Pong! Webhook latency is {context.Client.Ping}ms"
+		};
 
-			await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, discordInteractionResponseBuilder);
-		}
+		await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, discordInteractionResponseBuilder);
 	}
 }
