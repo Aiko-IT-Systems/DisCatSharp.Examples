@@ -25,10 +25,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="DisCatSharp" Version="10.4.2-nightly-046" />
-      <PackageReference Include="DisCatSharp.ApplicationCommands" Version="10.4.2-nightly-046" />
-      <PackageReference Include="DisCatSharp.Interactivity" Version="10.4.2-nightly-046" />
-      <PackageReference Include="DisCatSharp.VoiceNext" Version="10.4.2-nightly-046" />
+      <PackageReference Include="DisCatSharp" Version="10.4.2-nightly-047" />
+      <PackageReference Include="DisCatSharp.ApplicationCommands" Version="10.4.2-nightly-047" />
+      <PackageReference Include="DisCatSharp.Interactivity" Version="10.4.2-nightly-047" />
+      <PackageReference Include="DisCatSharp.VoiceNext" Version="10.4.2-nightly-047" />
       <PackageReference Include="Serilog" Version="3.1.1" />
       <PackageReference Include="Serilog.Extensions.Logging" Version="8.0.0" />
       <PackageReference Include="Serilog.Sinks.Console" Version="5.0.0" />
