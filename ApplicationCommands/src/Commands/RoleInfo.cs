@@ -61,10 +61,8 @@ public class RoleInfo : ApplicationCommandsModule
 
 		// If the guild has a custom guild icon, set the embed's thumbnail to that icon.
 		if (context.Guild.IconUrl != null)
-		{
 			// CHALLENGE: Replace the jpg to the highest resolution png file using the Discord API.
 			embedBuilder.WithThumbnail(context.Guild.IconUrl);
-		}
 
 		// Add fields to the embed, giving general information about the role that isn't typically available through the normal client.
 		embedBuilder.AddField(new("Color", discordRole.Color.ToString(), true));

@@ -1,13 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFramework>net7.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
         <Authors>Lala Sabathil &lt;aiko@aitsys.dev&gt;, Lunar Starstrum, QuantuChi</Authors>
         <Company>Aiko IT Systems</Company>
         <PackageId>DisCatSharp.Examples.ApplicationCommands</PackageId>
         <Product>DisCatSharp.Examples.ApplicationCommands</Product>
         <Description>DisCatSharp ApplicationCommands Example Bot</Description>
-        <Copyright>2021 AITSYS</Copyright>
+        <Copyright>2021-2024 AITSYS</Copyright>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <RepositoryUrl>https://github.com/Aiko-IT-Systems/DisCatSharp.Examples</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
@@ -23,8 +23,8 @@
       <NoWarn>1701;1702;DV2001</NoWarn>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="DisCatSharp" Version="10.4.2-nightly-057" />
-        <PackageReference Include="DisCatSharp.ApplicationCommands" Version="10.4.2-nightly-057" />
+        <PackageReference Include="DisCatSharp" Version="10.5.0-nightly-001" />
+        <PackageReference Include="DisCatSharp.ApplicationCommands" Version="10.5.0-nightly-001" />
         <PackageReference Include="Serilog" Version="3.1.1" />
         <PackageReference Include="Serilog.Extensions.Logging" Version="8.0.0" />
         <PackageReference Include="Serilog.Sinks.Console" Version="5.0.1" />

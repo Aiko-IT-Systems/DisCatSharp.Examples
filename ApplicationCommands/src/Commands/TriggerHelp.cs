@@ -53,10 +53,8 @@ public class TriggerHelp : ApplicationCommandsModule
 
 		// If the guild has a custom guild icon, set the embed's thumbnail to that icon.
 		if (context.Guild != null && context.Guild.IconUrl != null)
-		{
 			// CHALLENGE: Replace the jpg to the highest resolution png file using the Discord API.
 			discordEmbedBuilder.WithThumbnail(context.Guild.IconUrl);
-		}
 
 		// Iterate through each of the command's parameters, selecting only the ones that have the Option attribute.
 		foreach (var parameter in command.GetParameters())
@@ -64,9 +62,7 @@ public class TriggerHelp : ApplicationCommandsModule
 			var parameterChoice = parameter.GetCustomAttribute<OptionAttribute>(false);
 			// If the option attribute doesn't exist on the method argument, skip it.
 			if (parameterChoice == null)
-			{
 				continue;
-			}
 
 			// Add the argument's description to the embed, specifying if it's optional or required.
 			discordEmbedBuilder.AddField(new((parameter.IsOptional ? "(Optional) " : "(Required) ") + parameterChoice.Name, $"**Type:** {parameter.ParameterType.Name}\n**Description:** {parameterChoice.Description}"));
@@ -83,7 +79,7 @@ public class TriggerHelp : ApplicationCommandsModule
 /// </summary>
 public class TriggerHelpChoiceProvider : IChoiceProvider
 {
-	internal static readonly Dictionary<string, MethodInfo> Commands = new();
+	internal static readonly Dictionary<string, MethodInfo> Commands = [];
 
 	/// <summary>
 	/// Adding all commands and subcommands to Commands field.
@@ -95,8 +91,7 @@ public class TriggerHelpChoiceProvider : IChoiceProvider
 		// Get all nested group commands in the type variable/class
 		var nestedTypes = type.GetNestedTypes().Where(innerType => innerType?.GetCustomAttribute<SlashCommandGroupAttribute>() != null).ToList();
 		// If any nested group commands are available
-		if (nestedTypes.Any())
-		{
+		if (nestedTypes.Count != 0)
 			// Iterate through each subgroup command
 			foreach (var nestedType in nestedTypes)
 			{
@@ -109,12 +104,11 @@ public class TriggerHelpChoiceProvider : IChoiceProvider
 				// There are still nested classes, throw it back into the recursive loop.
 				SearchCommands(nestedType, commandName);
 			}
-		}
 		else
 		{
 			// Get all slash commands in the class
 			var commands = type.GetMethods().Where(method => method.GetCustomAttribute<SlashCommandAttribute>() != null).ToList();
-			if (!commands.Any())
+			if (commands.Count == 0)
 				return;
 
 			foreach (var command in commands)
@@ -145,12 +139,10 @@ public class TriggerHelpChoiceProvider : IChoiceProvider
 
 		// Find all command or subgroup commands from the classes
 		foreach (var command in commandClasses)
-		{
 			SearchCommands(command);
-		}
 
 		// SearchCommands registers the commands into a Dictionary<string, MethodInfo>. Since we only need the command name, we can just select the keys.
-		List<DiscordApplicationCommandOptionChoice> discordApplicationCommandOptionChoices = Commands.Keys.Select(commandName => new DiscordApplicationCommandOptionChoice(commandName, commandName)).ToList();
+		var discordApplicationCommandOptionChoices = Commands.Keys.Select(commandName => new DiscordApplicationCommandOptionChoice(commandName, commandName)).ToList();
 
 		// Sort the options alphabetically, in case Discord doesn't do that for us already.
 		discordApplicationCommandOptionChoices.Sort((DiscordApplicationCommandOptionChoice x, DiscordApplicationCommandOptionChoice y) => string.Compare(x.Name, y.Name, StringComparison.Ordinal));

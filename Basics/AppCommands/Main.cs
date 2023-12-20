@@ -44,9 +44,7 @@ internal class Main : ApplicationCommandsModule
 			await ctx.EditResponseAsync(new DiscordWebhookBuilder().WithContent("Shutting down!"));
 		}
 		else
-		{
 			await ctx.EditResponseAsync(new DiscordWebhookBuilder().WithContent("You are not allowed to execute this request!"));
-		}
 	}
 
 	/// <summary>

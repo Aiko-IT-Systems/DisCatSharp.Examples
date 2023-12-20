@@ -19,7 +19,7 @@ public class Tell : ApplicationCommandsModule
 	/// Check if this command is executed in the guild.
 	/// </summary>
 	/// <param name="context">Interaction context</param>
-	public async override Task<bool> BeforeSlashExecutionAsync(InteractionContext context)
+	public override async Task<bool> BeforeSlashExecutionAsync(InteractionContext context)
 	{
 		if (context.Guild == null)
 		{
@@ -46,7 +46,6 @@ public class Tell : ApplicationCommandsModule
 		InteractionContext context,
 		[Option("victim", "Who the bot is messaging.")] DiscordUser victim,
 		[Choice("ModMail", "Please contact ModMail."), Choice("Behaviour", "Please stop being rude."), Choice("Advertisement", "Please stop advertising."), Choice("SFW", "Please keep things SFW."), Option("Phrase", "What to message to the victim.")]
-	                                  
 		string phrase
 	)
 	{

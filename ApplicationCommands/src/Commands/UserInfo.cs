@@ -18,7 +18,7 @@ public class UserInfo : ApplicationCommandsModule
 	/// context menu commands use BeforeContextMenuExecutionAsync/AfterContextMenuExecutionAsync
 	/// </summary>
 	/// <param name="context">Context menu context</param>
-	public async override Task<bool> BeforeContextMenuExecutionAsync(ContextMenuContext context)
+	public override async Task<bool> BeforeContextMenuExecutionAsync(ContextMenuContext context)
 	{
 		if (context.Guild != null)
 			return true;

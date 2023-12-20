@@ -8,10 +8,7 @@ namespace DisCatSharp.Examples.Hosting;
 
 public class Program
 {
-	public static void Main(string[] args)
-	{
-		CreateHostBuilder(args).Build().Run();
-	}
+	public static void Main(string[] args) => CreateHostBuilder(args).Build().Run();
 
 	public static IHostBuilder CreateHostBuilder(string[] args) =>
 		Host.CreateDefaultBuilder(args)
@@ -19,5 +16,5 @@ public class Program
 				.MinimumLevel.Override("Microsoft", LogEventLevel.Information)
 				.WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}")
 				.CreateLogger())
-			.ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
+			.ConfigureWebHostDefaults(webBuilder => webBuilder.UseStartup<Startup>());
 }

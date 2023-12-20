@@ -19,7 +19,7 @@ public class MusicCommands : ApplicationCommandsModule
 	/// <summary>
 	/// Since we want to be able to pause and stop playback without waiting for the end, we need to store the streams somewhere
 	/// </summary>
-	private static readonly Dictionary<ulong, Stream> PlayBacks = new();
+	private static readonly Dictionary<ulong, Stream> s_playbacks = [];
 
 	/// <summary>
 	/// Play local file asynchronously.
@@ -54,10 +54,10 @@ public class MusicCommands : ApplicationCommandsModule
 		}
 
 		// Stop playback if playing
-		if (PlayBacks.ContainsKey(ctx.Guild.Id))
+		if (s_playbacks.TryGetValue(ctx.Guild.Id, out var value))
 		{
-			await PlayBacks[ctx.Guild.Id].DisposeAsync();
-			PlayBacks.Remove(ctx.Guild.Id);
+			await value.DisposeAsync();
+			s_playbacks.Remove(ctx.Guild.Id);
 		}
 
 		var transmit = connection.GetTransmitSink();
@@ -76,7 +76,7 @@ public class MusicCommands : ApplicationCommandsModule
 		// Without this, we cannot stop playback using the 'stop' command.
 		// Also, without this, the command cannot complete and return a message to the user before the playback is complete.
 		_ = pcm.CopyToAsync(transmit);
-		PlayBacks.Add(ctx.Guild.Id, pcm);
+		s_playbacks.Add(ctx.Guild.Id, pcm);
 
 		// CHALLENGE: Add a queue. You need to make sure that new audio files are added to a special queue instead of overwriting the current one
 		// and automatically played after the end of the previous file.
@@ -199,10 +199,10 @@ public class MusicCommands : ApplicationCommandsModule
 		}
 
 		// Stop playback if playing
-		if (PlayBacks.ContainsKey(ctx.Guild.Id))
+		if (s_playbacks.TryGetValue(ctx.Guild.Id, out var value))
 		{
-			await PlayBacks[ctx.Guild.Id].DisposeAsync();
-			PlayBacks.Remove(ctx.Guild.Id);
+			await value.DisposeAsync();
+			s_playbacks.Remove(ctx.Guild.Id);
 		}
 
 		await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new()

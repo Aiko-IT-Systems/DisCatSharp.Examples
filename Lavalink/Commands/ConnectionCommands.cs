@@ -36,7 +36,7 @@ public class ConnectionCommands : ApplicationCommandsModule
 		}
 
 		// Check if Lavalink connection is established
-		if (!lava.ConnectedNodes.Any())
+		if (!lava.ConnectedSessions.Any())
 		{
 			await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new()
 			{
@@ -46,7 +46,7 @@ public class ConnectionCommands : ApplicationCommandsModule
 			return;
 		}
 
-		var node = lava.ConnectedNodes.Values.First();
+		var node = lava.ConnectedSessions.Values.First();
 
 		// Connect to the channel
 		await ctx.Member.VoiceState.Channel.ConnectAsync(node);
@@ -65,7 +65,7 @@ public class ConnectionCommands : ApplicationCommandsModule
 	public static async Task LeaveAsync(InteractionContext ctx)
 	{
 		var lava = ctx.Client.GetLavalink();
-		if (!lava.ConnectedNodes.Any())
+		if (!lava.ConnectedSessions.Any())
 		{
 			await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new()
 			{
@@ -75,10 +75,10 @@ public class ConnectionCommands : ApplicationCommandsModule
 			return;
 		}
 
-		var node = lava.ConnectedNodes.Values.First();
+		var node = lava.ConnectedSessions.Values.First();
 
 		// Get the current Lavalink connection in the guild.
-		var connection = node.GetGuildConnection(ctx.Guild);
+		var connection = node.GetGuildPlayer(ctx.Guild);
 
 		if (connection == null)
 		{

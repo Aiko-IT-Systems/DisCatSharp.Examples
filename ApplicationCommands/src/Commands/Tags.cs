@@ -26,7 +26,7 @@ public class Tags : ApplicationCommandsModule
 		/// <summary>
 		/// Tags will be cleared when the bot restarts.
 		/// </summary>
-		public static List<Tag> Tags { get; private set; } = new();
+		public static List<Tag> Tags { get; private set; } = [];
 
 		/// <summary>
 		/// Sends a premade message.
@@ -95,7 +95,7 @@ public class Tags : ApplicationCommandsModule
 				return;
 			}
 
-			var tag = Tags.FirstOrDefault(listTag => listTag.GuildId == context.Guild.Id && listTag.Name == tagName.ToLowerInvariant());
+			var tag = Tags.FirstOrDefault(listTag => listTag.GuildId == context.Guild.Id && listTag.Name.Equals(tagName, System.StringComparison.InvariantCultureIgnoreCase));
 
 			// The tag already exists, we can't allow duplicates to happen.
 			if (tag != null)
@@ -139,7 +139,7 @@ public class Tags : ApplicationCommandsModule
 				return;
 			}
 
-			var tag = Tags.FirstOrDefault(listTag => listTag.GuildId == context.Guild.Id && listTag.Name == tagName.ToLowerInvariant());
+			var tag = Tags.FirstOrDefault(listTag => listTag.GuildId == context.Guild.Id && listTag.Name.Equals(tagName, System.StringComparison.InvariantCultureIgnoreCase));
 			if (tag == null)
 			{
 				discordInteractionResponseBuilder.Content = $"Error: Tag {tagName.Sanitize().InlineCode()} not found!";
@@ -181,12 +181,9 @@ internal class TagsAutocompleteProvider : IAutocompleteProvider
 	public async Task<IEnumerable<DiscordApplicationCommandAutocompleteChoice>> Provider(AutocompleteContext context)
 #pragma warning restore 1998
 	{
-		if (context.FocusedOption == null)
-		{
-			return null;
-		}
-
-		return Tags.RealTags.Tags.Where(listTag => listTag.GuildId == context.Interaction.Guild.Id)
-			.Select(item => new DiscordApplicationCommandAutocompleteChoice(item.Name, item.Name)).ToList();
+		return context.FocusedOption == null
+			? null
+			: Tags.RealTags.Tags.Where(listTag => listTag.GuildId == context.Interaction.Guild.Id)
+				.Select(item => new DiscordApplicationCommandAutocompleteChoice(item.Name, item.Name)).ToList();
 	}
 }

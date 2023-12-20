@@ -1,14 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+	<OutputType>Exe</OutputType>
+	<TargetFramework>net8.0</TargetFramework>
     <AssemblyName>DisCatSharp.Examples.Hosting</AssemblyName>
     <RootNamespace>DisCatSharp.Examples.Hosting</RootNamespace>
     <IsPackable>true</IsPackable>
     <PackageId>DisCatSharp.Examples.Hosting</PackageId>
     <Authors>Lala Sabathil &lt;aiko@aitsys.dev&gt;, QuantuChi</Authors>
     <Description>DisCatSharp Hosting Example Bot</Description>
-    <Copyright>2021 AITSYS</Copyright>
+	<Copyright>2021-2024 AITSYS</Copyright>
     <PackageProjectUrl>https://examples.dcs.aitsys.dev</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Aiko-IT-Systems/DisCatSharp.Examples</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -25,12 +26,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DisCatSharp" Version="10.4.2-nightly-057" />
-    <PackageReference Include="DisCatSharp.ApplicationCommands" Version="10.4.2-nightly-057" />
-    <PackageReference Include="DisCatSharp.CommandsNext" Version="10.4.2-nightly-057" />
-    <PackageReference Include="DisCatSharp.Hosting" Version="10.4.2-nightly-057" />
-    <PackageReference Include="DisCatSharp.Hosting.DependencyInjection" Version="10.4.2-nightly-057" />
-    <PackageReference Include="DisCatSharp.Interactivity" Version="10.4.2-nightly-057" />
+    <PackageReference Include="DisCatSharp" Version="10.5.0-nightly-001" />
+    <PackageReference Include="DisCatSharp.ApplicationCommands" Version="10.5.0-nightly-001" />
+    <PackageReference Include="DisCatSharp.CommandsNext" Version="10.5.0-nightly-001" />
+    <PackageReference Include="DisCatSharp.Hosting" Version="10.5.0-nightly-001" />
+    <PackageReference Include="DisCatSharp.Hosting.DependencyInjection" Version="10.5.0-nightly-001" />
+    <PackageReference Include="DisCatSharp.Interactivity" Version="10.5.0-nightly-001" />
     <PackageReference Include="Serilog" Version="3.1.1" />
     <PackageReference Include="Serilog.AspNetCore" Version="8.0.0" />
   </ItemGroup>

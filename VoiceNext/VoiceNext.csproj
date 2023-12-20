@@ -2,13 +2,13 @@
 
     <PropertyGroup>
         <OutputType>exe</OutputType>
-        <TargetFramework>net7.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
         <AssemblyName>DisCatSharp.Examples.VoiceNext</AssemblyName>
         <RootNamespace>DisCatSharp.Examples.VoiceNext</RootNamespace>
         <PackageId>DisCatSharp.Examples.VoiceNext</PackageId>
         <Description>DisCatSharp Voice Example Bot</Description>
         <Authors>Lala Sabathil &lt;aiko@aitsys.dev&gt;, QuantuChi</Authors>
-        <Copyright>2021 AITSYS</Copyright>
+        <Copyright>2021-2024 AITSYS</Copyright>
         <PackageProjectUrl>https://examples.dcs.aitsys.dev</PackageProjectUrl>
         <RepositoryUrl>https://github.com/Aiko-IT-Systems/DisCatSharp.Examples</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
@@ -25,9 +25,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="DisCatSharp" Version="10.4.2-nightly-057" />
-      <PackageReference Include="DisCatSharp.ApplicationCommands" Version="10.4.2-nightly-057" />
-      <PackageReference Include="DisCatSharp.VoiceNext" Version="10.4.2-nightly-057" />
+      <PackageReference Include="DisCatSharp" Version="10.5.0-nightly-001" />
+      <PackageReference Include="DisCatSharp.ApplicationCommands" Version="10.5.0-nightly-001" />
+      <PackageReference Include="DisCatSharp.VoiceNext" Version="10.5.0-nightly-001" />
       <PackageReference Include="Serilog" Version="3.1.1" />
       <PackageReference Include="Serilog.Extensions.Logging" Version="8.0.0" />
       <PackageReference Include="Serilog.Sinks.Console" Version="5.0.1" />

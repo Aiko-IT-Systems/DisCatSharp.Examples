@@ -8,14 +8,9 @@ using Microsoft.Extensions.Hosting;
 
 namespace DisCatSharp.Examples.Hosting;
 
-public class Startup
+public class Startup(IConfiguration configuration)
 {
-	public Startup(IConfiguration configuration)
-	{
-		this.Configuration = configuration;
-	}
-
-	public IConfiguration Configuration { get; }
+	public IConfiguration Configuration { get; } = configuration;
 
 	// This method gets called by the runtime. Use this method to add services to the container.
 	public void ConfigureServices(IServiceCollection services)
@@ -30,9 +25,7 @@ public class Startup
 	public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 	{
 		if (env.IsDevelopment())
-		{
 			app.UseDeveloperExceptionPage();
-		}
 		else
 		{
 			app.UseExceptionHandler("/Error");
@@ -47,6 +40,6 @@ public class Startup
 
 		app.UseAuthorization();
 
-		app.UseEndpoints(endpoints => { endpoints.MapRazorPages(); });
+		app.UseEndpoints(endpoints => endpoints.MapRazorPages());
 	}
 }

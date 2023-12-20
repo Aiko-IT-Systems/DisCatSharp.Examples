@@ -5,8 +5,12 @@ using DisCatSharp.Enums;
 using DisCatSharp.Lavalink;
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
+using DisCatSharp.Lavalink.Entities;
+using DisCatSharp.Lavalink.Enums;
 
 namespace DisCatSharp.Examples.Lavalink.Commands;
 
@@ -24,8 +28,8 @@ public class MusicCommands : ApplicationCommandsModule
 	public static async Task PlayAsync(InteractionContext ctx, [Option("query", "Search string or Youtube link")] string query)
 	{
 		var lava = ctx.Client.GetLavalink();
-		var node = lava.ConnectedNodes.Values.First();
-		var connection = node.GetGuildConnection(ctx.Member.VoiceState.Guild);
+		var node = lava.ConnectedSessions.Values.First();
+		var connection = node.GetGuildPlayer(ctx.Member.VoiceState.Guild);
 
 		if (connection == null)
 		{
@@ -47,23 +51,19 @@ public class MusicCommands : ApplicationCommandsModule
 			return;
 		}
 
-		LavalinkLoadResult tracks;
+		LavalinkTrackLoadingResult tracks;
 
 		// Check if query is valid url
 		if (Uri.TryCreate(query, UriKind.Absolute, out var uriResult) &&
 		    (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps))
-		{
 			// Get track from the url
-			tracks = await node.Rest.GetTracksAsync(uriResult);
-		}
+			tracks = await connection.LoadTracksAsync(uriResult.AbsolutePath);
 		else
-		{
 			// Search track in Youtube
-			tracks = await node.Rest.GetTracksAsync(query);
-		}
+			tracks = await connection.LoadTracksAsync(query);
 
 		// If something went wrong on Lavalink's end or it just couldn't find anything.
-		if (tracks.LoadResultType is LavalinkLoadResultType.LoadFailed or LavalinkLoadResultType.NoMatches)
+		if (tracks.LoadType is LavalinkLoadResultType.Error or LavalinkLoadResultType.Empty)
 		{
 			await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new()
 			{
@@ -74,7 +74,7 @@ public class MusicCommands : ApplicationCommandsModule
 		}
 
 		// Get first track in the result
-		var track = tracks.Tracks.First();
+		var track = tracks.GetResultAs<LavalinkPlaylist>().Tracks.First();
 
 		await connection.PlayAsync(track);
 
@@ -83,7 +83,7 @@ public class MusicCommands : ApplicationCommandsModule
 
 		await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new()
 		{
-			Content = $"Now playing {track.Author.InlineCode()} - {track.Title.InlineCode()}"
+			Content = $"Now playing {track.Info.Author.InlineCode()} - {track.Info.Title.InlineCode()}"
 		});
 	}
 
@@ -95,8 +95,8 @@ public class MusicCommands : ApplicationCommandsModule
 	public static async Task PauseAsync(InteractionContext ctx)
 	{
 		var lava = ctx.Client.GetLavalink();
-		var node = lava.ConnectedNodes.Values.First();
-		var connection = node.GetGuildConnection(ctx.Member.VoiceState.Guild);
+		var node = lava.ConnectedSessions.Values.First();
+		var connection = node.GetGuildPlayer(ctx.Member.VoiceState.Guild);
 
 		if (connection == null)
 		{
@@ -135,8 +135,8 @@ public class MusicCommands : ApplicationCommandsModule
 	public static async Task ResumeAsync(InteractionContext ctx)
 	{
 		var lava = ctx.Client.GetLavalink();
-		var node = lava.ConnectedNodes.Values.First();
-		var connection = node.GetGuildConnection(ctx.Member.VoiceState.Guild);
+		var node = lava.ConnectedSessions.Values.First();
+		var connection = node.GetGuildPlayer(ctx.Member.VoiceState.Guild);
 
 		if (connection == null)
 		{
@@ -163,7 +163,7 @@ public class MusicCommands : ApplicationCommandsModule
 
 		await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new()
 		{
-			Content = $"Now playing `{connection.CurrentState.CurrentTrack.Title}`"
+			Content = $"Now playing `{connection.CurrentTrack?.Info.Title}`"
 		});
 	}
 
@@ -175,8 +175,8 @@ public class MusicCommands : ApplicationCommandsModule
 	public static async Task StopAsync(InteractionContext ctx)
 	{
 		var lava = ctx.Client.GetLavalink();
-		var node = lava.ConnectedNodes.Values.First();
-		var connection = node.GetGuildConnection(ctx.Member.VoiceState.Guild);
+		var node = lava.ConnectedSessions.Values.First();
+		var connection = node.GetGuildPlayer(ctx.Member.VoiceState.Guild);
 
 		if (connection == null)
 		{
@@ -216,8 +216,8 @@ public class MusicCommands : ApplicationCommandsModule
 		var query = ctx.TargetMessage.Content;
 
 		var lava = ctx.Client.GetLavalink();
-		var node = lava.ConnectedNodes.Values.First();
-		var connection = node.GetGuildConnection(ctx.Member.VoiceState.Guild);
+		var node = lava.ConnectedSessions.Values.First();
+		var connection = node.GetGuildPlayer(ctx.Member.VoiceState.Guild);
 
 		if (connection == null)
 		{
@@ -239,25 +239,21 @@ public class MusicCommands : ApplicationCommandsModule
 			return;
 		}
 
-		LavalinkLoadResult tracks;
+		LavalinkTrackLoadingResult tracks;
 
 		// Check if query is valid url
 		if (Uri.TryCreate(query, UriKind.Absolute, out var uriResult) &&
 		    (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps))
-		{
 			// Get track from the url
-			tracks = await node.Rest.GetTracksAsync(uriResult);
-		}
+			tracks = await connection.LoadTracksAsync(uriResult.AbsoluteUri);
 		else
-		{
 			// Search track in Youtube
-			tracks = await node.Rest.GetTracksAsync(query);
-		}
+			tracks = await connection.LoadTracksAsync(query);
 
 		//If something went wrong on Lavalink's end
-		if (tracks.LoadResultType == LavalinkLoadResultType.LoadFailed
+		if (tracks.LoadType == LavalinkLoadResultType.Error
 		    //or it just couldn't find anything.
-		    || tracks.LoadResultType == LavalinkLoadResultType.NoMatches)
+		    || tracks.LoadType == LavalinkLoadResultType.Empty)
 		{
 			await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new()
 			{
@@ -268,7 +264,7 @@ public class MusicCommands : ApplicationCommandsModule
 		}
 
 		// Get first track in the result
-		var track = tracks.Tracks.First();
+		var track = tracks.GetResultAs<LavalinkPlaylist>().Tracks.First();
 
 		await connection.PlayAsync(track);
 
@@ -277,7 +273,7 @@ public class MusicCommands : ApplicationCommandsModule
 
 		await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new()
 		{
-			Content = $"Now playing {track.Author.InlineCode()} - {track.Title.InlineCode()}"
+			Content = $"Now playing {track.Info.Author.InlineCode()} - {track.Info.Title.InlineCode()}"
 		});
 	}
 }

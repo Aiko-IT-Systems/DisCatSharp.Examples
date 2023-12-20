@@ -69,9 +69,7 @@ public class Program
 		// If the guild ID is not provided, then register global commands.
 		ulong? guildId = null;
 		if (args.Length > 1)
-		{
 			guildId = ulong.Parse(args[1]);
-		}
 
 		// In order not to list all the commands when adding, you can create a list of all commands with this.
 		/*Type appCommandModule = typeof(ApplicationCommandsModule);

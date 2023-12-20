@@ -77,9 +77,7 @@ internal class Program
 		appCommandExt.SlashCommandErrored += Slash_SlashCommandErrored;
 
 		foreach (var command in commands)
-		{
 			appCommandExt.RegisterGlobalCommands(command);
-		}
 
 		discordClient.Logger.LogInformation("Application commands registered successfully");
 

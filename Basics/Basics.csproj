@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <OutputType />
-    <TargetFramework>net7.0</TargetFramework>
+	<OutputType>Exe</OutputType>
+	<TargetFramework>net8.0</TargetFramework>
     <RootNamespace>DisCatSharp.Examples.Basics</RootNamespace>
     <AssemblyName>DisCatSharp.Examples.Basics</AssemblyName>
     <StartupObject>DisCatSharp.Examples.Basics.Program</StartupObject>
@@ -9,7 +9,7 @@
     <Description>DisCatSharp Basic Example Bot</Description>
     <Authors>Lala Sabathil &lt;aiko@aitsys.dev&gt;, Johannes &lt;ottero@aitsys.dev&gt;</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Copyright>2021 AITSYS</Copyright>
+	<Copyright>2021-2024 AITSYS</Copyright>
     <PackageProjectUrl>https://examples.dcs.aitsys.dev</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Aiko-IT-Systems/DisCatSharp.Examples</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -21,10 +21,10 @@
     <NoWarn>1701;1702;DV2001</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="DisCatSharp" Version="10.4.2-nightly-057" />
-    <PackageReference Include="DisCatSharp.ApplicationCommands" Version="10.4.2-nightly-057" />
-    <PackageReference Include="DisCatSharp.CommandsNext" Version="10.4.2-nightly-057" />
-    <PackageReference Include="DisCatSharp.Common" Version="10.4.2-nightly-057" />
-    <PackageReference Include="DisCatSharp.Interactivity" Version="10.4.2-nightly-057" />
+    <PackageReference Include="DisCatSharp" Version="10.5.0-nightly-001" />
+    <PackageReference Include="DisCatSharp.ApplicationCommands" Version="10.5.0-nightly-001" />
+    <PackageReference Include="DisCatSharp.CommandsNext" Version="10.5.0-nightly-001" />
+    <PackageReference Include="DisCatSharp.Common" Version="10.5.0-nightly-001" />
+    <PackageReference Include="DisCatSharp.Interactivity" Version="10.5.0-nightly-001" />
   </ItemGroup>
 </Project>

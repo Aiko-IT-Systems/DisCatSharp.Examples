@@ -25,7 +25,7 @@ internal class Bot : IDisposable
 #if DEBUG
 	public static readonly string Prefix = "!";
 #else
-        public static string Prefix = "%";
+	public static readonly string Prefix = "%";
 #endif
 	//public static ulong devguild = ; //Set to register app command on guild
 
@@ -33,7 +33,6 @@ internal class Bot : IDisposable
 	public static DiscordClient Client;
 	public static ApplicationCommandsExtension AppCommands;
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0052:Remove unread private members", Justification = "<Pending>")]
 	private InteractivityExtension _next;
 
 	private CommandsNextExtension _cNext;
@@ -50,7 +49,7 @@ internal class Bot : IDisposable
 #if DEBUG
 		logLevel = LogLevel.Debug;
 #else
-            logLevel = LogLevel.Error;
+		logLevel = LogLevel.Error;
 #endif
 		var cfg = new DiscordConfiguration
 		{
@@ -68,8 +67,7 @@ internal class Bot : IDisposable
 
 		this._cNext = Client.UseCommandsNext(new()
 		{
-			StringPrefixes = new()
-				{ Prefix },
+			StringPrefixes = [Prefix],
 			CaseSensitive = true,
 			EnableMentionPrefix = true,
 			IgnoreExtraArguments = true,
@@ -112,9 +110,7 @@ internal class Bot : IDisposable
 	{
 		await Client.ConnectAsync();
 		while (!ShutdownRequest.IsCancellationRequested)
-		{
 			await Task.Delay(2000);
-		}
 
 		await Client.UpdateStatusAsync(null, UserStatus.Offline, null);
 		await Client.DisconnectAsync();
@@ -176,9 +172,7 @@ internal class Bot : IDisposable
 		Console.ForegroundColor = ConsoleColor.Magenta;
 		var commandlist = dcl.GetCommandsNext().RegisteredCommands;
 		foreach (var command in commandlist)
-		{
 			Console.WriteLine($"Command {command.Value.Name} loaded.");
-		}
 
 		Console.ForegroundColor = ConsoleColor.Green;
 		Console.WriteLine("Bot ready!");
