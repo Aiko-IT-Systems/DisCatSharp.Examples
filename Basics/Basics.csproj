@@ -21,10 +21,10 @@
     <NoWarn>1701;1702;DV2001</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="DisCatSharp" Version="10.5.0-nightly-004" />
-    <PackageReference Include="DisCatSharp.ApplicationCommands" Version="10.5.0-nightly-004" />
-    <PackageReference Include="DisCatSharp.CommandsNext" Version="10.5.0-nightly-004" />
-    <PackageReference Include="DisCatSharp.Common" Version="10.5.0-nightly-004" />
-    <PackageReference Include="DisCatSharp.Interactivity" Version="10.5.0-nightly-004" />
+    <PackageReference Include="DisCatSharp" Version="10.5.0-nightly-006" />
+    <PackageReference Include="DisCatSharp.ApplicationCommands" Version="10.5.0-nightly-006" />
+    <PackageReference Include="DisCatSharp.CommandsNext" Version="10.5.0-nightly-006" />
+    <PackageReference Include="DisCatSharp.Common" Version="10.5.0-nightly-006" />
+    <PackageReference Include="DisCatSharp.Interactivity" Version="10.5.0-nightly-006" />
   </ItemGroup>
 </Project>
