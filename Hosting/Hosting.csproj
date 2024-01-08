@@ -26,12 +26,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DisCatSharp" Version="10.6.0-nightly-005" />
-    <PackageReference Include="DisCatSharp.ApplicationCommands" Version="10.6.0-nightly-005" />
-    <PackageReference Include="DisCatSharp.CommandsNext" Version="10.6.0-nightly-005" />
-    <PackageReference Include="DisCatSharp.Hosting" Version="10.6.0-nightly-005" />
-    <PackageReference Include="DisCatSharp.Hosting.DependencyInjection" Version="10.6.0-nightly-005" />
-    <PackageReference Include="DisCatSharp.Interactivity" Version="10.6.0-nightly-005" />
+    <PackageReference Include="DisCatSharp" Version="10.6.0" />
+    <PackageReference Include="DisCatSharp.ApplicationCommands" Version="10.6.0" />
+    <PackageReference Include="DisCatSharp.CommandsNext" Version="10.6.0" />
+    <PackageReference Include="DisCatSharp.Hosting" Version="10.6.0" />
+    <PackageReference Include="DisCatSharp.Hosting.DependencyInjection" Version="10.6.0" />
+    <PackageReference Include="DisCatSharp.Interactivity" Version="10.6.0" />
     <PackageReference Include="Serilog" Version="3.1.1" />
     <PackageReference Include="Serilog.AspNetCore" Version="8.0.0" />
   </ItemGroup>
