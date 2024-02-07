@@ -49,12 +49,6 @@ internal class Program
 		// This line is needed to enable support for voice channels in the bot.
 		discordClient.UseVoiceNext();
 
-		Console.WriteLine("Connecting to Discord...");
-		await discordClient.ConnectAsync();
-
-		// Use the default logger provided for easy reading
-		discordClient.Logger.LogInformation("Connection success! Logged in as {CurrentUserUsername}#{CurrentUserDiscriminator} ({CurrentUserId})", discordClient.CurrentUser.Username, discordClient.CurrentUser.Discriminator, discordClient.CurrentUser.Id);
-
 		// Let the user know that we're registering the commands.
 		discordClient.Logger.LogInformation("Registering application commands...");
 
@@ -72,6 +66,12 @@ internal class Program
 			appCommandExt.RegisterGuildCommands(command, 885510395295584289);
 
 		discordClient.Logger.LogInformation("Application commands registered successfully");
+		
+		Console.WriteLine("Connecting to Discord...");
+		await discordClient.ConnectAsync();
+
+		// Use the default logger provided for easy reading
+		discordClient.Logger.LogInformation("Connection success! Logged in as {CurrentUserUsername}#{CurrentUserDiscriminator} ({CurrentUserId})", discordClient.CurrentUser.Username, discordClient.CurrentUser.Discriminator, discordClient.CurrentUser.Id);
 
 		// Listen for commands by putting this method to sleep and relying off of DiscordClient's event listeners
 		await Task.Delay(-1);

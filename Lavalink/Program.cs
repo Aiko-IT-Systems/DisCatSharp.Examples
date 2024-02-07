@@ -64,17 +64,6 @@ internal class Program
 
 		var lavalink = discordClient.UseLavalink();
 
-		Console.WriteLine("Connecting to Discord...");
-		await discordClient.ConnectAsync();
-
-		// Use the default logger provided for easy reading
-		discordClient.Logger.LogInformation("Connection success! Logged in as {CurrentUserUsername}#{CurrentUserDiscriminator} ({CurrentUserId})", discordClient.CurrentUser.Username, discordClient.CurrentUser.Discriminator, discordClient.CurrentUser.Id);
-
-		// Lavalink
-		discordClient.Logger.LogInformation($"Connecting to lavalink...");
-		await lavalink.ConnectAsync(lavalinkConfig); // Make sure this is after discordClient.ConnectAsync()
-		discordClient.Logger.LogInformation($"Successful connection with lavalink!");
-
 		// In order not to list all the commands when adding, you can create a list of all commands with this.
 		var appCommandModule = typeof(ApplicationCommandsModule);
 		var commands = Assembly.GetExecutingAssembly().GetTypes().Where(t => appCommandModule.IsAssignableFrom(t) && !t.IsNested).ToList();
@@ -88,7 +77,17 @@ internal class Program
 		foreach (var command in commands)
 			appCommandExt.RegisterGlobalCommands(command);
 
-		discordClient.Logger.LogInformation("Application commands registered successfully");
+		// Connect AFTER registering application commands
+		Console.WriteLine("Connecting to Discord...");
+		await discordClient.ConnectAsync();
+
+		// Use the default logger provided for easy reading
+		discordClient.Logger.LogInformation("Connection success! Logged in as {CurrentUserUsername}#{CurrentUserDiscriminator} ({CurrentUserId})", discordClient.CurrentUser.Username, discordClient.CurrentUser.Discriminator, discordClient.CurrentUser.Id);
+
+		// Lavalink
+		discordClient.Logger.LogInformation($"Connecting to lavalink...");
+		await lavalink.ConnectAsync(lavalinkConfig); // Make sure this is after discordClient.ConnectAsync()
+		discordClient.Logger.LogInformation($"Successful connection with lavalink!");
 
 		// Listen for commands by putting this method to sleep and relying off of DiscordClient's event listeners
 		await Task.Delay(-1);

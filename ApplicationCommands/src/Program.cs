@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace DisCatSharp.Examples.ApplicationCommands;
 
+// TODO: rewrite, this is kinda weird
 /// <summary>
 /// The program.
 /// </summary>
@@ -50,12 +51,6 @@ public class Program
 		};
 
 		DiscordShardedClient discordShardedClient = new(discordConfiguration);
-
-		Log.Logger.Information("Connecting to Discord...");
-		await discordShardedClient.StartAsync();
-
-		// Use the default logger provided for easy reading
-		discordShardedClient.Logger.LogInformation("Connection success! Logged in as {CurrentUserUsername}#{CurrentUserDiscriminator} ({CurrentUserId})", discordShardedClient.CurrentUser.Username, discordShardedClient.CurrentUser.Discriminator, discordShardedClient.CurrentUser.Id);
 
 		// Register a Random class instance now for use later over in RollRandom.cs
 		ApplicationCommandsConfiguration appCommandsConfiguration = new(new ServiceCollection().AddSingleton<Random>().BuildServiceProvider())
@@ -99,6 +94,14 @@ public class Program
 		}
 
 		discordShardedClient.Logger.LogInformation("Application commands registered successfully");
+
+
+		Log.Logger.Information("Connecting to Discord...");
+		await discordShardedClient.StartAsync();
+
+		// Use the default logger provided for easy reading
+		discordShardedClient.Logger.LogInformation("Connection success! Logged in as {CurrentUserUsername}#{CurrentUserDiscriminator} ({CurrentUserId})", discordShardedClient.CurrentUser.Username, discordShardedClient.CurrentUser.Discriminator, discordShardedClient.CurrentUser.Id);
+		
 		// Listen for commands by putting this method to sleep and relying off of DiscordClient's event listeners
 		await Task.Delay(-1);
 	}

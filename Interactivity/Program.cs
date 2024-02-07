@@ -51,9 +51,6 @@ internal class Program
 		// Enabling VoiceNext for . You can also use lavalink.
 		discordClient.UseVoiceNext();
 
-		Console.WriteLine("Connecting to Discord...");
-		await discordClient.ConnectAsync();
-
 		// Enabling interactivity support
 		discordClient.UseInteractivity();
 
@@ -80,6 +77,9 @@ internal class Program
 			appCommandExt.RegisterGlobalCommands(command);
 
 		discordClient.Logger.LogInformation("Application commands registered successfully");
+
+		Console.WriteLine("Connecting to Discord...");
+		await discordClient.ConnectAsync();
 
 		// Listen for commands by putting this method to sleep and relying off of DiscordClient's event listeners
 		await Task.Delay(-1);
