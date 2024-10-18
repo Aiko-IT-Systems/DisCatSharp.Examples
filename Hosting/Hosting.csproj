@@ -33,7 +33,7 @@
     <PackageReference Include="DisCatSharp.Hosting.DependencyInjection" Version="10.6.4" />
     <PackageReference Include="DisCatSharp.Interactivity" Version="10.6.4" />
     <PackageReference Include="Serilog" Version="4.0.2" />
-    <PackageReference Include="Serilog.AspNetCore" Version="8.0.2" />
+    <PackageReference Include="Serilog.AspNetCore" Version="8.0.3" />
   </ItemGroup>
 
 </Project>
