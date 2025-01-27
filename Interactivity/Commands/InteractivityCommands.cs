@@ -26,7 +26,7 @@ public class InteractivityCommands : ApplicationCommandsModule
 		// Get the Interactivity extension
 		var interactivity = ctx.Client.GetInteractivity();
 
-		await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new(new()
+		await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder(new()
 		{
 			Content = "Please, send a message"
 		}));
@@ -39,7 +39,7 @@ public class InteractivityCommands : ApplicationCommandsModule
 		// We should check if the previous method was completed with the expiration of time
 		if (result.TimedOut)
 		{
-			await ctx.EditResponseAsync(new()
+			await ctx.EditResponseAsync(new DiscordWebhookBuilder()
 			{
 				Content = "Timed out!"
 			});
@@ -47,7 +47,7 @@ public class InteractivityCommands : ApplicationCommandsModule
 		}
 
 		// result.Result - an original message with which you can do anything, including using its content and deleting.
-		await ctx.EditResponseAsync(new()
+		await ctx.EditResponseAsync(new DiscordWebhookBuilder()
 		{
 			Content = result.Result.Content
 		});
@@ -67,7 +67,7 @@ public class InteractivityCommands : ApplicationCommandsModule
 
 		var emoji = DiscordEmoji.FromName(ctx.Client, ":white_check_mark:");
 
-		await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new(new()
+		await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder(new()
 		{
 			Content = $"To confirm, select the reaction {emoji}"
 		}));
@@ -85,7 +85,7 @@ public class InteractivityCommands : ApplicationCommandsModule
 		// We should check if the previous method was completed with the expiration of time
 		if (result.TimedOut)
 		{
-			await ctx.EditResponseAsync(new()
+			await ctx.EditResponseAsync(new DiscordWebhookBuilder()
 			{
 				Content = "Timed out!"
 			});
@@ -93,7 +93,7 @@ public class InteractivityCommands : ApplicationCommandsModule
 		}
 
 		// result.Result - arguments that contain information such as the message, channel, and emoji of the clicked reaction.
-		await ctx.EditResponseAsync(new()
+		await ctx.EditResponseAsync(new DiscordWebhookBuilder()
 		{
 			Content = $"You added a reaction: {emoji}"
 		});
@@ -127,7 +127,7 @@ public class InteractivityCommands : ApplicationCommandsModule
 		// Add a list of buttons to message builder.
 		response.AddComponents(buttons);
 
-		await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new(response));
+		await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder(response));
 
 		// Here we wait for the user to click on one of the buttons.
 		// The command will not continue until the button is pressed OR until a certain amount of time has passed (in this example, 5 minutes)
@@ -136,7 +136,7 @@ public class InteractivityCommands : ApplicationCommandsModule
 		// We should check if the previous method was completed with the expiration of time
 		if (result.TimedOut)
 		{
-			await ctx.EditResponseAsync(new()
+			await ctx.EditResponseAsync(new DiscordWebhookBuilder()
 			{
 				Content = "Timed out!"
 			});
@@ -144,7 +144,7 @@ public class InteractivityCommands : ApplicationCommandsModule
 		}
 
 		// result.Result.Id - button id
-		await ctx.EditResponseAsync(new()
+		await ctx.EditResponseAsync(new DiscordWebhookBuilder()
 		{
 			Content = $"You pressed the {(result.Result.Id == "btn1" ? "first" : "second")} button"
 		});
@@ -186,7 +186,7 @@ public class InteractivityCommands : ApplicationCommandsModule
 		// We should check if the previous method was completed with the expiration of time
 		if (result.TimedOut)
 		{
-			await ctx.EditResponseAsync(new()
+			await ctx.EditResponseAsync(new DiscordWebhookBuilder()
 			{
 				Content = "Timed out!"
 			});
@@ -194,7 +194,7 @@ public class InteractivityCommands : ApplicationCommandsModule
 		}
 
 		// result.Result.Values[] - the array of Id of all selected items.
-		await ctx.EditResponseAsync(new()
+		await ctx.EditResponseAsync(new DiscordWebhookBuilder()
 		{
 			Content = "You selected " + result.Result.Values[0]
 		});
@@ -226,6 +226,6 @@ public class InteractivityCommands : ApplicationCommandsModule
 		};
 		builder.AddComponents(buttons);
 
-		await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new(builder));
+		await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder(builder));
 	}
 }
