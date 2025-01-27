@@ -36,7 +36,7 @@ internal class Main : ApplicationCommandsModule
 	public static async Task ShutdownAsync(InteractionContext ctx)
 	{
 		await ctx.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource, new DiscordInteractionResponseBuilder().WithContent("Shutdown request"));
-		if (ctx.Client.CurrentApplication.Owners.Any(x => x == ctx.User))
+		if (ctx.Client.CurrentApplication.Members.Any(x => x.Id == ctx.User.Id ))
 		{
 			await Task.Delay(5000);
 			await ctx.EditResponseAsync(new DiscordWebhookBuilder().WithContent("Shutdown request accepted."));
