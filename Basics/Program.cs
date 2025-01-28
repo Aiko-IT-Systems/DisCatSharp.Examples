@@ -3,12 +3,12 @@ using DisCatSharp.Examples.Basics.Main;
 namespace DisCatSharp.Examples.Basics;
 
 /// <summary>
-/// The program.
+///     The program.
 /// </summary>
 internal class Program
 {
 	/// <summary>
-	/// Entry point.
+	///     Entry point.
 	/// </summary>
 	/// <param name="args">The args.</param>
 	private static void Main(string[] args)

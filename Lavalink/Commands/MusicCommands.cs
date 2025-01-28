@@ -1,26 +1,24 @@
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+
 using DisCatSharp.ApplicationCommands;
 using DisCatSharp.ApplicationCommands.Attributes;
 using DisCatSharp.ApplicationCommands.Context;
 using DisCatSharp.Enums;
 using DisCatSharp.Lavalink;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
 using DisCatSharp.Lavalink.Entities;
 using DisCatSharp.Lavalink.Enums;
 
 namespace DisCatSharp.Examples.Lavalink.Commands;
 
 /// <summary>
-/// Playback control with these commands.
+///     Playback control with these commands.
 /// </summary>
 public class MusicCommands : ApplicationCommandsModule
 {
 	/// <summary>
-	/// Play music asynchronously.
+	///     Play music asynchronously.
 	/// </summary>
 	/// <param name="ctx">Interaction context</param>
 	/// <param name="query">Search string or Youtube link</param>
@@ -88,7 +86,7 @@ public class MusicCommands : ApplicationCommandsModule
 	}
 
 	/// <summary>
-	/// Pause playback
+	///     Pause playback
 	/// </summary>
 	/// <param name="ctx">Interaction context</param>
 	[SlashCommand("pause", "Pause playback")]
@@ -128,7 +126,7 @@ public class MusicCommands : ApplicationCommandsModule
 	}
 
 	/// <summary>
-	/// Resume playback
+	///     Resume playback
 	/// </summary>
 	/// <param name="ctx">Interaction context</param>
 	[SlashCommand("resume", "Resume playback")]
@@ -168,7 +166,7 @@ public class MusicCommands : ApplicationCommandsModule
 	}
 
 	/// <summary>
-	/// Stop playback
+	///     Stop playback
 	/// </summary>
 	/// <param name="ctx">Interaction context</param>
 	[SlashCommand("stop", "Stop playback")]
@@ -207,7 +205,7 @@ public class MusicCommands : ApplicationCommandsModule
 	}
 
 	/// <summary>
-	/// BONUS: play music through the context menu!
+	///     BONUS: play music through the context menu!
 	/// </summary>
 	/// <param name="ctx">Interaction context</param>
 	[ContextMenu(ApplicationCommandType.Message, "Play")]

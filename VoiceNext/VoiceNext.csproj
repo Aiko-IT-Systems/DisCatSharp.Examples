@@ -1,36 +1,36 @@
 <Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="../Common.targets" />
+	<PropertyGroup>
+		<OutputType>exe</OutputType>
+		<TargetFramework>net9.0</TargetFramework>
+		<AssemblyName>DisCatSharp.Examples.VoiceNext</AssemblyName>
+		<RootNamespace>DisCatSharp.Examples.VoiceNext</RootNamespace>
+		<PackageId>DisCatSharp.Examples.VoiceNext</PackageId>
+		<Description>DisCatSharp Voice Example Bot</Description>
+		<Authors>Lala Sabathil &lt;aiko@aitsys.dev&gt;, QuantuChi</Authors>
+		<Copyright>2021-2024 AITSYS</Copyright>
+		<PackageProjectUrl>https://examples.dcs.aitsys.dev</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/Aiko-IT-Systems/DisCatSharp.Examples</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<Company>Aiko IT Systems</Company>
+		<Product>DisCatSharp.Examples.VoiceNext</Product>
+	</PropertyGroup>
 
-    <PropertyGroup>
-        <OutputType>exe</OutputType>
-        <TargetFramework>net9.0</TargetFramework>
-        <AssemblyName>DisCatSharp.Examples.VoiceNext</AssemblyName>
-        <RootNamespace>DisCatSharp.Examples.VoiceNext</RootNamespace>
-        <PackageId>DisCatSharp.Examples.VoiceNext</PackageId>
-        <Description>DisCatSharp Voice Example Bot</Description>
-        <Authors>Lala Sabathil &lt;aiko@aitsys.dev&gt;, QuantuChi</Authors>
-        <Copyright>2021-2024 AITSYS</Copyright>
-        <PackageProjectUrl>https://examples.dcs.aitsys.dev</PackageProjectUrl>
-        <RepositoryUrl>https://github.com/Aiko-IT-Systems/DisCatSharp.Examples</RepositoryUrl>
-        <RepositoryType>git</RepositoryType>
-        <Company>Aiko IT Systems</Company>
-        <Product>DisCatSharp.Examples.VoiceNext</Product>
-    </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<NoWarn>1701;1702;DV2001</NoWarn>
+	</PropertyGroup>
 
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-      <NoWarn>1701;1702;DV2001</NoWarn>
-    </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<NoWarn>1701;1702;DV2001</NoWarn>
+	</PropertyGroup>
 
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-      <NoWarn>1701;1702;DV2001</NoWarn>
-    </PropertyGroup>
-
-    <ItemGroup>
-      <PackageReference Include="DisCatSharp" Version="10.6.6" />
-      <PackageReference Include="DisCatSharp.ApplicationCommands" Version="10.6.6" />
-      <PackageReference Include="DisCatSharp.VoiceNext" Version="10.6.6" />
-      <PackageReference Include="Serilog" Version="4.2.0" />
-      <PackageReference Include="Serilog.Extensions.Logging" Version="9.0.0" />
-      <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
-    </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="DisCatSharp" Version="10.6.6" />
+		<PackageReference Include="DisCatSharp.ApplicationCommands" Version="10.6.6" />
+		<PackageReference Include="DisCatSharp.VoiceNext" Version="10.6.6" />
+		<PackageReference Include="Serilog" Version="4.2.0" />
+		<PackageReference Include="Serilog.Extensions.Logging" Version="9.0.0" />
+		<PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
+	</ItemGroup>
 
 </Project>

@@ -1,4 +1,9 @@
-﻿using DisCatSharp.ApplicationCommands;
+using System;
+using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
+
+using DisCatSharp.ApplicationCommands;
 using DisCatSharp.ApplicationCommands.EventArgs;
 using DisCatSharp.Lavalink;
 using DisCatSharp.Net;
@@ -7,20 +12,15 @@ using Microsoft.Extensions.Logging;
 
 using Serilog;
 
-using System;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
-
 namespace DisCatSharp.Examples.Lavalink;
 
 /// <summary>
-/// The program.
+///     The program.
 /// </summary>
 internal class Program
 {
 	/// <summary>
-	/// Entry point. Initializes the bot.
+	///     Entry point. Initializes the bot.
 	/// </summary>
 	/// <param name="args">The args.</param>
 	private static async Task Main(string[] args)
@@ -82,19 +82,19 @@ internal class Program
 		await discordClient.ConnectAsync();
 
 		// Use the default logger provided for easy reading
-		discordClient.Logger.LogInformation("Connection success! Logged in as {CurrentUserUsername}#{CurrentUserDiscriminator} ({CurrentUserId})", discordClient.CurrentUser.Username, discordClient.CurrentUser.Discriminator, discordClient.CurrentUser.Id);
+		discordClient.Logger.LogInformation("Connection success! Logged in as {CurrentUserUsername} ({CurrentUserId})", discordClient.CurrentUser.UsernameWithDiscriminator, discordClient.CurrentUser.Id);
 
 		// Lavalink
-		discordClient.Logger.LogInformation($"Connecting to lavalink...");
+		discordClient.Logger.LogInformation("Connecting to lavalink...");
 		await lavalink.ConnectAsync(lavalinkConfig); // Make sure this is after discordClient.ConnectAsync()
-		discordClient.Logger.LogInformation($"Successful connection with lavalink!");
+		discordClient.Logger.LogInformation("Successful connection with lavalink!");
 
 		// Listen for commands by putting this method to sleep and relying off of DiscordClient's event listeners
 		await Task.Delay(-1);
 	}
 
 	/// <summary>
-	/// Fires when the user uses the slash command.
+	///     Fires when the user uses the slash command.
 	/// </summary>
 	/// <param name="sender">Application commands ext.</param>
 	/// <param name="e">Event arguments.</param>
@@ -105,7 +105,7 @@ internal class Program
 	}
 
 	/// <summary>
-	/// Fires when an exception is thrown in the slash command.
+	///     Fires when an exception is thrown in the slash command.
 	/// </summary>
 	/// <param name="sender">Application commands ext.</param>
 	/// <param name="e">Event arguments.</param>

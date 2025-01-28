@@ -1,25 +1,25 @@
+using System.Threading.Tasks;
+
 using DisCatSharp.ApplicationCommands;
 using DisCatSharp.ApplicationCommands.Attributes;
 using DisCatSharp.ApplicationCommands.Context;
 using DisCatSharp.Entities;
 using DisCatSharp.Enums;
 
-using System.Threading.Tasks;
-
 namespace DisCatSharp.Examples.Interactivity.Commands;
 
 /// <summary>
-/// Shows how to create, archive and delete threads.
+///     Shows how to create, archive and delete threads.
 /// </summary>
 public class ThreadCommands : ApplicationCommandsModule
 {
 	/// <summary>
-	/// Create a thread in a specific channel.
+	///     Create a thread in a specific channel.
 	/// </summary>
 	/// <param name="ctx">Interaction context</param>
 	/// <param name="name">Thread name</param>
 	/// <param name="channel">The channel where the thread should be created</param>
-	[SlashCommand("create_thread", "Create a thread in a specific channel")]
+	[SlashCommand("create_thread", "Create a thread in a specific channel", allowedContexts: [InteractionContextType.Guild], integrationTypes: [ApplicationCommandIntegrationTypes.GuildInstall])]
 	public static async Task CreateThread(InteractionContext ctx, [Option("name", "Thread name")] string name, [Option("channel", "The channel where the thread should be created")] DiscordChannel channel = null)
 	{
 		channel ??= ctx.Channel;
@@ -34,11 +34,11 @@ public class ThreadCommands : ApplicationCommandsModule
 	}
 
 	/// <summary>
-	/// Archive thread.
+	///     Archive thread.
 	/// </summary>
 	/// <param name="ctx">Interaction context</param>
 	/// <param name="threadId">Thread Id</param>
-	[SlashCommand("archive_thread", "Archive thread")]
+	[SlashCommand("archive_thread", "Archive thread", allowedContexts: [InteractionContextType.Guild], integrationTypes: [ApplicationCommandIntegrationTypes.GuildInstall])]
 	public static async Task ArchiveThread(InteractionContext ctx, [Option("thread", "Thread id")] string threadId)
 	{
 		// Get the thread from its Id
@@ -63,11 +63,11 @@ public class ThreadCommands : ApplicationCommandsModule
 	}
 
 	/// <summary>
-	/// Permanently delete thread.
+	///     Permanently delete thread.
 	/// </summary>
 	/// <param name="ctx">Interaction context</param>
 	/// <param name="threadId">Thread Id</param>
-	[SlashCommand("delete_thread", "Permanently delete thread (deletes all content of the thread)")]
+	[SlashCommand("delete_thread", "Permanently delete thread (deletes all content of the thread)", allowedContexts: [InteractionContextType.Guild], integrationTypes: [ApplicationCommandIntegrationTypes.GuildInstall])]
 	public static async Task DeleteThread(InteractionContext ctx, [Option("thread", "Thread id")] string threadId)
 	{
 		// Get the thread from its Id

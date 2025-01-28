@@ -1,25 +1,25 @@
-using DisCatSharp.ApplicationCommands;
-using DisCatSharp.ApplicationCommands.Attributes;
-using DisCatSharp.ApplicationCommands.Context;
-using DisCatSharp.Entities;
-using DisCatSharp.Enums;
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
+using DisCatSharp.ApplicationCommands;
+using DisCatSharp.ApplicationCommands.Attributes;
+using DisCatSharp.ApplicationCommands.Context;
+using DisCatSharp.Entities;
+using DisCatSharp.Enums;
+
 namespace DisCatSharp.Examples.ApplicationCommands.Commands;
 
 /// <summary>
-/// Shows advanced usage of ChoiceProvider attribute with Reflection.
-/// Notice how Ping inherits the ApplicationCommandsModule.
+///     Shows advanced usage of ChoiceProvider attribute with Reflection.
+///     Notice how Ping inherits the ApplicationCommandsModule.
 /// </summary>
 public class TriggerHelp : ApplicationCommandsModule
 {
 	/// <summary>
-	/// Slash command registers the name and command description.
+	///     Slash command registers the name and command description.
 	/// </summary>
 	/// <param name="context">Interaction context</param>
 	/// <param name="commandName">The name of the command to get help on</param>
@@ -75,14 +75,37 @@ public class TriggerHelp : ApplicationCommandsModule
 }
 
 /// <summary>
-/// Choice provider for manage_permissions command
+///     Choice provider for manage_permissions command
 /// </summary>
-public class TriggerHelpChoiceProvider : IChoiceProvider
+public sealed class TriggerHelpChoiceProvider : IChoiceProvider
 {
 	internal static readonly Dictionary<string, MethodInfo> Commands = [];
 
 	/// <summary>
-	/// Adding all commands and subcommands to Commands field.
+	///     Using Reflection, we search our program for ApplicationCommandsModules and register them as commands.
+	/// </summary>
+	/// <returns>A list of application slash commands.</returns>
+	public Task<IEnumerable<DiscordApplicationCommandOptionChoice>> Provider()
+	{
+		// All top level command classes
+		var commandClasses = Assembly.GetEntryAssembly().GetTypes().Where(type => type.IsSubclassOf(typeof(ApplicationCommandsModule)) && !type.IsNested);
+
+		// Find all command or subgroup commands from the classes
+		foreach (var command in commandClasses)
+			SearchCommands(command);
+
+		// SearchCommands registers the commands into a Dictionary<string, MethodInfo>. Since we only need the command name, we can just select the keys.
+		var discordApplicationCommandOptionChoices = Commands.Keys.Select(commandName => new DiscordApplicationCommandOptionChoice(commandName, commandName)).ToList();
+
+		// Sort the options alphabetically, in case Discord doesn't do that for us already.
+		discordApplicationCommandOptionChoices.Sort((x, y) => string.Compare(x.Name, y.Name, StringComparison.Ordinal));
+
+		// Return our commands to the help function.
+		return Task.FromResult(discordApplicationCommandOptionChoices.AsEnumerable());
+	}
+
+	/// <summary>
+	///     Adding all commands and subcommands to Commands field.
 	/// </summary>
 	/// <param name="type">Type of the command.</param>
 	/// <param name="commandName">Name of the command.</param>
@@ -126,28 +149,5 @@ public class TriggerHelpChoiceProvider : IChoiceProvider
 				Commands.Add(subCommand.Trim(), command);
 			}
 		}
-	}
-
-	/// <summary>
-	/// Using Reflection, we search our program for ApplicationCommandsModules and register them as commands.
-	/// </summary>
-	/// <returns>A list of application slash commands.</returns>
-	public Task<IEnumerable<DiscordApplicationCommandOptionChoice>> Provider()
-	{
-		// All top level command classes
-		var commandClasses = Assembly.GetEntryAssembly().GetTypes().Where(type => type.IsSubclassOf(typeof(ApplicationCommandsModule)) && !type.IsNested);
-
-		// Find all command or subgroup commands from the classes
-		foreach (var command in commandClasses)
-			SearchCommands(command);
-
-		// SearchCommands registers the commands into a Dictionary<string, MethodInfo>. Since we only need the command name, we can just select the keys.
-		var discordApplicationCommandOptionChoices = Commands.Keys.Select(commandName => new DiscordApplicationCommandOptionChoice(commandName, commandName)).ToList();
-
-		// Sort the options alphabetically, in case Discord doesn't do that for us already.
-		discordApplicationCommandOptionChoices.Sort((DiscordApplicationCommandOptionChoice x, DiscordApplicationCommandOptionChoice y) => string.Compare(x.Name, y.Name, StringComparison.Ordinal));
-
-		// Return our commands to the help function.
-		return Task.FromResult(discordApplicationCommandOptionChoices.AsEnumerable());
 	}
 }

@@ -1,23 +1,23 @@
+using System.Threading.Tasks;
+
 using DisCatSharp.ApplicationCommands;
 using DisCatSharp.ApplicationCommands.Attributes;
 using DisCatSharp.ApplicationCommands.Context;
 using DisCatSharp.Entities;
 using DisCatSharp.Enums;
 
-using System.Threading.Tasks;
-
 namespace DisCatSharp.Examples.ApplicationCommands.Commands;
 
 /// <summary>
-/// This simple command shows how to use the message context menu.
+///     This simple command shows how to use the message context menu.
 /// </summary>
 public class MessageCopy : ApplicationCommandsModule
 {
 	/// <summary>
-	/// Copies the message and sends it on its own username.
+	///     Copies the message and sends it on its own username.
 	/// </summary>
 	/// <param name="context">Context menu context.</param>
-	[ContextMenu(ApplicationCommandType.Message, "Copy message")]
+	[ContextMenu(ApplicationCommandType.Message, "Copy message", allowedContexts: [InteractionContextType.Guild], integrationTypes: [ApplicationCommandIntegrationTypes.GuildInstall])]
 	public static async Task CommandAsync(ContextMenuContext context)
 	{
 		// Create the response message

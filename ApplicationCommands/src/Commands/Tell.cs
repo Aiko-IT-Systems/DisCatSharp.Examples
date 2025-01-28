@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+
 using DisCatSharp.ApplicationCommands;
 using DisCatSharp.ApplicationCommands.Attributes;
 using DisCatSharp.ApplicationCommands.Context;
@@ -5,18 +7,16 @@ using DisCatSharp.Entities;
 using DisCatSharp.Enums;
 using DisCatSharp.Exceptions;
 
-using System.Threading.Tasks;
-
 namespace DisCatSharp.Examples.ApplicationCommands.Commands;
 
 /// <summary>
-/// Shows usage of the ChoiceAttribute.
+///     Shows usage of the ChoiceAttribute.
 /// </summary>
 public class Tell : ApplicationCommandsModule
 {
 	/// <summary>
-	/// Shows advanced usage of ChoiceProvider attribute with Reflection
-	/// Check if this command is executed in the guild.
+	///     Shows advanced usage of ChoiceProvider attribute with Reflection
+	///     Check if this command is executed in the guild.
 	/// </summary>
 	/// <param name="context">Interaction context</param>
 	public override async Task<bool> BeforeSlashExecutionAsync(InteractionContext context)
@@ -36,12 +36,12 @@ public class Tell : ApplicationCommandsModule
 	}
 
 	/// <summary>
-	/// Slash command registers the name and command description.
+	///     Slash command registers the name and command description.
 	/// </summary>
 	/// <param name="context">Interaction context</param>
 	/// <param name="victim">Who the bot is messaging</param>
 	/// <param name="phrase">What to message to the victim</param>
-	[SlashCommand("tell", "Sends someone a message.")]
+	[SlashCommand("tell", "Sends someone a message.", allowedContexts: [InteractionContextType.Guild], integrationTypes: [ApplicationCommandIntegrationTypes.GuildInstall])]
 	public static async Task CommandAsync(
 		InteractionContext context,
 		[Option("victim", "Who the bot is messaging.")] DiscordUser victim,
@@ -71,13 +71,12 @@ public class Tell : ApplicationCommandsModule
 		// Sometimes people have bots blocked or dm's turned off. If that's the case, we catch the exception and ignore it.
 		catch (UnauthorizedException)
 		{
-			discordInteractionResponseBuilder.Content = $"Error: Failed to message the victim! They don't have their dm's open.";
+			discordInteractionResponseBuilder.Content = "Error: Failed to message the victim! They don't have their dm's open.";
 			await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, discordInteractionResponseBuilder);
 			return;
 		}
 
 		discordInteractionResponseBuilder.Content = $"Sucessfully messaged the user:\n{phrase} - {context.User.Mention}";
 		await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, discordInteractionResponseBuilder);
-		return;
 	}
 }

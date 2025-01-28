@@ -1,39 +1,40 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
 using DisCatSharp.ApplicationCommands;
 using DisCatSharp.ApplicationCommands.Attributes;
 using DisCatSharp.ApplicationCommands.Context;
 using DisCatSharp.Entities;
 using DisCatSharp.Enums;
 
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
 namespace DisCatSharp.Examples.ApplicationCommands.Commands;
 
 /// <summary>
-/// Group slash commands + optional arguments.
-/// Notice how the GroupSlashCommand attribute isn't on this class, but the subclass.
+///     Group slash commands + optional arguments.
+///     Notice how the GroupSlashCommand attribute isn't on this class, but the subclass.
 /// </summary>
 public class Tags : ApplicationCommandsModule
 {
 	/// <summary>
-	/// Also inherits ApplicationCommandsModule
-	/// SlashCommandGroup is what makes group commands!
+	///     Also inherits ApplicationCommandsModule
+	///     SlashCommandGroup is what makes group commands!
 	/// </summary>
-	[SlashCommandGroup("tag_test", "Sends, modifies or deletes a premade message.")]
+	[SlashCommandGroup("tag_test", "Sends, modifies or deletes a premade message.", allowedContexts: [InteractionContextType.Guild], integrationTypes: [ApplicationCommandIntegrationTypes.GuildInstall])]
 	public class RealTags : ApplicationCommandsModule
 	{
 		/// <summary>
-		/// Tags will be cleared when the bot restarts.
+		///     Tags will be cleared when the bot restarts.
 		/// </summary>
-		public static List<Tag> Tags { get; private set; } = [];
+		public static List<Tag> Tags { get; } = [];
 
 		/// <summary>
-		/// Sends a premade message.
+		///     Sends a premade message.
 		/// </summary>
 		/// <param name="context">Interaction context</param>
 		/// <param name="tagName">The name of the tag to send</param>
-		[SlashCommand("send", "Sends a premade message.")]
+		[SlashCommand("send", "Sends a premade message.", allowedContexts: [InteractionContextType.Guild], integrationTypes: [ApplicationCommandIntegrationTypes.GuildInstall])]
 		public static async Task SendAsync(InteractionContext context, [Autocomplete(typeof(TagsAutocompleteProvider)), Option("name", "The name of the tag to send", true)] string tagName)
 		{
 			DiscordInteractionResponseBuilder discordInteractionResponseBuilder = new();
@@ -73,12 +74,12 @@ public class Tags : ApplicationCommandsModule
 		}
 
 		/// <summary>
-		/// Creates a new tag for everyone to use.
+		///     Creates a new tag for everyone to use.
 		/// </summary>
 		/// <param name="context">Interaction context</param>
 		/// <param name="tagName">What to call the new tag</param>
 		/// <param name="tagContent">What to fill the tag with</param>
-		[SlashCommand("create", "Creates a new tag for everyone to use.")]
+		[SlashCommand("create", "Creates a new tag for everyone to use.", allowedContexts: [InteractionContextType.Guild], integrationTypes: [ApplicationCommandIntegrationTypes.GuildInstall])]
 		public static async Task CreateAsync(
 			InteractionContext context,
 			[Option("name", "What to call the new tag.")] string tagName,
@@ -95,7 +96,7 @@ public class Tags : ApplicationCommandsModule
 				return;
 			}
 
-			var tag = Tags.FirstOrDefault(listTag => listTag.GuildId == context.Guild.Id && listTag.Name.Equals(tagName, System.StringComparison.InvariantCultureIgnoreCase));
+			var tag = Tags.FirstOrDefault(listTag => listTag.GuildId == context.Guild.Id && listTag.Name.Equals(tagName, StringComparison.InvariantCultureIgnoreCase));
 
 			// The tag already exists, we can't allow duplicates to happen.
 			if (tag != null)
@@ -123,11 +124,11 @@ public class Tags : ApplicationCommandsModule
 		}
 
 		/// <summary>
-		/// Deletes a tag from the guild.
+		///     Deletes a tag from the guild.
 		/// </summary>
 		/// <param name="context">Interaction context</param>
 		/// <param name="tagName">The name of the tag that should be deleted</param>
-		[SlashCommand("delete", "Deletes a tag from the guild.")]
+		[SlashCommand("delete", "Deletes a tag from the guild.", allowedContexts: [InteractionContextType.Guild], integrationTypes: [ApplicationCommandIntegrationTypes.GuildInstall])]
 		public static async Task DeleteAsync(InteractionContext context, [Option("name", "The name of the tag that should be deleted.")] string tagName)
 		{
 			DiscordInteractionResponseBuilder discordInteractionResponseBuilder = new();
@@ -139,7 +140,7 @@ public class Tags : ApplicationCommandsModule
 				return;
 			}
 
-			var tag = Tags.FirstOrDefault(listTag => listTag.GuildId == context.Guild.Id && listTag.Name.Equals(tagName, System.StringComparison.InvariantCultureIgnoreCase));
+			var tag = Tags.FirstOrDefault(listTag => listTag.GuildId == context.Guild.Id && listTag.Name.Equals(tagName, StringComparison.InvariantCultureIgnoreCase));
 			if (tag == null)
 			{
 				discordInteractionResponseBuilder.Content = $"Error: Tag {tagName.Sanitize().InlineCode()} not found!";
@@ -167,13 +168,15 @@ public class Tags : ApplicationCommandsModule
 }
 
 /// <summary>
-/// Generates a list of options.
-/// Unlike the ChoiceProvider, which generates it once during the registration of commands, this generates it whenever someone writes a command.
+///     Generates a list of options.
+///     Unlike the ChoiceProvider, which generates it once during the registration of commands, this generates it whenever
+///     someone writes a command.
 /// </summary>
-internal class TagsAutocompleteProvider : IAutocompleteProvider
+internal sealed class TagsAutocompleteProvider : IAutocompleteProvider
 {
 	/// <summary>
-	/// The method in which the list is generated. You can do whatever you want here, the main thing is to get a list with options.
+	///     The method in which the list is generated. You can do whatever you want here, the main thing is to get a list with
+	///     options.
 	/// </summary>
 	/// <param name="context">Special context of autocomplete.</param>
 	/// <returns>List of the options</returns>

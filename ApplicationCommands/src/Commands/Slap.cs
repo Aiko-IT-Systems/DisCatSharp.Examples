@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+
 using DisCatSharp.ApplicationCommands;
 using DisCatSharp.ApplicationCommands.Attributes;
 using DisCatSharp.ApplicationCommands.Context;
@@ -5,35 +7,35 @@ using DisCatSharp.Entities;
 using DisCatSharp.Enums;
 using DisCatSharp.Exceptions;
 
-using System.Threading.Tasks;
-
 namespace DisCatSharp.Examples.ApplicationCommands.Commands;
 
 /// <summary>
-/// Shows how to use DiscordEntities + permissions.
+///     Shows how to use DiscordEntities + permissions.
 /// </summary>
 public class Slap : ApplicationCommandsModule
 {
 	/// <summary>
-	/// Checks to see if the user has the KickMembers permission. If they do, it executes the command. If they don't, the command fails silently.
+	///     Checks to see if the user has the KickMembers permission. If they do, it executes the command. If they don't, the
+	///     command fails silently.
 	/// </summary>
 	/// <param name="context">Interaction context</param>
 	public override Task<bool> BeforeSlashExecutionAsync(InteractionContext context)
 		=> Task.FromResult(context.Member.Permissions.HasPermission(Permissions.KickMembers));
 
 	/// <summary>
-	/// Checks to see if the user has the KickMembers permission. If they do, it executes the command. If they don't, the command fails silently.
+	///     Checks to see if the user has the KickMembers permission. If they do, it executes the command. If they don't, the
+	///     command fails silently.
 	/// </summary>
 	/// <param name="context">Interaction context</param>
 	public override Task<bool> BeforeContextMenuExecutionAsync(ContextMenuContext context)
 		=> Task.FromResult(context.Member.Permissions.HasPermission(Permissions.KickMembers));
 
 	/// <summary>
-	/// Kick user from the server.
+	///     Kick user from the server.
 	/// </summary>
 	/// <param name="context">Interaction context</param>
 	/// <param name="victim">User to be kicked</param>
-	[SlashCommand("slap", "Slaps the user so hard, it kicks them out of the guild.", dmPermission: false)]
+	[SlashCommand("slap", "Slaps the user so hard, it kicks them out of the guild.", allowedContexts: [InteractionContextType.Guild], integrationTypes: [ApplicationCommandIntegrationTypes.GuildInstall])]
 	public static async Task CommandAsync(InteractionContext context, [Option("victim", "Who should I slap?")] DiscordUser victim = null)
 	{
 		// For the sake of examples, if the user didn't provide someone to kick, let's assume that they kicked themselves.
@@ -79,11 +81,11 @@ public class Slap : ApplicationCommandsModule
 	}
 
 	/// <summary>
-	/// Kick user from the server (context menu version).
-	/// Note that several types of commands (slash/user/message) can be used in one class.
+	///     Kick user from the server (context menu version).
+	///     Note that several types of commands (slash/user/message) can be used in one class.
 	/// </summary>
 	/// <param name="context">Context menu context</param>
-	[ContextMenu(ApplicationCommandType.User, "Slap", dmPermission: false)]
+	[ContextMenu(ApplicationCommandType.User, "Slap", allowedContexts: [InteractionContextType.Guild], integrationTypes: [ApplicationCommandIntegrationTypes.GuildInstall])]
 	public static async Task CommandAsync(ContextMenuContext context)
 	{
 		if (context.Guild == null)

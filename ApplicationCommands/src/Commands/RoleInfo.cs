@@ -1,25 +1,25 @@
+using System.Globalization;
+using System.Threading.Tasks;
+
 using DisCatSharp.ApplicationCommands;
 using DisCatSharp.ApplicationCommands.Attributes;
 using DisCatSharp.ApplicationCommands.Context;
 using DisCatSharp.Entities;
 using DisCatSharp.Enums;
 
-using System.Globalization;
-using System.Threading.Tasks;
-
 namespace DisCatSharp.Examples.ApplicationCommands.Commands;
 
 /// <summary>
-/// Slash commands with arguments
+///     Slash commands with arguments
 /// </summary>
 public class RoleInfo : ApplicationCommandsModule
 {
 	/// <summary>
-	/// Get information about the role.
+	///     Get information about the role.
 	/// </summary>
 	/// <param name="context">Interaction context</param>
 	/// <param name="discordRole">The role to get information on</param>
-	[SlashCommand("role_info", "Gets general information about a role.")]
+	[SlashCommand("role_info", "Gets general information about a role.", allowedContexts: [InteractionContextType.Guild], integrationTypes: [ApplicationCommandIntegrationTypes.GuildInstall])]
 	public static async Task CommandAsync(
 		InteractionContext context,
 		// Option adds an argument to the command
@@ -75,7 +75,7 @@ public class RoleInfo : ApplicationCommandsModule
 		embedBuilder.AddField(new("Role Id", discordRole.Id.ToString(CultureInfo.InvariantCulture), true));
 		embedBuilder.AddField(new("Role Name", discordRole.Name, true));
 		embedBuilder.AddField(new("Role Position", discordRole.Position.ToString(), true));
-		embedBuilder.AddField(new("Permissions", discordRole.Permissions.ToPermissionString(), false));
+		embedBuilder.AddField(new("Permissions", discordRole.Permissions.ToPermissionString()));
 
 		// Create the message builder.
 		DiscordWebhookBuilder messageBuilder = new();

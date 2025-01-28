@@ -1,4 +1,9 @@
-﻿using DisCatSharp.ApplicationCommands;
+using System;
+using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
+
+using DisCatSharp.ApplicationCommands;
 using DisCatSharp.ApplicationCommands.EventArgs;
 using DisCatSharp.EventArgs;
 using DisCatSharp.Interactivity.Extensions;
@@ -8,20 +13,15 @@ using Microsoft.Extensions.Logging;
 
 using Serilog;
 
-using System;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
-
 namespace DisCatSharp.Examples.Interactivity;
 
 /// <summary>
-/// The program.
+///     The program.
 /// </summary>
 internal class Program
 {
 	/// <summary>
-	/// Entry point. Initializes the bot.
+	///     Entry point. Initializes the bot.
 	/// </summary>
 	/// <param name="args">The args.</param>
 	private static async Task Main(string[] args)
@@ -58,7 +58,7 @@ internal class Program
 		discordClient.ComponentInteractionCreated += ComponentInteraction;
 
 		// Use the default logger provided for easy reading
-		discordClient.Logger.LogInformation($"Connection success! Logged in as {discordClient.CurrentUser.Username}#{discordClient.CurrentUser.Discriminator} ({discordClient.CurrentUser.Id})");
+		discordClient.Logger.LogInformation($"Connection success! Logged in as {discordClient.CurrentUser.UsernameWithDiscriminator} ({discordClient.CurrentUser.Id})");
 
 		// Let the user know that we're registering the commands.
 		discordClient.Logger.LogInformation("Registering application commands...");
@@ -86,7 +86,7 @@ internal class Program
 	}
 
 	/// <summary>
-	/// Fires when the user uses the slash command.
+	///     Fires when the user uses the slash command.
 	/// </summary>
 	/// <param name="sender">Application commands ext.</param>
 	/// <param name="e">Event arguments.</param>
@@ -97,7 +97,7 @@ internal class Program
 	}
 
 	/// <summary>
-	/// Fires when an exception is thrown in the slash command.
+	///     Fires when an exception is thrown in the slash command.
 	/// </summary>
 	/// <param name="sender">Application commands ext.</param>
 	/// <param name="e">Event arguments.</param>
@@ -108,8 +108,8 @@ internal class Program
 	}
 
 	/// <summary>
-	/// You can create messages with buttons or select menus that will always work, even after the commands are completed.
-	/// This example for the 'random' command.
+	///     You can create messages with buttons or select menus that will always work, even after the commands are completed.
+	///     This example for the 'random' command.
 	/// </summary>
 	/// <param name="sender">Discord client</param>
 	/// <param name="e">Event arguments</param>

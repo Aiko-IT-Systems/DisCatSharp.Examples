@@ -1,28 +1,29 @@
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Threading.Tasks;
+
 using DisCatSharp.ApplicationCommands;
 using DisCatSharp.ApplicationCommands.Attributes;
 using DisCatSharp.ApplicationCommands.Context;
 using DisCatSharp.Enums;
 using DisCatSharp.VoiceNext;
 
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Threading.Tasks;
-
 namespace DisCatSharp.Examples.VoiceNext.Commands;
 
 /// <summary>
-/// Playback control with these commands.
+///     Playback control with these commands.
 /// </summary>
 public class MusicCommands : ApplicationCommandsModule
 {
 	/// <summary>
-	/// Since we want to be able to pause and stop playback without waiting for the end, we need to store the streams somewhere
+	///     Since we want to be able to pause and stop playback without waiting for the end, we need to store the streams
+	///     somewhere
 	/// </summary>
 	private static readonly Dictionary<ulong, Stream> s_playbacks = [];
 
 	/// <summary>
-	/// Play local file asynchronously.
+	///     Play local file asynchronously.
 	/// </summary>
 	/// <param name="ctx">Interaction context</param>
 	/// <param name="path">Path to the audio file</param>
@@ -88,7 +89,7 @@ public class MusicCommands : ApplicationCommandsModule
 	}
 
 	/// <summary>
-	/// Pause playback
+	///     Pause playback
 	/// </summary>
 	/// <param name="ctx">Interaction context</param>
 	[SlashCommand("pause", "Pause playback")]
@@ -128,7 +129,7 @@ public class MusicCommands : ApplicationCommandsModule
 	}
 
 	/// <summary>
-	/// Resume playback
+	///     Resume playback
 	/// </summary>
 	/// <param name="ctx">Interaction context</param>
 	[SlashCommand("resume", "Resume playback")]
@@ -168,7 +169,7 @@ public class MusicCommands : ApplicationCommandsModule
 	}
 
 	/// <summary>
-	/// Stop playback
+	///     Stop playback
 	/// </summary>
 	/// <param name="ctx">Interaction context</param>
 	[SlashCommand("stop", "Stop playback")]

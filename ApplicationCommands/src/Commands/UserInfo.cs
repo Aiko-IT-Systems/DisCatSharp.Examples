@@ -1,21 +1,21 @@
+using System.Threading.Tasks;
+
 using DisCatSharp.ApplicationCommands;
 using DisCatSharp.ApplicationCommands.Attributes;
 using DisCatSharp.ApplicationCommands.Context;
 using DisCatSharp.Entities;
 using DisCatSharp.Enums;
 
-using System.Threading.Tasks;
-
 namespace DisCatSharp.Examples.ApplicationCommands.Commands;
 
 /// <summary>
-/// This simple command shows how to use the user context menu
+///     This simple command shows how to use the user context menu
 /// </summary>
 public class UserInfo : ApplicationCommandsModule
 {
 	/// <summary>
-	/// Unlike slash commands that use BeforeSlashExecutionAsync/AfterSlashExecutionAsync,
-	/// context menu commands use BeforeContextMenuExecutionAsync/AfterContextMenuExecutionAsync
+	///     Unlike slash commands that use BeforeSlashExecutionAsync/AfterSlashExecutionAsync,
+	///     context menu commands use BeforeContextMenuExecutionAsync/AfterContextMenuExecutionAsync
 	/// </summary>
 	/// <param name="context">Context menu context</param>
 	public override async Task<bool> BeforeContextMenuExecutionAsync(ContextMenuContext context)
@@ -37,10 +37,10 @@ public class UserInfo : ApplicationCommandsModule
 	}
 
 	/// <summary>
-	/// Get information about the user.
+	///     Get information about the user.
 	/// </summary>
 	/// <param name="context"></param>
-	[ContextMenu(ApplicationCommandType.User, "Get info")]
+	[ContextMenu(ApplicationCommandType.User, "Get info", allowedContexts: [InteractionContextType.Guild], integrationTypes: [ApplicationCommandIntegrationTypes.GuildInstall])]
 	public static async Task CommandAsync(ContextMenuContext context)
 	{
 		// Create the response message

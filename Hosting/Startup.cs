@@ -8,7 +8,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace DisCatSharp.Examples.Hosting;
 
-public class Startup(IConfiguration configuration)
+public sealed class Startup(IConfiguration configuration)
 {
 	public IConfiguration Configuration { get; } = configuration;
 

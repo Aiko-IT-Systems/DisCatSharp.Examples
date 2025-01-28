@@ -1,3 +1,8 @@
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+
 using DisCatSharp.ApplicationCommands;
 using DisCatSharp.ApplicationCommands.Attributes;
 using DisCatSharp.ApplicationCommands.Context;
@@ -6,25 +11,20 @@ using DisCatSharp.Enums;
 using DisCatSharp.Exceptions;
 using DisCatSharp.VoiceNext;
 
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-
 namespace DisCatSharp.Examples.Interactivity.Commands;
 
 /// <summary>
-/// Stage channel management.
+///     Stage channel management.
 /// </summary>
 public class StageCommands : ApplicationCommandsModule
 {
 	/// <summary>
-	/// The command for creating a stage channel.
+	///     The command for creating a stage channel.
 	/// </summary>
 	/// <param name="ctx">Interaction context</param>
 	/// <param name="name">Stage channel name</param>
 	/// <param name="topic">Topic of the new stage</param>
-	[SlashCommand("create_stage", "The command for creating a stage channel")]
+	[SlashCommand("create_stage", "The command for creating a stage channel", allowedContexts: [InteractionContextType.Guild], integrationTypes: [ApplicationCommandIntegrationTypes.GuildInstall])]
 	public static async Task CreateStage(
 		InteractionContext ctx,
 		[Option("name", "Stage channel name")] string name,
@@ -35,7 +35,7 @@ public class StageCommands : ApplicationCommandsModule
 		var channel = await ctx.Guild.CreateStageChannelAsync(name);
 
 		// Secondly, open stage in the channel you just created
-		await channel.OpenStageAsync(topic, false, null);
+		await channel.OpenStageAsync(topic);
 
 		await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new()
 		{
@@ -44,11 +44,11 @@ public class StageCommands : ApplicationCommandsModule
 	}
 
 	/// <summary>
-	/// Close stage without deleting.
+	///     Close stage without deleting.
 	/// </summary>
 	/// <param name="ctx">Interaction context</param>
 	/// <param name="stage">Stage channel</param>
-	[SlashCommand("close_stage", "Close stage without deleting")]
+	[SlashCommand("close_stage", "Close stage without deleting", allowedContexts: [InteractionContextType.Guild], integrationTypes: [ApplicationCommandIntegrationTypes.GuildInstall])]
 	public static async Task CloseStage(InteractionContext ctx, [Option("id", "Stage channel"), ChannelTypes(ChannelType.Stage)] DiscordChannel stage)
 	{
 		// Check whether the desired stage channel was found.
@@ -81,11 +81,11 @@ public class StageCommands : ApplicationCommandsModule
 	}
 
 	/// <summary>
-	/// Permanently delete stage channel.
+	///     Permanently delete stage channel.
 	/// </summary>
 	/// <param name="ctx">Interaction context</param>
 	/// <param name="stage">Stage channel</param>
-	[SlashCommand("delete_stage", "Permanently delete stage channel")]
+	[SlashCommand("delete_stage", "Permanently delete stage channel", allowedContexts: [InteractionContextType.Guild], integrationTypes: [ApplicationCommandIntegrationTypes.GuildInstall])]
 	public static async Task DeleteStage(InteractionContext ctx, [Option("id", "Stage channel"), ChannelTypes(ChannelType.Stage)] DiscordChannel stage)
 	{
 		// Check whether the desired stage channel was found.
@@ -107,11 +107,11 @@ public class StageCommands : ApplicationCommandsModule
 	}
 
 	/// <summary>
-	/// Get stage channel info.
+	///     Get stage channel info.
 	/// </summary>
 	/// <param name="ctx">Interaction context</param>
 	/// <param name="stage">Stage channel</param>
-	[SlashCommand("get_stage", "Get stage channel info")]
+	[SlashCommand("get_stage", "Get stage channel info", allowedContexts: [InteractionContextType.Guild], integrationTypes: [ApplicationCommandIntegrationTypes.GuildInstall])]
 	public static async Task GetStage(InteractionContext ctx, [Option("id", "Stage channel"), ChannelTypes(ChannelType.Stage)] DiscordChannel stage)
 	{
 		// Check whether the desired stage channel was found.
@@ -146,13 +146,13 @@ public class StageCommands : ApplicationCommandsModule
 	}
 
 	/// <summary>
-	/// Update topic and stage channel publicity.
+	///     Update topic and stage channel publicity.
 	/// </summary>
 	/// <param name="ctx">Interaction context</param>
 	/// <param name="stage">Stage channel</param>
 	/// <param name="topic">New topic</param>
 	/// <param name="isPublic">Whether the stage channel will be private or public</param>
-	[SlashCommand("modify_stage", "Update topic and stage channel publicity")]
+	[SlashCommand("modify_stage", "Update topic and stage channel publicity", allowedContexts: [InteractionContextType.Guild], integrationTypes: [ApplicationCommandIntegrationTypes.GuildInstall])]
 	public static async Task ModifyStage(InteractionContext ctx, [Option("id", "Stage channel"), ChannelTypes(ChannelType.Stage)] DiscordChannel stage, [Option("topic", "New topic")] string topic)
 	{
 		// Check whether the desired stage channel was found.
@@ -185,11 +185,11 @@ public class StageCommands : ApplicationCommandsModule
 	}
 
 	/// <summary>
-	/// Make a member a speaker, or move them to an audience.
+	///     Make a member a speaker, or move them to an audience.
 	/// </summary>
 	/// <param name="ctx">Interaction context</param>
 	/// <param name="user">The user who needs to change the voice state</param>
-	[SlashCommand("speaker", "Make a member a speaker, or move them to an audience")]
+	[SlashCommand("speaker", "Make a member a speaker, or move them to an audience", allowedContexts: [InteractionContextType.Guild], integrationTypes: [ApplicationCommandIntegrationTypes.GuildInstall])]
 	public static async Task SpeakerStage(InteractionContext ctx, [Option("user", "The user who needs to change the voice state")] DiscordUser user = null)
 	{
 		var member = (DiscordMember)user ?? ctx.Member;
@@ -218,11 +218,11 @@ public class StageCommands : ApplicationCommandsModule
 	}
 
 	/// <summary>
-	/// Play audio in stage channel.
+	///     Play audio in stage channel.
 	/// </summary>
 	/// <param name="ctx">Interaction context</param>
 	/// <param name="path">Path to the audio file</param>
-	[SlashCommand("play_stage", "Play audio in stage channel")]
+	[SlashCommand("play_stage", "Play audio in stage channel", allowedContexts: [InteractionContextType.Guild], integrationTypes: [ApplicationCommandIntegrationTypes.GuildInstall])]
 	public static async Task PlayStage(InteractionContext ctx, [Option("path", "Path to the audio file")] string path)
 	{
 		// This is a basic example of using VoiceNext with a stage channel (see the VoiceNext example for more details).
@@ -251,7 +251,7 @@ public class StageCommands : ApplicationCommandsModule
 		var ffmpeg = Process.Start(new ProcessStartInfo
 		{
 			FileName = "ffmpeg",
-			Arguments = $@"-i ""{path}"" -ac 2 -f s16le -ar 48000 pipe:1",
+			Arguments = $"""-i "{path}" -ac 2 -f s16le -ar 48000 pipe:1""",
 			RedirectStandardOutput = true,
 			UseShellExecute = false
 		});

@@ -1,8 +1,12 @@
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+
 using DisCatSharp.ApplicationCommands;
 using DisCatSharp.ApplicationCommands.EventArgs;
 using DisCatSharp.CommandsNext;
-using DisCatSharp.Enums;
 using DisCatSharp.Entities;
+using DisCatSharp.Enums;
 using DisCatSharp.EventArgs;
 using DisCatSharp.Interactivity;
 using DisCatSharp.Interactivity.Enums;
@@ -10,22 +14,17 @@ using DisCatSharp.Interactivity.Extensions;
 
 using Microsoft.Extensions.Logging;
 
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Reflection;
-
 namespace DisCatSharp.Examples.Basics.Main;
 
 /// <summary>
-/// The bot.
+///     The bot.
 /// </summary>
-internal class Bot : IDisposable
+internal sealed class Bot : IDisposable
 {
 #if DEBUG
-	public static readonly string Prefix = "!";
+	public const string PREFIX = "!";
 #else
-	public static readonly string Prefix = "%";
+	public const string PREFIX = "%";
 #endif
 	//public static ulong devguild = ; //Set to register app command on guild
 
@@ -38,18 +37,17 @@ internal class Bot : IDisposable
 	private CommandsNextExtension _cNext;
 
 	/// <summary>
-	/// Initializes a new instance of the <see cref="Bot"/> class.
+	///     Initializes a new instance of the <see cref="Bot" /> class.
 	/// </summary>
 	/// <param name="token">The token.</param>
 	public Bot(string token)
 	{
 		ShutdownRequest = new();
 
-		LogLevel logLevel;
 #if DEBUG
-		logLevel = LogLevel.Debug;
+		var logLevel = LogLevel.Debug;
 #else
-		logLevel = LogLevel.Error;
+		var logLevel = LogLevel.Error;
 #endif
 		var cfg = new DiscordConfiguration
 		{
@@ -67,7 +65,7 @@ internal class Bot : IDisposable
 
 		this._cNext = Client.UseCommandsNext(new()
 		{
-			StringPrefixes = [Prefix],
+			StringPrefixes = [PREFIX],
 			CaseSensitive = true,
 			EnableMentionPrefix = true,
 			IgnoreExtraArguments = true,
@@ -91,7 +89,7 @@ internal class Bot : IDisposable
 	}
 
 	/// <summary>
-	/// Disposes the Bot.
+	///     Disposes the Bot.
 	/// </summary>
 	public void Dispose()
 	{
@@ -104,7 +102,7 @@ internal class Bot : IDisposable
 	}
 
 	/// <summary>
-	/// Starts the Bot.
+	///     Starts the Bot.
 	/// </summary>
 	public async Task RunAsync()
 	{
@@ -112,14 +110,14 @@ internal class Bot : IDisposable
 		while (!ShutdownRequest.IsCancellationRequested)
 			await Task.Delay(2000);
 
-		await Client.UpdateStatusAsync(null, UserStatus.Offline, null);
+		await Client.UpdateStatusAsync(null, UserStatus.Offline);
 		await Client.DisconnectAsync();
 		await Task.Delay(2500);
 		this.Dispose();
 	}
 
 	/// <summary>
-	/// Registers the event listener.
+	///     Registers the event listener.
 	/// </summary>
 	/// <param name="client">The client.</param>
 	/// <param name="cnext">The commandsnext extension.</param>
@@ -149,7 +147,7 @@ internal class Bot : IDisposable
 	}
 
 	/// <summary>
-	/// Registers the commands.
+	///     Registers the commands.
 	/// </summary>
 	/// <param name="cnext">The commandsnext extension.</param>
 	/// <param name="appCommands">The appcommands extension.</param>
@@ -163,7 +161,7 @@ internal class Bot : IDisposable
 	private static Task Client_ReadyAsync(DiscordClient dcl, ReadyEventArgs e)
 	{
 		Console.ForegroundColor = ConsoleColor.Yellow;
-		Console.WriteLine($"Starting with Prefix {Prefix} :3");
+		Console.WriteLine($"Starting with Prefix {PREFIX} :3");
 		Console.WriteLine($"Starting {Client.CurrentUser.Username}");
 		Console.WriteLine("Client ready!");
 		Console.WriteLine($"Shard {dcl.ShardId}");
@@ -236,7 +234,7 @@ internal class Bot : IDisposable
 	private static Task Client_SocketErroredAsync(DiscordClient dcl, SocketErrorEventArgs e)
 	{
 		Console.ForegroundColor = ConsoleColor.DarkRed;
-		Console.WriteLine("Socket has an error! " + e.Exception.Message.ToString());
+		Console.WriteLine("Socket has an error! " + e.Exception.Message);
 		return Task.CompletedTask;
 	}
 

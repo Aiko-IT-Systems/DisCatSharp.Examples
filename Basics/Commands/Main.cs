@@ -1,19 +1,19 @@
+using System.Threading.Tasks;
+
 using DisCatSharp.CommandsNext;
 using DisCatSharp.CommandsNext.Attributes;
-
-using System.Threading.Tasks;
 
 using static DisCatSharp.Examples.Basics.Main.Bot;
 
 namespace DisCatSharp.Examples.Basics.Commands;
 
 /// <summary>
-/// The main command module.
+///     The main command module.
 /// </summary>
 internal class Main : BaseCommandModule
 {
 	/// <summary>
-	/// Pings you.
+	///     Pings you.
 	/// </summary>
 	/// <param name="ctx">The command context.</param>
 	[Command("ping"), Description("Test ping :3")]
@@ -24,19 +24,19 @@ internal class Main : BaseCommandModule
 	}
 
 	/// <summary>
-	/// Shutdowns the bot.
+	///     Shutdowns the bot.
 	/// </summary>
 	/// <param name="ctx">The command context.</param>
 	[Command("shutdown"), Description("Shuts the bot down safely."), RequireOwner]
 	public async Task ShutdownAsync(CommandContext ctx)
 	{
-		ShutdownRequest.Cancel();
+		await ShutdownRequest.CancelAsync();
 		await ctx.RespondAsync("Shutting down");
 		await ctx.Message.DeleteAsync("Command Hide");
 	}
 
 	/// <summary>
-	/// Repeats what you say.
+	///     Repeats what you say.
 	/// </summary>
 	/// <param name="ctx">The command context.</param>
 	/// <param name="msg">The message to repeat.</param>

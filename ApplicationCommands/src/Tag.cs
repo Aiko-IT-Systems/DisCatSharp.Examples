@@ -2,7 +2,7 @@ using System;
 
 namespace DisCatSharp.Examples.ApplicationCommands;
 
-public class Tag
+public sealed class Tag
 {
 	// The tag name.
 	public string Name { get; internal init; }

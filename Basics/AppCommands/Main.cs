@@ -1,23 +1,23 @@
+using System.Linq;
+using System.Threading.Tasks;
+
 using DisCatSharp.ApplicationCommands;
 using DisCatSharp.ApplicationCommands.Attributes;
 using DisCatSharp.ApplicationCommands.Context;
 using DisCatSharp.Entities;
 using DisCatSharp.Enums;
 
-using System.Linq;
-using System.Threading.Tasks;
-
 using static DisCatSharp.Examples.Basics.Main.Bot;
 
 namespace DisCatSharp.Examples.Basics.AppCommands;
 
 /// <summary>
-/// The main slash command module.
+///     The main slash command module.
 /// </summary>
 internal class Main : ApplicationCommandsModule
 {
 	/// <summary>
-	/// Pings you.
+	///     Pings you.
 	/// </summary>
 	/// <param name="ctx">The command context.</param>
 	[SlashCommand("ping", "Send's the actual ping")]
@@ -29,18 +29,18 @@ internal class Main : ApplicationCommandsModule
 	}
 
 	/// <summary>
-	/// Shutdowns the bot.
+	///     Shutdowns the bot.
 	/// </summary>
 	/// <param name="ctx">The command context.</param>
 	[SlashCommand("shutdown", "Bot shutdown (restricted)")]
 	public static async Task ShutdownAsync(InteractionContext ctx)
 	{
 		await ctx.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource, new DiscordInteractionResponseBuilder().WithContent("Shutdown request"));
-		if (ctx.Client.CurrentApplication.Members.Any(x => x.Id == ctx.User.Id ))
+		if (ctx.Client.CurrentApplication.Members.Any(x => x.Id == ctx.User.Id))
 		{
 			await Task.Delay(5000);
 			await ctx.EditResponseAsync(new DiscordWebhookBuilder().WithContent("Shutdown request accepted."));
-			ShutdownRequest.Cancel();
+			await ShutdownRequest.CancelAsync();
 			await ctx.EditResponseAsync(new DiscordWebhookBuilder().WithContent("Shutting down!"));
 		}
 		else
@@ -48,7 +48,7 @@ internal class Main : ApplicationCommandsModule
 	}
 
 	/// <summary>
-	/// Repeats what you say.
+	///     Repeats what you say.
 	/// </summary>
 	/// <param name="ctx">The command context.</param>
 	/// <param name="message">The message to repeat.</param>
@@ -62,7 +62,7 @@ internal class Main : ApplicationCommandsModule
 	}
 
 	/// <summary>
-	/// Gets the users avatar.
+	///     Gets the users avatar.
 	/// </summary>
 	/// <param name="ctx">The command context.</param>
 	/// <param name="user">The optional user.</param>
@@ -72,14 +72,14 @@ internal class Main : ApplicationCommandsModule
 		user ??= ctx.Member;
 		var embed = new DiscordEmbedBuilder
 		{
-			Title = $"Avatar",
+			Title = "Avatar",
 			ImageUrl = user.AvatarUrl
-		}.WithFooter($"Requested by {ctx.Member.DisplayName}", ctx.Member.AvatarUrl).WithAuthor($"{user.Username}", user.AvatarUrl, user.AvatarUrl);
+		}.WithFooter($"Requested by {ctx.User.UsernameWithGlobalName}", ctx.User.AvatarUrl).WithAuthor($"{user.Username}", user.AvatarUrl, user.AvatarUrl);
 		await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder().AddEmbed(embed.Build()));
 	}
 
 	/// <summary>
-	/// Gets the users avatar with context menu.
+	///     Gets the users avatar with context menu.
 	/// </summary>
 	/// <param name="ctx">The command context.</param>
 	[ContextMenu(ApplicationCommandType.User, "Get avatar")]
@@ -87,9 +87,9 @@ internal class Main : ApplicationCommandsModule
 	{
 		var embed = new DiscordEmbedBuilder
 		{
-			Title = $"Avatar",
+			Title = "Avatar",
 			ImageUrl = ctx.TargetUser.AvatarUrl
-		}.WithFooter($"Requested by {ctx.Member.DisplayName}", ctx.Member.AvatarUrl).WithAuthor($"{ctx.TargetUser.Username}", ctx.TargetUser.AvatarUrl, ctx.TargetUser.AvatarUrl);
+		}.WithFooter($"Requested by {ctx.User.UsernameWithGlobalName}", ctx.User.AvatarUrl).WithAuthor($"{ctx.TargetUser.Username}", ctx.TargetUser.AvatarUrl, ctx.TargetUser.AvatarUrl);
 		await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder().AddEmbed(embed.Build()));
 	}
 }

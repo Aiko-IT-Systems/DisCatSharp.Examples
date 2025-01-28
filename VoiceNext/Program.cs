@@ -1,4 +1,9 @@
-﻿using DisCatSharp.ApplicationCommands;
+﻿using System;
+using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
+
+using DisCatSharp.ApplicationCommands;
 using DisCatSharp.ApplicationCommands.EventArgs;
 using DisCatSharp.VoiceNext;
 
@@ -6,20 +11,15 @@ using Microsoft.Extensions.Logging;
 
 using Serilog;
 
-using System;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
-
 namespace DisCatSharp.Examples.VoiceNext;
 
 /// <summary>
-/// The program.
+///     The program.
 /// </summary>
 internal class Program
 {
 	/// <summary>
-	/// Entry point. Initializes the bot.
+	///     Entry point. Initializes the bot.
 	/// </summary>
 	/// <param name="args">The args.</param>
 	private static async Task Main(string[] args)
@@ -66,7 +66,7 @@ internal class Program
 			appCommandExt.RegisterGuildCommands(command, 885510395295584289);
 
 		discordClient.Logger.LogInformation("Application commands registered successfully");
-		
+
 		Console.WriteLine("Connecting to Discord...");
 		await discordClient.ConnectAsync();
 
@@ -78,7 +78,7 @@ internal class Program
 	}
 
 	/// <summary>
-	/// Fires when the user uses the slash command.
+	///     Fires when the user uses the slash command.
 	/// </summary>
 	/// <param name="sender">Application commands ext.</param>
 	/// <param name="e">Event arguments.</param>
@@ -89,7 +89,7 @@ internal class Program
 	}
 
 	/// <summary>
-	/// Fires when an exception is thrown in the slash command.
+	///     Fires when an exception is thrown in the slash command.
 	/// </summary>
 	/// <param name="sender">Application commands ext.</param>
 	/// <param name="e">Event arguments.</param>

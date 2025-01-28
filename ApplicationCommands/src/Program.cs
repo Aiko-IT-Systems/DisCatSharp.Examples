@@ -1,3 +1,7 @@
+using System;
+using System.Reflection;
+using System.Threading.Tasks;
+
 using DisCatSharp.ApplicationCommands;
 using DisCatSharp.ApplicationCommands.EventArgs;
 
@@ -6,26 +10,22 @@ using Microsoft.Extensions.Logging;
 
 using Serilog;
 
-using System;
-using System.Reflection;
-using System.Threading.Tasks;
-
 namespace DisCatSharp.Examples.ApplicationCommands;
 
 // TODO: rewrite, this is kinda weird
 /// <summary>
-/// The program.
+///     The program.
 /// </summary>
 public class Program
 {
 	/// <summary>
-	/// Entry point.
+	///     Entry point.
 	/// </summary>
 	/// <param name="args">The args.</param>
 	public static void Main(string[] args) => MainAsync(args).ConfigureAwait(false).GetAwaiter().GetResult();
 
 	/// <summary>
-	/// Asynchronous method in which the bot is initialized.
+	///     Asynchronous method in which the bot is initialized.
 	/// </summary>
 	/// <param name="args">The args.</param>
 	public static async Task MainAsync(string[] args)
@@ -95,19 +95,18 @@ public class Program
 
 		discordShardedClient.Logger.LogInformation("Application commands registered successfully");
 
-
 		Log.Logger.Information("Connecting to Discord...");
 		await discordShardedClient.StartAsync();
 
 		// Use the default logger provided for easy reading
-		discordShardedClient.Logger.LogInformation("Connection success! Logged in as {CurrentUserUsername}#{CurrentUserDiscriminator} ({CurrentUserId})", discordShardedClient.CurrentUser.Username, discordShardedClient.CurrentUser.Discriminator, discordShardedClient.CurrentUser.Id);
-		
+		discordShardedClient.Logger.LogInformation("Connection success! Logged in as {UsernameWithDiscriminator} ({CurrentUserId})", discordShardedClient.CurrentUser.UsernameWithDiscriminator, discordShardedClient.CurrentUser.Id);
+
 		// Listen for commands by putting this method to sleep and relying off of DiscordClient's event listeners
 		await Task.Delay(-1);
 	}
 
 	/// <summary>
-	/// Fires when the user uses the slash command.
+	///     Fires when the user uses the slash command.
 	/// </summary>
 	/// <param name="sender">Application commands ext.</param>
 	/// <param name="e">Event arguments.</param>
@@ -118,7 +117,7 @@ public class Program
 	}
 
 	/// <summary>
-	/// Fires when an exception is thrown in the slash command.
+	///     Fires when an exception is thrown in the slash command.
 	/// </summary>
 	/// <param name="sender">Application commands ext.</param>
 	/// <param name="e">Event arguments.</param>
@@ -129,7 +128,7 @@ public class Program
 	}
 
 	/// <summary>
-	/// Fires when the user uses the context menu command.
+	///     Fires when the user uses the context menu command.
 	/// </summary>
 	/// <param name="sender">Application commands ext.</param>
 	/// <param name="e">Event arguments.</param>
@@ -140,7 +139,7 @@ public class Program
 	}
 
 	/// <summary>
-	/// Fires when an exception is thrown in the context menu command.
+	///     Fires when an exception is thrown in the context menu command.
 	/// </summary>
 	/// <param name="sender">Application commands ext.</param>
 	/// <param name="e">Event arguments.</param>

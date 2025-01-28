@@ -1,3 +1,7 @@
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+
 using DisCatSharp.ApplicationCommands;
 using DisCatSharp.ApplicationCommands.Attributes;
 using DisCatSharp.ApplicationCommands.Context;
@@ -6,19 +10,16 @@ using DisCatSharp.Enums;
 
 using Microsoft.Extensions.DependencyInjection;
 
-using System;
-using System.Linq;
-using System.Threading.Tasks;
-
 namespace DisCatSharp.Examples.ApplicationCommands.Commands;
 
 /// <summary>
-/// Slash commands with enums.
+///     Slash commands with enums.
 /// </summary>
 public class RollRandom : ApplicationCommandsModule
 {
 	/// <summary>
-	/// By using an enum with the ChoiceName attribute, we can allow users to pick from a list without having to deal with arbiturary user input.
+	///     By using an enum with the ChoiceName attribute, we can allow users to pick from a list without having to deal with
+	///     arbiturary user input.
 	/// </summary>
 	public enum RandomChoice
 	{
@@ -33,11 +34,11 @@ public class RollRandom : ApplicationCommandsModule
 	}
 
 	/// <summary>
-	/// Random command.
+	///     Random command.
 	/// </summary>
 	/// <param name="context">Interaction context</param>
 	/// <param name="randomChoice">Should a random number, role or user be picked?</param>
-	[SlashCommand("roll_random", "Gets a random person, role or number.")]
+	[SlashCommand("roll_random", "Gets a random person, role or number.", allowedContexts: [InteractionContextType.Guild], integrationTypes: [ApplicationCommandIntegrationTypes.GuildInstall])]
 	public static async Task CommandAsync(InteractionContext context, [Option("random_choice", "Should a random number, role or user be picked?")] RandomChoice randomChoice = RandomChoice.Number)
 	{
 		// This is how you use dependency injection. We registered a Random instance over in Program.cs, now we're getting the same instance here.
@@ -56,13 +57,11 @@ public class RollRandom : ApplicationCommandsModule
 		{
 			case RandomChoice.Number:
 				discordInteractionResponseBuilder.Content = random.Next(1, 101).ToString();
-				await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, discordInteractionResponseBuilder);
 				break;
 			case RandomChoice.DiscordRole:
 				var rolePosition = random.Next(context.Guild.Roles.Count + 1);
 				discordInteractionResponseBuilder.Content = context.Guild.Roles.Values.ElementAt(rolePosition).Mention;
 				// CHALLENGE: Make the role not be pinged when mentioned using the DiscordInteractionResponseBuilder.Mentions property
-				await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, discordInteractionResponseBuilder);
 				break;
 			case RandomChoice.DiscordUser:
 				// CHALLENGE: Make a guild member cache to prevent API abuse.
@@ -70,13 +69,13 @@ public class RollRandom : ApplicationCommandsModule
 				var userPosition = random.Next(guildMembers.Count);
 				discordInteractionResponseBuilder.Content = guildMembers.ElementAt(userPosition).Mention;
 				// CHALLENGE: Make the user not be pinged when mentioned using the DiscordInteractionResponseBuilder.Mentions property
-				await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, discordInteractionResponseBuilder);
 				break;
 			// This shouldn't be reached, but it's here for error safety.
 			default:
 				discordInteractionResponseBuilder.Content = "Error: Choice options are Number, Role or User! Please pick one of those.";
-				await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, discordInteractionResponseBuilder);
 				break;
 		}
+
+		await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, discordInteractionResponseBuilder);
 	}
 }

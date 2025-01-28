@@ -1,20 +1,20 @@
+using System.Threading.Tasks;
+
 using DisCatSharp.ApplicationCommands;
 using DisCatSharp.ApplicationCommands.Attributes;
 using DisCatSharp.ApplicationCommands.Context;
 using DisCatSharp.Enums;
 using DisCatSharp.VoiceNext;
 
-using System.Threading.Tasks;
-
 namespace DisCatSharp.Examples.VoiceNext.Commands;
 
 /// <summary>
-/// Commands to connect and disconnect to the voice channel.
+///     Commands to connect and disconnect to the voice channel.
 /// </summary>
 public class ConnectionCommands : ApplicationCommandsModule
 {
 	/// <summary>
-	/// Connect to the voice channel.
+	///     Connect to the voice channel.
 	/// </summary>
 	/// <param name="ctx">Interaction context</param>
 	[SlashCommand("connect", "Join the voice channel")]
@@ -41,7 +41,7 @@ public class ConnectionCommands : ApplicationCommandsModule
 	}
 
 	/// <summary>
-	/// Disconnect from the voice channel.
+	///     Disconnect from the voice channel.
 	/// </summary>
 	/// <param name="ctx">Interaction context</param>
 	[SlashCommand("leave", "Leave the voice channel")]
