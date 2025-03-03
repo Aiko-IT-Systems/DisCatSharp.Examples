@@ -2,7 +2,7 @@
 	<Import Project="../Common.targets" />
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
-		<TargetFramework>net9.0</TargetFramework>
+		<TargetFrameworks>net9.0;net10.0</TargetFrameworks>
 		<Authors>Lala Sabathil &lt;aiko@aitsys.dev&gt;, Lunar Starstrum, QuantuChi</Authors>
 		<Company>Aiko IT Systems</Company>
 		<PackageId>DisCatSharp.Examples.ApplicationCommands</PackageId>

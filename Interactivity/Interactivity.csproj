@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<Import Project="../Common.targets" />
 	<PropertyGroup>
-		<OutputType>exe</OutputType>
-		<TargetFramework>net9.0</TargetFramework>
+		<OutputType>Exe</OutputType>
+		<TargetFrameworks>net9.0;net10.0</TargetFrameworks>
 		<AssemblyName>DisCatSharp.Examples.Interactivity</AssemblyName>
 		<RootNamespace>DisCatSharp.Examples.Interactivity</RootNamespace>
 		<PackageId>DisCatSharp.Examples.Interactivity</PackageId>
