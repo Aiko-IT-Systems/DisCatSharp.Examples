@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="Common.targets" />
+    <File Path="README.md" />
+  </Folder>
+  <Project Path="ApplicationCommands/ApplicationCommands.csproj" />
+  <Project Path="Basics/Basics.csproj" />
+  <Project Path="Hosting/Hosting.csproj" />
+  <Project Path="Interactivity/Interactivity.csproj" />
+  <Project Path="Lavalink/Lavalink.csproj" />
+  <Project Path="VoiceNext/VoiceNext.csproj" />
+</Solution>
