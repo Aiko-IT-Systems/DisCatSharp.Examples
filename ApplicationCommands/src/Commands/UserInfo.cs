@@ -47,7 +47,7 @@ public class UserInfo : ApplicationCommandsModule
 		DiscordInteractionResponseBuilder discordInteractionResponseBuilder = new()
 		{
 			// Add info to message content.
-			Content = $"Username: {context.TargetMember.Username + "#" + context.TargetMember.Discriminator}\n" +
+			Content = $"Username: {context.TargetMember.UsernameWithDiscriminator}\n" +
 					  $"Nickname: {context.TargetMember.Nickname ?? "`Empty`"}\n" +
 					  $"Registered: {context.TargetMember.CreationTimestamp}\n" +
 					  $"Joined: {context.TargetMember.JoinedAt}\n" +

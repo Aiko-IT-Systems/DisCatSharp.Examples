@@ -75,7 +75,7 @@ internal class Program
 		await discordClient.ConnectAsync();
 
 		// Use the default logger provided for easy reading
-		discordClient.Logger.LogInformation("Connection success! Logged in as {CurrentUserUsername}#{CurrentUserDiscriminator} ({CurrentUserId})", discordClient.CurrentUser.Username, discordClient.CurrentUser.Discriminator, discordClient.CurrentUser.Id);
+		discordClient.Logger.LogInformation("Connection success! Logged in as {UsernameWithDiscriminator} ({CurrentUserId})", discordClient.CurrentUser.UsernameWithDiscriminator, discordClient.CurrentUser.Id);
 
 		using var shutdown = new CancellationTokenSource();
 		Console.CancelKeyPress += (_, eventArgs) =>
