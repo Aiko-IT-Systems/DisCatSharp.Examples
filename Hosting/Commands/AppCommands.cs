@@ -4,7 +4,10 @@ using DisCatSharp.ApplicationCommands;
 using DisCatSharp.ApplicationCommands.Attributes;
 using DisCatSharp.ApplicationCommands.Context;
 using DisCatSharp.Entities;
+using DisCatSharp.Examples.Hosting.Services;
 using DisCatSharp.Enums;
+
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DisCatSharp.Examples.Hosting.Commands;
 
@@ -20,11 +23,19 @@ public class AppCommands : ApplicationCommandsModule
 	[SlashCommand("ping", "Test command for Hosting.")]
 	public static async Task CommandAsync(InteractionContext context)
 	{
-		DiscordInteractionResponseBuilder discordInteractionResponseBuilder = new()
-		{
-			Content = $"Pong! Webhook latency is {context.Client.Ping}ms"
-		};
+		var stats = context.Services.GetRequiredService<BotStatusService>().RecordCommand("SecondBot", "ping", context.Client.Ping, context.Client.Guilds.Count);
+		// CHALLENGE: Pull health checks, feature flags, or configuration from DI so this becomes a real readiness panel.
+		var card = new DiscordContainerComponent(accentColor: new DiscordColor("#3BA55D"))
+			.AddComponent(new DiscordTextDisplayComponent($$"""
+				## Hosted slash command status
+				- Latency: `{{stats.GatewayLatency}}ms`
+				- Uptime: `{{stats.Uptime:g}}`
+				- Guilds: `{{stats.GuildCount}}`
+				- Invocation count: `{{stats.InvocationCount}}`
 
-		await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, discordInteractionResponseBuilder);
+				> This card stays intentionally small so you can layer real host data onto it.
+				"""));
+
+		await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder().WithV2Components().AddComponents(card));
 	}
 }

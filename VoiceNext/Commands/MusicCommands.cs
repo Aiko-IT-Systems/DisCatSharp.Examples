@@ -7,7 +7,7 @@ using DisCatSharp.ApplicationCommands;
 using DisCatSharp.ApplicationCommands.Attributes;
 using DisCatSharp.ApplicationCommands.Context;
 using DisCatSharp.Enums;
-using DisCatSharp.VoiceNext;
+using DisCatSharp.Voice;
 
 namespace DisCatSharp.Examples.VoiceNext.Commands;
 
@@ -30,8 +30,8 @@ public class MusicCommands : ApplicationCommandsModule
 	[SlashCommand("play", "Play local file asynchronously")]
 	public static async Task PlayAsync(InteractionContext ctx, [Option("path", "Path to the audio file")] string path)
 	{
-		// Get the current VoiceNext connection in the guild.
-		var vnext = ctx.Client.GetVoiceNext();
+		// Get the current voice connection in the guild.
+		var vnext = ctx.Client.GetVoice();
 		var connection = vnext.GetConnection(ctx.Guild);
 
 		if (connection == null)
@@ -95,8 +95,8 @@ public class MusicCommands : ApplicationCommandsModule
 	[SlashCommand("pause", "Pause playback")]
 	public static async Task PauseAsync(InteractionContext ctx)
 	{
-		// Get the current VoiceNext connection in the guild.
-		var vnext = ctx.Client.GetVoiceNext();
+		// Get the current voice connection in the guild.
+		var vnext = ctx.Client.GetVoice();
 		var connection = vnext.GetConnection(ctx.Guild);
 
 		if (connection == null)
@@ -135,8 +135,8 @@ public class MusicCommands : ApplicationCommandsModule
 	[SlashCommand("resume", "Resume playback")]
 	public static async Task ResumeAsync(InteractionContext ctx)
 	{
-		// Get the current VoiceNext connection in the guild.
-		var vnext = ctx.Client.GetVoiceNext();
+		// Get the current voice connection in the guild.
+		var vnext = ctx.Client.GetVoice();
 		var connection = vnext.GetConnection(ctx.Guild);
 
 		if (connection == null)
@@ -175,8 +175,8 @@ public class MusicCommands : ApplicationCommandsModule
 	[SlashCommand("stop", "Stop playback")]
 	public static async Task StopAsync(InteractionContext ctx)
 	{
-		// Get the current VoiceNext connection in the guild.
-		var vnext = ctx.Client.GetVoiceNext();
+		// Get the current voice connection in the guild.
+		var vnext = ctx.Client.GetVoice();
 		var connection = vnext.GetConnection(ctx.Guild);
 
 		if (connection == null)

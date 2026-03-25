@@ -1,3 +1,5 @@
+using System;
+
 using DisCatSharp.Hosting.DependencyInjection;
 
 using Microsoft.AspNetCore.Builder;
@@ -15,6 +17,8 @@ public sealed class Startup(IConfiguration configuration)
 	// This method gets called by the runtime. Use this method to add services to the container.
 	public void ConfigureServices(IServiceCollection services)
 	{
+		services.AddSingleton(TimeProvider.System);
+		services.AddSingleton<Services.BotStatusService>();
 		services.AddDiscordHostedService<FirstBot>(); // Initializing the first bot
 		services.AddDiscordHostedService<SecondBot>(); // Initializing the second bot
 

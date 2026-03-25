@@ -1,3 +1,6 @@
+using System;
+using System.Threading.Tasks;
+
 using DisCatSharp.Examples.Basics.Main;
 
 namespace DisCatSharp.Examples.Basics;
@@ -11,10 +14,19 @@ internal class Program
 	///     Entry point.
 	/// </summary>
 	/// <param name="args">The args.</param>
-	private static void Main(string[] args)
+	private static async Task Main(string[] args)
 	{
-		var token = args[0];
+		var token = args.Length > 0
+			? args[0]
+			: Environment.GetEnvironmentVariable("DISCATSHARP_TOKEN") ?? Environment.GetEnvironmentVariable("DISCORD_TOKEN");
+
+		if (string.IsNullOrWhiteSpace(token))
+		{
+			Console.Error.WriteLine("Provide a bot token as the first argument or set DISCATSHARP_TOKEN / DISCORD_TOKEN.");
+			return;
+		}
+
 		using var bot = new Bot(token);
-		bot.RunAsync().Wait();
+		await bot.RunAsync();
 	}
 }

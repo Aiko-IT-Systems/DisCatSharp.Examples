@@ -1,3 +1,5 @@
+using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 using DisCatSharp.ApplicationCommands;
@@ -20,19 +22,24 @@ public class Ping : ApplicationCommandsModule
 	[SlashCommand("ping", "Checks the latency between the bot and the Discord API. Best used to see if the bot is lagging.")]
 	public static async Task CommandAsync(InteractionContext context)
 	{
-		// Create the response message
-		DiscordInteractionResponseBuilder discordInteractionResponseBuilder = new()
-		{
-			// Make the message contain the websocket latency between Discord and the bot.
-			Content = $"Pong! Webhook latency is {context.Client.Ping}ms"
-		};
+		await context.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource, new DiscordInteractionResponseBuilder());
 
-		// Uncomment this in order for it to be visibile to *just* the command executer.
-		//discordInteractionResponseBuilder.IsEphemeral = true;
+		var stopwatch = Stopwatch.StartNew();
+		await Task.Delay(150);
+		stopwatch.Stop();
 
-		// Send the message. InteractionResponseType.ChannelMessageWithSource means that the command executed within 3 seconds and has the results ready.
-		await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, discordInteractionResponseBuilder);
+		// CHALLENGE: Turn this into a reusable health card and wire one action to a real dashboard or deployment status page.
+		var card = new DiscordContainerComponent(accentColor: new DiscordColor("#5865F2"))
+			.AddComponent(new DiscordTextDisplayComponent($$"""
+				## Shard health snapshot
+				- Gateway latency: `{{context.Client.Ping}}ms`
+				- Command turnaround: `{{stopwatch.ElapsedMilliseconds}}ms`
+				- Shard: `{{context.Client.ShardId}}`
+				- Guild cache: `{{context.Client.Guilds.Count}}`
 
-		// CHALLENGE: Turns this into a lambda
+				> Deferred responses are a good place to gather runtime measurements before you render a richer card.
+				"""));
+
+		await context.EditResponseAsync(new DiscordWebhookBuilder().WithV2Components().AddComponents(card));
 	}
 }

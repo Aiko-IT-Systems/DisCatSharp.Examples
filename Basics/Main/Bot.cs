@@ -32,9 +32,9 @@ internal sealed class Bot : IDisposable
 	public static DiscordClient Client;
 	public static ApplicationCommandsExtension AppCommands;
 
-	private InteractivityExtension _next;
+	private readonly InteractivityExtension _next;
 
-	private CommandsNextExtension _cNext;
+	private readonly CommandsNextExtension _cNext;
 
 	/// <summary>
 	///     Initializes a new instance of the <see cref="Bot" /> class.
@@ -93,12 +93,8 @@ internal sealed class Bot : IDisposable
 	/// </summary>
 	public void Dispose()
 	{
+		ShutdownRequest.Dispose();
 		Client.Dispose();
-		this._next = null;
-		this._cNext = null;
-		Client = null;
-		AppCommands = null;
-		Environment.Exit(0);
 	}
 
 	/// <summary>
@@ -107,13 +103,15 @@ internal sealed class Bot : IDisposable
 	public async Task RunAsync()
 	{
 		await Client.ConnectAsync();
-		while (!ShutdownRequest.IsCancellationRequested)
-			await Task.Delay(2000);
+		try
+		{
+			await Task.Delay(Timeout.InfiniteTimeSpan, ShutdownRequest.Token);
+		}
+		catch (TaskCanceledException)
+		{ }
 
 		await Client.UpdateStatusAsync(null, UserStatus.Offline);
 		await Client.DisconnectAsync();
-		await Task.Delay(2500);
-		this.Dispose();
 	}
 
 	/// <summary>

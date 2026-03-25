@@ -9,7 +9,7 @@ using DisCatSharp.ApplicationCommands.Context;
 using DisCatSharp.Entities;
 using DisCatSharp.Enums;
 using DisCatSharp.Exceptions;
-using DisCatSharp.VoiceNext;
+using DisCatSharp.Voice;
 
 namespace DisCatSharp.Examples.Interactivity.Commands;
 
@@ -225,7 +225,7 @@ public class StageCommands : ApplicationCommandsModule
 	[SlashCommand("play_stage", "Play audio in stage channel", allowedContexts: [InteractionContextType.Guild], integrationTypes: [ApplicationCommandIntegrationTypes.GuildInstall])]
 	public static async Task PlayStage(InteractionContext ctx, [Option("path", "Path to the audio file")] string path)
 	{
-		// This is a basic example of using VoiceNext with a stage channel (see the VoiceNext example for more details).
+		// This is a basic example of using Voice with a stage channel (see the Voice example for more details).
 		// You can also use lavalink.
 
 		// Check if the user is currently connected to the stage channel

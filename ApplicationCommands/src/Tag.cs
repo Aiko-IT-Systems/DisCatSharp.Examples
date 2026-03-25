@@ -4,18 +4,47 @@ namespace DisCatSharp.Examples.ApplicationCommands;
 
 public sealed class Tag
 {
-	// The tag name.
-	public string Name { get; internal init; }
+	/// <summary>
+	///     Gets the tag name.
+	/// </summary>
+	public required string Name { get; init; }
 
-	// The tag's content.
-	public string Content { get; internal init; }
+	/// <summary>
+	///     Gets the tag content.
+	/// </summary>
+	public required string Content { get; init; }
 
-	// Which guild the tag belongs too.
-	public ulong GuildId { get; internal init; }
+	/// <summary>
+	///     Gets the guild the tag belongs to.
+	/// </summary>
+	public required ulong GuildId { get; init; }
 
-	// Who owns the tag.
-	public ulong OwnerId { get; internal init; }
+	/// <summary>
+	///     Gets the tag owner.
+	/// </summary>
+	public required ulong OwnerId { get; init; }
 
-	// When the tag was created at.
-	public DateTime CreatedAt { get; } = DateTime.UtcNow;
+	/// <summary>
+	///     Gets when the tag was created.
+	/// </summary>
+	public DateTimeOffset CreatedAt { get; init; } = DateTimeOffset.UtcNow;
+
+	/// <summary>
+	///     Gets how often the tag has been used.
+	/// </summary>
+	public int UseCount { get; private set; }
+
+	/// <summary>
+	///     Gets when the tag was last used.
+	/// </summary>
+	public DateTimeOffset? LastUsedAt { get; private set; }
+
+	/// <summary>
+	///     Marks the tag as used.
+	/// </summary>
+	public void MarkUsed()
+	{
+		this.UseCount++;
+		this.LastUsedAt = DateTimeOffset.UtcNow;
+	}
 }

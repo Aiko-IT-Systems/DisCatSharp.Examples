@@ -4,7 +4,7 @@ using DisCatSharp.ApplicationCommands;
 using DisCatSharp.ApplicationCommands.Attributes;
 using DisCatSharp.ApplicationCommands.Context;
 using DisCatSharp.Enums;
-using DisCatSharp.VoiceNext;
+using DisCatSharp.Voice;
 
 namespace DisCatSharp.Examples.VoiceNext.Commands;
 
@@ -47,8 +47,8 @@ public class ConnectionCommands : ApplicationCommandsModule
 	[SlashCommand("leave", "Leave the voice channel")]
 	public static async Task LeaveAsync(InteractionContext ctx)
 	{
-		// Get the current VoiceNext connection in the guild.
-		var vnext = ctx.Client.GetVoiceNext();
+		// Get the current voice connection in the guild.
+		var vnext = ctx.Client.GetVoice();
 		var connection = vnext.GetConnection(ctx.Guild);
 
 		// Check if the bot is currently connected to the voice channel

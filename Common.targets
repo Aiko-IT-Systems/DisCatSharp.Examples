@@ -2,6 +2,7 @@
 
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<PropertyGroup>
+		<DisCatSharpVersion>10.7.0</DisCatSharpVersion>
 		<NuGetAuditSuppress>true</NuGetAuditSuppress>
 		<NuGetAudit>false</NuGetAudit>
 	</PropertyGroup>

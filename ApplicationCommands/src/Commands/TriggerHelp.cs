@@ -31,7 +31,7 @@ public class TriggerHelp : ApplicationCommandsModule
 		string commandName
 	)
 	{
-		// Using the TriggerHelpChoiceProvider class, we know that whatever the user gives us *should* be in the Commands dictionary, provided that they use tab completion. If they don't, say we couldn't find the command. 
+		// Using the TriggerHelpChoiceProvider class, we know that whatever the user gives us *should* be in the Commands dictionary, provided that they use tab completion. If they don't, say we couldn't find the command.
 		if (!TriggerHelpChoiceProvider.Commands.TryGetValue(commandName, out var command))
 		{
 			await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new()
@@ -42,35 +42,39 @@ public class TriggerHelp : ApplicationCommandsModule
 			return;
 		}
 
-		// Get the command's description from the SlashCommand attribute we used to register the command.
 		var slashCommandAttribute = command.GetCustomAttribute<SlashCommandAttribute>();
-		DiscordEmbedBuilder discordEmbedBuilder = new()
-		{
-			Title = '/' + commandName,
-			Description = slashCommandAttribute.Description,
-			Color = new DiscordColor("#7b84d1")
-		};
+		var parameterLines = new List<string>();
 
-		// If the guild has a custom guild icon, set the embed's thumbnail to that icon.
-		if (context.Guild != null && context.Guild.IconUrl != null)
-			// CHALLENGE: Replace the jpg to the highest resolution png file using the Discord API.
-			discordEmbedBuilder.WithThumbnail(context.Guild.IconUrl);
-
-		// Iterate through each of the command's parameters, selecting only the ones that have the Option attribute.
 		foreach (var parameter in command.GetParameters())
 		{
 			var parameterChoice = parameter.GetCustomAttribute<OptionAttribute>(false);
-			// If the option attribute doesn't exist on the method argument, skip it.
 			if (parameterChoice == null)
 				continue;
 
-			// Add the argument's description to the embed, specifying if it's optional or required.
-			discordEmbedBuilder.AddField(new((parameter.IsOptional ? "(Optional) " : "(Required) ") + parameterChoice.Name, $"**Type:** {parameter.ParameterType.Name}\n**Description:** {parameterChoice.Description}"));
+			parameterLines.Add($"- {(parameter.IsOptional ? "Optional" : "Required")} `{parameterChoice.Name}` · `{parameter.ParameterType.Name}` — {parameterChoice.Description}");
 		}
 
-		DiscordInteractionResponseBuilder discordInteractionResponseBuilder = new();
-		discordInteractionResponseBuilder.AddEmbed(discordEmbedBuilder);
-		await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, discordInteractionResponseBuilder);
+		var header = new DiscordSectionComponent(
+		[
+			new DiscordTextDisplayComponent($"## /{commandName}"),
+			new DiscordTextDisplayComponent(slashCommandAttribute.Description)
+		]);
+
+		if (context.Guild?.IconUrl != null)
+			// CHALLENGE: Replace the jpg to the highest resolution png file using the Discord API.
+			header.WithThumbnailComponent(context.Guild.IconUrl, $"{context.Guild.Name} icon");
+
+		// CHALLENGE: Group commands by feature area or add concrete usage examples once the help surface grows.
+		var card = new DiscordContainerComponent(accentColor: new DiscordColor("#7b84d1"))
+			.AddComponent(header)
+			.AddComponent(new DiscordTextDisplayComponent(parameterLines.Count == 0
+				? "- No slash-command options are required for this command."
+				: string.Join(Environment.NewLine, parameterLines)))
+			.AddComponent(new DiscordTextDisplayComponent("> Reflection keeps this help card tiny even as you add more commands."));
+
+		await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder()
+			.WithV2Components()
+			.AddComponents(card));
 	}
 }
 
@@ -87,20 +91,13 @@ public sealed class TriggerHelpChoiceProvider : IChoiceProvider
 	/// <returns>A list of application slash commands.</returns>
 	public Task<IEnumerable<DiscordApplicationCommandOptionChoice>> Provider()
 	{
-		// All top level command classes
 		var commandClasses = Assembly.GetEntryAssembly().GetTypes().Where(type => type.IsSubclassOf(typeof(ApplicationCommandsModule)) && !type.IsNested);
 
-		// Find all command or subgroup commands from the classes
 		foreach (var command in commandClasses)
 			SearchCommands(command);
 
-		// SearchCommands registers the commands into a Dictionary<string, MethodInfo>. Since we only need the command name, we can just select the keys.
 		var discordApplicationCommandOptionChoices = Commands.Keys.Select(commandName => new DiscordApplicationCommandOptionChoice(commandName, commandName)).ToList();
-
-		// Sort the options alphabetically, in case Discord doesn't do that for us already.
 		discordApplicationCommandOptionChoices.Sort((x, y) => string.Compare(x.Name, y.Name, StringComparison.Ordinal));
-
-		// Return our commands to the help function.
 		return Task.FromResult(discordApplicationCommandOptionChoices.AsEnumerable());
 	}
 
@@ -111,25 +108,16 @@ public sealed class TriggerHelpChoiceProvider : IChoiceProvider
 	/// <param name="commandName">Name of the command.</param>
 	public static void SearchCommands(Type type, string commandName = "")
 	{
-		// Get all nested group commands in the type variable/class
 		var nestedTypes = type.GetNestedTypes().Where(innerType => innerType?.GetCustomAttribute<SlashCommandGroupAttribute>() != null).ToList();
-		// If any nested group commands are available
 		if (nestedTypes.Count != 0)
-			// Iterate through each subgroup command
 			foreach (var nestedType in nestedTypes)
 			{
 				var slashCommandGroupAttribute = nestedType.GetCustomAttribute<SlashCommandGroupAttribute>();
-				// Add the group command to the previous command name. This means it'd look like:
-				// /groupCommand subcommand
-				// instead of:
-				// /subcommand
 				commandName += ' ' + slashCommandGroupAttribute.Name;
-				// There are still nested classes, throw it back into the recursive loop.
 				SearchCommands(nestedType, commandName);
 			}
 		else
 		{
-			// Get all slash commands in the class
 			var commands = type.GetMethods().Where(method => method.GetCustomAttribute<SlashCommandAttribute>() != null).ToList();
 			if (commands.Count == 0)
 				return;
@@ -137,14 +125,6 @@ public sealed class TriggerHelpChoiceProvider : IChoiceProvider
 			foreach (var command in commands)
 			{
 				var slashCommandAttribute = command.GetCustomAttribute<SlashCommandAttribute>();
-				// We assign a temporary variable here, because if we added it to commandName, then our commands would look like:
-				// /groupCommand test
-				// /groupCommand test delete
-				// /groupCommand test delete create
-				// instead of:
-				// /groupCommand test
-				// /groupCommand delete
-				// /groupCommand create
 				var subCommand = commandName + ' ' + slashCommandAttribute.Name;
 				Commands.Add(subCommand.Trim(), command);
 			}

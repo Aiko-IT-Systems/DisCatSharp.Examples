@@ -9,6 +9,8 @@ using DisCatSharp.ApplicationCommands.Context;
 using DisCatSharp.Entities;
 using DisCatSharp.Enums;
 
+using Microsoft.Extensions.DependencyInjection;
+
 namespace DisCatSharp.Examples.ApplicationCommands.Commands;
 
 /// <summary>
@@ -17,6 +19,28 @@ namespace DisCatSharp.Examples.ApplicationCommands.Commands;
 /// </summary>
 public class Tags : ApplicationCommandsModule
 {
+	private static TagStore GetTagStore(IServiceProvider services)
+		=> services.GetRequiredService<TagStore>();
+
+	private static DiscordInteractionResponseBuilder CreateErrorResponse(string content)
+		=> new()
+		{
+			Content = content,
+			IsEphemeral = true
+		};
+
+	// CHALLENGE: Add edit or delete buttons to this card and teach how to keep the display in sync after those actions.
+	private static DiscordContainerComponent BuildTagCard(Tag tag)
+		=> new DiscordContainerComponent(accentColor: new DiscordColor("#FEE75C"))
+			.AddComponent(new DiscordTextDisplayComponent($"## Tag · {tag.Name}"))
+			.AddComponent(new DiscordTextDisplayComponent(tag.Content))
+			.AddComponent(new DiscordTextDisplayComponent($$"""
+				- Owner: <@{{tag.OwnerId}}>
+				- Uses: `{{tag.UseCount}}`
+				- Created: `{{tag.CreatedAt:u}}`
+				- Last used: `{{tag.LastUsedAt?.ToString("u") ?? "Never"}}`
+				"""));
+
 	/// <summary>
 	///     Also inherits ApplicationCommandsModule
 	///     SlashCommandGroup is what makes group commands!
@@ -25,11 +49,6 @@ public class Tags : ApplicationCommandsModule
 	public class RealTags : ApplicationCommandsModule
 	{
 		/// <summary>
-		///     Tags will be cleared when the bot restarts.
-		/// </summary>
-		public static List<Tag> Tags { get; } = [];
-
-		/// <summary>
 		///     Sends a premade message.
 		/// </summary>
 		/// <param name="context">Interaction context</param>
@@ -37,40 +56,23 @@ public class Tags : ApplicationCommandsModule
 		[SlashCommand("send", "Sends a premade message.", allowedContexts: [InteractionContextType.Guild], integrationTypes: [ApplicationCommandIntegrationTypes.GuildInstall])]
 		public static async Task SendAsync(InteractionContext context, [Autocomplete(typeof(TagsAutocompleteProvider)), Option("name", "The name of the tag to send", true)] string tagName)
 		{
-			DiscordInteractionResponseBuilder discordInteractionResponseBuilder = new();
-			// This is a guild command, make sure nobody can execute this command in dm's
 			if (context.Guild == null)
 			{
-				discordInteractionResponseBuilder.Content = "Error: This is a guild command!";
-				discordInteractionResponseBuilder.IsEphemeral = true;
-				await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, discordInteractionResponseBuilder);
+				await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, CreateErrorResponse("Error: This is a guild command!"));
 				return;
 			}
 
-			// Since everyone around the world uses Discord
-			tagName = tagName.ToLowerInvariant();
-
-			// Sort through the created tags.
-			var tag = Tags.FirstOrDefault(listTag => listTag.GuildId == context.Guild.Id && listTag.Name == tagName);
-
-			// If the tag wasn't found, let the user know.
-			if (tag == null)
+			var tagStore = GetTagStore(context.Services);
+			var normalizedTagName = TagStore.NormalizeName(tagName);
+			if (!tagStore.TryTouch(context.Guild.Id, normalizedTagName, out var tag))
 			{
-				discordInteractionResponseBuilder.Content = $"Error: Tag {tagName.Sanitize().InlineCode()} not found!";
-
-				// Hide the message from everyone else to prevent public embarassment and to create a cleaner chat for everyone else.
-				discordInteractionResponseBuilder.IsEphemeral = true;
-
-				// Send the error message.
-				await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, discordInteractionResponseBuilder);
+				await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, CreateErrorResponse($"Error: Tag {normalizedTagName.Sanitize().InlineCode()} not found!"));
 				return;
 			}
 
-			// The tag was found, send it!
-			discordInteractionResponseBuilder.Content = tag.Content;
-
-			// Send the tag!
-			await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, discordInteractionResponseBuilder);
+			await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder().WithV2Components()
+				.WithAllowedMentions([])
+				.AddComponents(BuildTagCard(tag)));
 		}
 
 		/// <summary>
@@ -83,44 +85,36 @@ public class Tags : ApplicationCommandsModule
 		public static async Task CreateAsync(
 			InteractionContext context,
 			[Option("name", "What to call the new tag.")] string tagName,
-			// Be giving the tagContent an optional argument in C#, it becomes an optional argument in Discord too!
 			[Option("content", "What to fill the tag with.")] string tagContent = "I'm an empty tag :("
 		)
 		{
-			DiscordInteractionResponseBuilder discordInteractionResponseBuilder = new();
 			if (context.Guild == null)
 			{
-				discordInteractionResponseBuilder.Content = "Error: This is a guild command!";
-				discordInteractionResponseBuilder.IsEphemeral = true;
-				await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, discordInteractionResponseBuilder);
+				await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, CreateErrorResponse("Error: This is a guild command!"));
 				return;
 			}
 
-			var tag = Tags.FirstOrDefault(listTag => listTag.GuildId == context.Guild.Id && listTag.Name.Equals(tagName, StringComparison.InvariantCultureIgnoreCase));
-
-			// The tag already exists, we can't allow duplicates to happen.
-			if (tag != null)
+			var normalizedTagName = TagStore.NormalizeName(tagName);
+			var tagStore = GetTagStore(context.Services);
+			if (tagStore.Contains(context.Guild.Id, normalizedTagName))
 			{
-				discordInteractionResponseBuilder.Content = $"Error: Tag {tagName.Sanitize().InlineCode()} already exists!";
-				discordInteractionResponseBuilder.IsEphemeral = true;
-				await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, discordInteractionResponseBuilder);
+				await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, CreateErrorResponse($"Error: Tag {normalizedTagName.Sanitize().InlineCode()} already exists!"));
 				return;
 			}
 
-			tag = new()
+			tagStore.TryCreate(new Tag
 			{
-				Name = tagName.ToLowerInvariant(),
+				Name = normalizedTagName,
 				GuildId = context.Guild.Id,
 				OwnerId = context.User.Id,
+				Content = string.IsNullOrWhiteSpace(tagContent) ? "I'm an empty tag :(" : tagContent.Trim()
+			});
 
-				// CHALLENGE: Escape user and role pings!
-				Content = tagContent
-			};
-			Tags.Add(tag);
-			discordInteractionResponseBuilder.Content = $"Tag {tag.Name.Sanitize().InlineCode()} has been created!";
-
-			// Send the response.
-			await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, discordInteractionResponseBuilder);
+			// CHALLENGE: persist tags to JSON or a small database once you're ready to move beyond in-memory samples.
+			await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder
+			{
+				Content = $"Tag {normalizedTagName.Sanitize().InlineCode()} has been created!"
+			});
 		}
 
 		/// <summary>
@@ -131,38 +125,97 @@ public class Tags : ApplicationCommandsModule
 		[SlashCommand("delete", "Deletes a tag from the guild.", allowedContexts: [InteractionContextType.Guild], integrationTypes: [ApplicationCommandIntegrationTypes.GuildInstall])]
 		public static async Task DeleteAsync(InteractionContext context, [Option("name", "The name of the tag that should be deleted.")] string tagName)
 		{
-			DiscordInteractionResponseBuilder discordInteractionResponseBuilder = new();
 			if (context.Guild == null)
 			{
-				discordInteractionResponseBuilder.Content = "Error: This is a guild command!";
-				discordInteractionResponseBuilder.IsEphemeral = true;
-				await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, discordInteractionResponseBuilder);
+				await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, CreateErrorResponse("Error: This is a guild command!"));
 				return;
 			}
 
-			var tag = Tags.FirstOrDefault(listTag => listTag.GuildId == context.Guild.Id && listTag.Name.Equals(tagName, StringComparison.InvariantCultureIgnoreCase));
+			var tagStore = GetTagStore(context.Services);
+			var normalizedTagName = TagStore.NormalizeName(tagName);
+			var tag = tagStore.Get(context.Guild.Id, normalizedTagName);
 			if (tag == null)
 			{
-				discordInteractionResponseBuilder.Content = $"Error: Tag {tagName.Sanitize().InlineCode()} not found!";
-				discordInteractionResponseBuilder.IsEphemeral = true;
-				await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, discordInteractionResponseBuilder);
+				await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, CreateErrorResponse($"Error: Tag {normalizedTagName.Sanitize().InlineCode()} not found!"));
+				return;
 			}
 
-			if (tag.OwnerId == context.User.Id || tag.OwnerId == context.Guild.OwnerId
-			                                   // This means if the command executor has the ManageMessages permission in one channel, they can delete a guild tag.
-			                                   // CHALLENGE: Get the guild permissions of the member instead of the channel permissions.
-			                                   || context.Member.PermissionsIn(context.Channel).HasPermission(Permissions.ManageMessages))
+			if (tag.OwnerId == context.User.Id || context.User.Id == context.Guild.OwnerId || context.Member.PermissionsIn(context.Channel).HasPermission(Permissions.ManageMessages))
 			{
-				Tags.Remove(tag);
-				discordInteractionResponseBuilder.Content = $"Tag {tagName.Sanitize().InlineCode()} was deleted!";
-				await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, discordInteractionResponseBuilder);
+				tagStore.TryDelete(context.Guild.Id, normalizedTagName, out _);
+				await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder
+				{
+					Content = $"Tag {normalizedTagName.Sanitize().InlineCode()} was deleted!"
+				});
+				return;
 			}
-			else
+
+			await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, CreateErrorResponse($"Error: Tag {normalizedTagName.Sanitize().InlineCode()} could not be deleted! You're missing the {"ManageMessages".InlineCode()} permission!"));
+		}
+
+		/// <summary>
+		///     Lists the most active tags in the current guild.
+		/// </summary>
+		/// <param name="context">Interaction context</param>
+		[SlashCommand("list", "Lists the tags that currently exist in this guild.", allowedContexts: [InteractionContextType.Guild], integrationTypes: [ApplicationCommandIntegrationTypes.GuildInstall])]
+		public static async Task ListAsync(InteractionContext context)
+		{
+			if (context.Guild == null)
 			{
-				discordInteractionResponseBuilder.Content = $"Error: Tag {tagName.Sanitize().InlineCode()} could not be deleted! You're missing the {"ManageMessages".InlineCode()} permission!";
-				discordInteractionResponseBuilder.IsEphemeral = true;
-				await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, discordInteractionResponseBuilder);
+				await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, CreateErrorResponse("Error: This is a guild command!"));
+				return;
 			}
+
+			var tags = GetTagStore(context.Services).List(context.Guild.Id);
+			if (tags.Count == 0)
+			{
+				await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, CreateErrorResponse("There are no tags yet. Create one with /tag_test create."));
+				return;
+			}
+
+			var preview = string.Join(Environment.NewLine, tags.Take(10)
+				.Select(tag => $"• {tag.Name.Sanitize().InlineCode()} — {tag.UseCount} uses by <@{tag.OwnerId}>"));
+
+			// CHALLENGE: Add pagination or category filters so the catalog still feels practical once a guild has more than a handful of tags.
+			var card = new DiscordContainerComponent(accentColor: new DiscordColor("#FEE75C"))
+				.AddComponent(new DiscordTextDisplayComponent($"## Tag catalog for {context.Guild.Name}"))
+				.AddComponent(new DiscordTextDisplayComponent(preview))
+				.AddComponent(new DiscordTextDisplayComponent($$"""
+					- Total tags: `{{tags.Count}}`
+					- Preview size: `{{Math.Min(tags.Count, 10)}}`
+
+					> This preview intentionally stays small so you can grow it into a richer catalog later.
+					"""));
+
+			await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder().WithV2Components()
+				.WithAllowedMentions([])
+				.AddComponents(card));
+		}
+
+		/// <summary>
+		///     Shows metadata for a single tag.
+		/// </summary>
+		/// <param name="context">Interaction context</param>
+		/// <param name="tagName">The tag to inspect.</param>
+		[SlashCommand("info", "Shows metadata for a single tag.", allowedContexts: [InteractionContextType.Guild], integrationTypes: [ApplicationCommandIntegrationTypes.GuildInstall])]
+		public static async Task InfoAsync(InteractionContext context, [Autocomplete(typeof(TagsAutocompleteProvider)), Option("name", "The tag to inspect.")] string tagName)
+		{
+			if (context.Guild == null)
+			{
+				await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, CreateErrorResponse("Error: This is a guild command!"));
+				return;
+			}
+
+			var tag = GetTagStore(context.Services).Get(context.Guild.Id, TagStore.NormalizeName(tagName));
+			if (tag == null)
+			{
+				await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, CreateErrorResponse($"Error: Tag {tagName.Sanitize().InlineCode()} not found!"));
+				return;
+			}
+
+			await context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder().WithV2Components()
+				.WithAllowedMentions([])
+				.AddComponents(BuildTagCard(tag)));
 		}
 	}
 }
@@ -180,13 +233,19 @@ internal sealed class TagsAutocompleteProvider : IAutocompleteProvider
 	/// </summary>
 	/// <param name="context">Special context of autocomplete.</param>
 	/// <returns>List of the options</returns>
-#pragma warning disable 1998
-	public async Task<IEnumerable<DiscordApplicationCommandAutocompleteChoice>> Provider(AutocompleteContext context)
-#pragma warning restore 1998
+	public Task<IEnumerable<DiscordApplicationCommandAutocompleteChoice>> Provider(AutocompleteContext context)
 	{
-		return context.FocusedOption == null
-			? null
-			: Tags.RealTags.Tags.Where(listTag => listTag.GuildId == context.Interaction.Guild.Id)
-				.Select(item => new DiscordApplicationCommandAutocompleteChoice(item.Name, item.Name)).ToList();
+		if (context.Guild == null)
+			return Task.FromResult<IEnumerable<DiscordApplicationCommandAutocompleteChoice>>([]);
+
+		var tagStore = context.Services.GetRequiredService<TagStore>();
+		var searchTerm = context.FocusedOption?.Value?.ToString() ?? string.Empty;
+		var tags = tagStore.List(context.Guild.Id)
+			.Where(tag => searchTerm.Length == 0 || tag.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
+			.Take(25)
+			.Select(tag => new DiscordApplicationCommandAutocompleteChoice(tag.Name, tag.Name))
+			.ToList();
+
+		return Task.FromResult<IEnumerable<DiscordApplicationCommandAutocompleteChoice>>(tags);
 	}
 }

@@ -1,11 +1,12 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 
 using DisCatSharp.ApplicationCommands;
 using DisCatSharp.ApplicationCommands.EventArgs;
-using DisCatSharp.VoiceNext;
+using DisCatSharp.Voice;
 
 using Microsoft.Extensions.Logging;
 
@@ -24,30 +25,30 @@ internal class Program
 	/// <param name="args">The args.</param>
 	private static async Task Main(string[] args)
 	{
-		// Logging! Let the user know that the bot started!
 		Console.WriteLine("Starting bot...");
 
-		// Create logger
 		Log.Logger = new LoggerConfiguration()
 			.MinimumLevel.Information()
 			.WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}")
 			.CreateLogger();
 
-		// CHALLENGE: Try making sure the token is provided! Hint: A Try/Catch block may be needed!
+		var token = ResolveToken(args);
+		if (token == null)
+		{
+			Log.Logger.Error("Provide a bot token as the first argument or set DISCATSHARP_TOKEN / DISCORD_TOKEN.");
+			return;
+		}
+
 		DiscordConfiguration discordConfiguration = new()
 		{
-			// The token is recieved from the command line arguments (bad practice in production!)
-			// Example: dotnet run <someBotTokenHere>
-			// CHALLENGE: Make it read from a file, optionally from a json file using System.Text.Json
-			// CHALLENGE #2: Try retriving the token from environment variables
-			Token = args[0],
+			Token = token,
 			LoggerFactory = new LoggerFactory().AddSerilog(Log.Logger)
 		};
 
 		DiscordClient discordClient = new(discordConfiguration);
 
 		// This line is needed to enable support for voice channels in the bot.
-		discordClient.UseVoiceNext();
+		discordClient.UseVoice();
 
 		// Let the user know that we're registering the commands.
 		discordClient.Logger.LogInformation("Registering application commands...");
@@ -73,9 +74,30 @@ internal class Program
 		// Use the default logger provided for easy reading
 		discordClient.Logger.LogInformation("Connection success! Logged in as {CurrentUserUsername}#{CurrentUserDiscriminator} ({CurrentUserId})", discordClient.CurrentUser.Username, discordClient.CurrentUser.Discriminator, discordClient.CurrentUser.Id);
 
-		// Listen for commands by putting this method to sleep and relying off of DiscordClient's event listeners
-		await Task.Delay(-1);
+		using var shutdown = new CancellationTokenSource();
+		Console.CancelKeyPress += (_, eventArgs) =>
+		{
+			eventArgs.Cancel = true;
+			shutdown.Cancel();
+		};
+
+		try
+		{
+			await Task.Delay(Timeout.InfiniteTimeSpan, shutdown.Token);
+		}
+		catch (TaskCanceledException)
+		{ }
+		finally
+		{
+			await discordClient.DisconnectAsync();
+			Log.CloseAndFlush();
+		}
 	}
+
+	private static string ResolveToken(string[] args)
+		=> args.Length > 0
+			? args[0]
+			: Environment.GetEnvironmentVariable("DISCATSHARP_TOKEN") ?? Environment.GetEnvironmentVariable("DISCORD_TOKEN");
 
 	/// <summary>
 	///     Fires when the user uses the slash command.

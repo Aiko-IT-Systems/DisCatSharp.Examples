@@ -1,5 +1,7 @@
 using System;
+using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 
 using DisCatSharp.ApplicationCommands;
@@ -30,63 +32,49 @@ public class Program
 	/// <param name="args">The args.</param>
 	public static async Task MainAsync(string[] args)
 	{
-		// Logging! Let the user know that the bot started!
 		Console.WriteLine("Starting bot...");
 
-		// Create logger
 		Log.Logger = new LoggerConfiguration()
 			.MinimumLevel.Debug()
 			.WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}")
 			.CreateLogger();
 
-		// CHALLENGE: Try making sure the token is provided! Hint: A Try/Catch block may be needed!
+		var token = ResolveToken(args);
+		if (token == null)
+		{
+			Log.Logger.Error("Provide a bot token as the first argument or set DISCATSHARP_TOKEN / DISCORD_TOKEN.");
+			return;
+		}
+
 		DiscordConfiguration discordConfiguration = new()
 		{
-			// The token is recieved from the command line arguments (bad practice in production!)
-			// Example: dotnet run <someBotTokenHere>
-			// CHALLENGE: Make it read from a file, optionally from a json file using System.Text.Json
-			// CHALLENGE #2: Try retriving the token from environment variables
-			Token = args[0],
+			Token = token,
 			LoggerFactory = new LoggerFactory().AddSerilog(Log.Logger)
 		};
 
 		DiscordShardedClient discordShardedClient = new(discordConfiguration);
 
-		// Register a Random class instance now for use later over in RollRandom.cs
-		ApplicationCommandsConfiguration appCommandsConfiguration = new(new ServiceCollection().AddSingleton<Random>().BuildServiceProvider())
+		ApplicationCommandsConfiguration appCommandsConfiguration = new(new ServiceCollection()
+			.AddSingleton(Random.Shared)
+			.AddSingleton<TagStore>()
+			.BuildServiceProvider())
 		{
 			DebugStartup = true
 		};
 
-		// Let the user know that we're registering the commands.
 		discordShardedClient.Logger.LogInformation("Registering application commands...");
 
-		// If the guild ID is not provided, then register global commands.
-		ulong? guildId = null;
-		if (args.Length > 1)
-			guildId = ulong.Parse(args[1]);
-
-		// In order not to list all the commands when adding, you can create a list of all commands with this.
-		/*Type appCommandModule = typeof(ApplicationCommandsModule);
-		var commands = Assembly.GetExecutingAssembly().GetTypes().Where(t => appCommandModule.IsAssignableFrom(t) && !t.IsNested).ToList();*/
+		var guildId = ResolveGuildId(args);
 
 		foreach (var discordClient in discordShardedClient.ShardClients.Values)
 		{
 			var appCommandShardExtension = discordClient.UseApplicationCommands(appCommandsConfiguration);
 
-			// Register event handlers
 			appCommandShardExtension.SlashCommandExecuted += Slash_SlashCommandExecutedAsync;
 			appCommandShardExtension.SlashCommandErrored += Slash_SlashCommandErroredAsync;
 			appCommandShardExtension.ContextMenuExecuted += Context_ContextMenuCommandExecutedAsync;
 			appCommandShardExtension.ContextMenuErrored += Context_ContextMenuCommandErroredAsync;
 
-			/*foreach (var command in commands)
-			{
-				if (guildId != null)
-					appCommandShardExtension.RegisterGuildCommands(command, (ulong)guildId);
-				else
-					appCommandShardExtension.RegisterGlobalCommands(command);
-			}*/
 			if (guildId != null)
 				appCommandShardExtension.RegisterGuildCommands(Assembly.GetExecutingAssembly(), (ulong)guildId);
 			else
@@ -95,15 +83,38 @@ public class Program
 
 		discordShardedClient.Logger.LogInformation("Application commands registered successfully");
 
+		using var shutdown = new CancellationTokenSource();
+		Console.CancelKeyPress += (_, eventArgs) =>
+		{
+			eventArgs.Cancel = true;
+			shutdown.Cancel();
+		};
+
 		Log.Logger.Information("Connecting to Discord...");
 		await discordShardedClient.StartAsync();
 
-		// Use the default logger provided for easy reading
 		discordShardedClient.Logger.LogInformation("Connection success! Logged in as {UsernameWithDiscriminator} ({CurrentUserId})", discordShardedClient.CurrentUser.UsernameWithDiscriminator, discordShardedClient.CurrentUser.Id);
 
-		// Listen for commands by putting this method to sleep and relying off of DiscordClient's event listeners
-		await Task.Delay(-1);
+		try
+		{
+			await Task.Delay(Timeout.InfiniteTimeSpan, shutdown.Token);
+		}
+		catch (TaskCanceledException)
+		{ }
+		finally
+		{
+			await discordShardedClient.StopAsync();
+			Log.CloseAndFlush();
+		}
 	}
+
+	private static ulong? ResolveGuildId(string[] args)
+		=> args.Length > 1 && ulong.TryParse(args[1], out var guildId) ? guildId : null;
+
+	private static string ResolveToken(string[] args)
+		=> args.FirstOrDefault(static argument => !string.IsNullOrWhiteSpace(argument))
+			?? Environment.GetEnvironmentVariable("DISCATSHARP_TOKEN")
+			?? Environment.GetEnvironmentVariable("DISCORD_TOKEN");
 
 	/// <summary>
 	///     Fires when the user uses the slash command.
