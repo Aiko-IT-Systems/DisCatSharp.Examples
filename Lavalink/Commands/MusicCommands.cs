@@ -17,6 +17,54 @@ namespace DisCatSharp.Examples.Lavalink.Commands;
 /// </summary>
 public class MusicCommands : ApplicationCommandsModule
 {
+	private static async Task<(LavalinkGuildPlayer Connection, bool Failed)> TryGetGuildPlayerAsync(BaseContext ctx)
+	{
+		if (ctx.Member?.VoiceState?.Channel == null)
+		{
+			await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new()
+			{
+				IsEphemeral = true,
+				Content = "You must be connected to a voice channel to use this command!"
+			});
+			return (null, true);
+		}
+
+		var lava = ctx.Client.GetLavalink();
+		if (!lava.ConnectedSessions.Any())
+		{
+			await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new()
+			{
+				IsEphemeral = true,
+				Content = "The Lavalink connection is not established!"
+			});
+			return (null, true);
+		}
+
+		var node = lava.ConnectedSessions.Values.First();
+		var connection = node.GetGuildPlayer(ctx.Guild);
+		if (connection == null)
+		{
+			await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new()
+			{
+				IsEphemeral = true,
+				Content = "The bot is not connected to the voice channel in this guild!"
+			});
+			return (null, true);
+		}
+
+		if (ctx.Member.VoiceState.Channel != connection.Channel)
+		{
+			await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new()
+			{
+				IsEphemeral = true,
+				Content = "You must be in the same voice channel as the bot!"
+			});
+			return (null, true);
+		}
+
+		return (connection, false);
+	}
+
 	/// <summary>
 	///     Play music asynchronously.
 	/// </summary>
@@ -25,29 +73,9 @@ public class MusicCommands : ApplicationCommandsModule
 	[SlashCommand("play", "Play music asynchronously")]
 	public static async Task PlayAsync(InteractionContext ctx, [Option("query", "Search string or Youtube link")] string query)
 	{
-		var lava = ctx.Client.GetLavalink();
-		var node = lava.ConnectedSessions.Values.First();
-		var connection = node.GetGuildPlayer(ctx.Member.VoiceState.Guild);
-
-		if (connection == null)
-		{
-			await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new()
-			{
-				IsEphemeral = true,
-				Content = "The bot is not connected to the voice channel in this guild!"
-			});
+		var (connection, failed) = await TryGetGuildPlayerAsync(ctx);
+		if (failed)
 			return;
-		}
-
-		if (ctx.Member.VoiceState == null || ctx.Member.VoiceState.Channel == null || ctx.Member.VoiceState.Channel != connection.Channel)
-		{
-			await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new()
-			{
-				IsEphemeral = true,
-				Content = "You must be in the same voice channel as the bot!"
-			});
-			return;
-		}
 
 		LavalinkTrackLoadingResult tracks;
 
@@ -55,7 +83,7 @@ public class MusicCommands : ApplicationCommandsModule
 		if (Uri.TryCreate(query, UriKind.Absolute, out var uriResult) &&
 			(uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps))
 			// Get track from the url
-			tracks = await connection.LoadTracksAsync(uriResult.AbsolutePath);
+			tracks = await connection.LoadTracksAsync(uriResult.AbsoluteUri);
 		else
 			// Search track in Youtube
 			tracks = await connection.LoadTracksAsync(query);
@@ -92,29 +120,9 @@ public class MusicCommands : ApplicationCommandsModule
 	[SlashCommand("pause", "Pause playback")]
 	public static async Task PauseAsync(InteractionContext ctx)
 	{
-		var lava = ctx.Client.GetLavalink();
-		var node = lava.ConnectedSessions.Values.First();
-		var connection = node.GetGuildPlayer(ctx.Member.VoiceState.Guild);
-
-		if (connection == null)
-		{
-			await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new()
-			{
-				IsEphemeral = true,
-				Content = "The bot is not connected to the voice channel in this guild!"
-			});
+		var (connection, failed) = await TryGetGuildPlayerAsync(ctx);
+		if (failed)
 			return;
-		}
-
-		if (ctx.Member.VoiceState == null || ctx.Member.VoiceState.Channel == null || ctx.Member.VoiceState.Channel != connection.Channel)
-		{
-			await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new()
-			{
-				IsEphemeral = true,
-				Content = "You must be in the same voice channel as the bot!"
-			});
-			return;
-		}
 
 		// Pause playback
 		await connection.PauseAsync();
@@ -132,29 +140,9 @@ public class MusicCommands : ApplicationCommandsModule
 	[SlashCommand("resume", "Resume playback")]
 	public static async Task ResumeAsync(InteractionContext ctx)
 	{
-		var lava = ctx.Client.GetLavalink();
-		var node = lava.ConnectedSessions.Values.First();
-		var connection = node.GetGuildPlayer(ctx.Member.VoiceState.Guild);
-
-		if (connection == null)
-		{
-			await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new()
-			{
-				IsEphemeral = true,
-				Content = "The bot is not connected to the voice channel in this guild!"
-			});
+		var (connection, failed) = await TryGetGuildPlayerAsync(ctx);
+		if (failed)
 			return;
-		}
-
-		if (ctx.Member.VoiceState == null || ctx.Member.VoiceState.Channel == null || ctx.Member.VoiceState.Channel != connection.Channel)
-		{
-			await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new()
-			{
-				IsEphemeral = true,
-				Content = "You must be in the same voice channel as the bot!"
-			});
-			return;
-		}
 
 		// Resume playback
 		await connection.ResumeAsync();
@@ -172,29 +160,9 @@ public class MusicCommands : ApplicationCommandsModule
 	[SlashCommand("stop", "Stop playback")]
 	public static async Task StopAsync(InteractionContext ctx)
 	{
-		var lava = ctx.Client.GetLavalink();
-		var node = lava.ConnectedSessions.Values.First();
-		var connection = node.GetGuildPlayer(ctx.Member.VoiceState.Guild);
-
-		if (connection == null)
-		{
-			await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new()
-			{
-				IsEphemeral = true,
-				Content = "The bot is not connected to the voice channel in this guild!"
-			});
+		var (connection, failed) = await TryGetGuildPlayerAsync(ctx);
+		if (failed)
 			return;
-		}
-
-		if (ctx.Member.VoiceState == null || ctx.Member.VoiceState.Channel == null || ctx.Member.VoiceState.Channel != connection.Channel)
-		{
-			await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new()
-			{
-				IsEphemeral = true,
-				Content = "You must be in the same voice channel as the bot!"
-			});
-			return;
-		}
 
 		await connection.StopAsync();
 
@@ -212,30 +180,9 @@ public class MusicCommands : ApplicationCommandsModule
 	public static async Task PlayAsync(ContextMenuContext ctx)
 	{
 		var query = ctx.TargetMessage.Content;
-
-		var lava = ctx.Client.GetLavalink();
-		var node = lava.ConnectedSessions.Values.First();
-		var connection = node.GetGuildPlayer(ctx.Member.VoiceState.Guild);
-
-		if (connection == null)
-		{
-			await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new()
-			{
-				IsEphemeral = true,
-				Content = "The bot is not connected to the voice channel in this guild!"
-			});
+		var (connection, failed) = await TryGetGuildPlayerAsync(ctx);
+		if (failed)
 			return;
-		}
-
-		if (ctx.Member.VoiceState == null || ctx.Member.VoiceState.Channel == null || ctx.Member.VoiceState.Channel != connection.Channel)
-		{
-			await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new()
-			{
-				IsEphemeral = true,
-				Content = "You must be in the same voice channel as the bot!"
-			});
-			return;
-		}
 
 		LavalinkTrackLoadingResult tracks;
 

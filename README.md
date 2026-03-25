@@ -13,7 +13,7 @@ You need a compatible IDE to work with it, and .NET 9 SDK.
 | **ApplicationCommands** | Yes            | Create and use application commands: registration, deferred responses, Components V2 cards, autocomplete, DI-backed tags, role/help cards, and other practical command patterns. |
 | **Interactivity**       | Yes            | Interactivity, components (buttons, select menus), threads, stages, owner-scoped panels, and a practical multi-step task workflow with modal capture and follow-up handling. |
 | **VoiceNext**           | Yes            | Play local audio files and record incoming voice into timeline-aware per-speaker WAV files with the modern `DisCatSharp.Voice` package. |
-| **Lavalink**            | No             | Play audio from YouTube in voice channels.                                                        |
+| **Lavalink**            | Yes            | Play audio from YouTube in voice channels with the current `DisCatSharp.Lavalink` package.       |
 | **Hosting**             | Yes            | Initialize a bot as a service and surface host-backed runtime status through Components V2 cards. |
 
 ### Components V2 feature map
