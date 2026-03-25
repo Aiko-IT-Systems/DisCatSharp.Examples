@@ -12,7 +12,7 @@ You need a compatible IDE to work with it, and .NET 9 SDK.
 | **Basics**              | Yes            | Bot initialization plus approachable command and slash-command flows such as reminders, avatar media-gallery previews, and Components V2-first teaching surfaces with room for challenge-driven extensions. |
 | **ApplicationCommands** | Yes            | Create and use application commands: registration, deferred responses, Components V2 cards, autocomplete, DI-backed tags, role/help cards, and other practical command patterns. |
 | **Interactivity**       | Yes            | Interactivity, components (buttons, select menus), threads, stages, owner-scoped panels, and a practical multi-step task workflow with modal capture and follow-up handling. |
-| **VoiceNext**           | No             | Play local audio files in voice channels with the modern `DisCatSharp.Voice` package.             |
+| **VoiceNext**           | Yes            | Play local audio files and record incoming voice into timeline-aware per-speaker WAV files with the modern `DisCatSharp.Voice` package. |
 | **Lavalink**            | No             | Play audio from YouTube in voice channels.                                                        |
 | **Hosting**             | Yes            | Initialize a bot as a service and surface host-backed runtime status through Components V2 cards. |
 
@@ -30,3 +30,4 @@ You need a compatible IDE to work with it, and .NET 9 SDK.
 | `Hosting\Commands\AppCommands.cs` | Yes | Yes | No | No | No | Host-backed runtime status card for slash commands. |
 | `Interactivity\Commands\InteractivityCommands.cs` | Yes | Yes | No | No | Yes | Message, reaction, button, select, and workflow examples; `/workflow` now captures details via modal before follow-up buttons. |
 | `Interactivity\Program.cs` | Yes | Yes | No | No | No | Owner-scoped randomizer edits persistent Components V2 panels. |
+| `VoiceNext\Commands\RecordingCommands.cs` | Yes | Yes | No | No | No | Recording start/status/stop flows render Components V2 cards while uploading teachable, timeline-aware per-speaker WAV files. |

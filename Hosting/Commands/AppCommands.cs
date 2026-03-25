@@ -4,8 +4,8 @@ using DisCatSharp.ApplicationCommands;
 using DisCatSharp.ApplicationCommands.Attributes;
 using DisCatSharp.ApplicationCommands.Context;
 using DisCatSharp.Entities;
-using DisCatSharp.Examples.Hosting.Services;
 using DisCatSharp.Enums;
+using DisCatSharp.Examples.Hosting.Services;
 
 using Microsoft.Extensions.DependencyInjection;
 

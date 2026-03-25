@@ -47,6 +47,16 @@ public class ConnectionCommands : ApplicationCommandsModule
 	[SlashCommand("leave", "Leave the voice channel")]
 	public static async Task LeaveAsync(InteractionContext ctx)
 	{
+		if (VoiceRecordingStore.Get(ctx.Guild.Id) != null)
+		{
+			await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new()
+			{
+				IsEphemeral = true,
+				Content = "Stop the active recording with `/record_stop` before leaving so the example can upload the WAV files."
+			});
+			return;
+		}
+
 		// Get the current voice connection in the guild.
 		var vnext = ctx.Client.GetVoice();
 		var connection = vnext.GetConnection(ctx.Guild);

@@ -28,9 +28,9 @@ internal class Program
 		Console.WriteLine("Starting bot...");
 
 		Log.Logger = new LoggerConfiguration()
-			.MinimumLevel.Information()
-			.WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}")
-			.CreateLogger();
+		.MinimumLevel.Information()
+		.WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}")
+		.CreateLogger();
 
 		var token = ResolveToken(args);
 		if (token == null)
@@ -47,8 +47,11 @@ internal class Program
 
 		DiscordClient discordClient = new(discordConfiguration);
 
-		// This line is needed to enable support for voice channels in the bot.
-		discordClient.UseVoice();
+		// Enable inbound audio so the recording commands can subscribe to VoiceReceived and write WAV files.
+		discordClient.UseVoice(new VoiceConfiguration
+		{
+			EnableIncoming = true
+		});
 
 		// Let the user know that we're registering the commands.
 		discordClient.Logger.LogInformation("Registering application commands...");
@@ -95,9 +98,9 @@ internal class Program
 	}
 
 	private static string ResolveToken(string[] args)
-		=> args.Length > 0
-			? args[0]
-			: Environment.GetEnvironmentVariable("DISCATSHARP_TOKEN") ?? Environment.GetEnvironmentVariable("DISCORD_TOKEN");
+	=> args.Length > 0
+	? args[0]
+	: Environment.GetEnvironmentVariable("DISCATSHARP_TOKEN") ?? Environment.GetEnvironmentVariable("DISCORD_TOKEN");
 
 	/// <summary>
 	///     Fires when the user uses the slash command.

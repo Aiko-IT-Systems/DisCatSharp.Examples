@@ -152,7 +152,7 @@ internal sealed class Bot : IDisposable
 	private void RegisterCommands(CommandsNextExtension cnext, ApplicationCommandsExtension appCommands)
 	{
 		cnext.RegisterCommands<Commands.Main>(); // Commands.Main = Ordner.Class
-		// appCommands.RegisterCommands<AppCommands.Main>(devguild); // use to register on guild
+												 // appCommands.RegisterCommands<AppCommands.Main>(devguild); // use to register on guild
 		appCommands.RegisterGlobalCommands<AppCommands.Main>(); // use to register global (can take up to an hour)
 	}
 

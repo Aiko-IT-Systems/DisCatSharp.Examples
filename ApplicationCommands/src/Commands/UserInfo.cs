@@ -48,11 +48,11 @@ public class UserInfo : ApplicationCommandsModule
 		{
 			// Add info to message content.
 			Content = $"Username: {context.TargetMember.Username + "#" + context.TargetMember.Discriminator}\n" +
-			          $"Nickname: {context.TargetMember.Nickname ?? "`Empty`"}\n" +
-			          $"Registered: {context.TargetMember.CreationTimestamp}\n" +
-			          $"Joined: {context.TargetMember.JoinedAt}\n" +
-			          $"Admin: {context.TargetMember.Permissions.HasPermission(Permissions.Administrator)}\n" +
-			          $"Owner: {context.TargetMember.IsOwner}"
+					  $"Nickname: {context.TargetMember.Nickname ?? "`Empty`"}\n" +
+					  $"Registered: {context.TargetMember.CreationTimestamp}\n" +
+					  $"Joined: {context.TargetMember.JoinedAt}\n" +
+					  $"Admin: {context.TargetMember.Permissions.HasPermission(Permissions.Administrator)}\n" +
+					  $"Owner: {context.TargetMember.IsOwner}"
 		};
 
 		// Send the message. InteractionResponseType.ChannelMessageWithSource means that the command executed within 3 seconds and has the results ready.

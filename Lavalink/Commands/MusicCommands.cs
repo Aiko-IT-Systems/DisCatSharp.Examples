@@ -53,7 +53,7 @@ public class MusicCommands : ApplicationCommandsModule
 
 		// Check if query is valid url
 		if (Uri.TryCreate(query, UriKind.Absolute, out var uriResult) &&
-		    (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps))
+			(uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps))
 			// Get track from the url
 			tracks = await connection.LoadTracksAsync(uriResult.AbsolutePath);
 		else
@@ -241,7 +241,7 @@ public class MusicCommands : ApplicationCommandsModule
 
 		// Check if query is valid url
 		if (Uri.TryCreate(query, UriKind.Absolute, out var uriResult) &&
-		    (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps))
+			(uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps))
 			// Get track from the url
 			tracks = await connection.LoadTracksAsync(uriResult.AbsoluteUri);
 		else
@@ -250,8 +250,8 @@ public class MusicCommands : ApplicationCommandsModule
 
 		//If something went wrong on Lavalink's end
 		if (tracks.LoadType == LavalinkLoadResultType.Error
-		    //or it just couldn't find anything.
-		    || tracks.LoadType == LavalinkLoadResultType.Empty)
+			//or it just couldn't find anything.
+			|| tracks.LoadType == LavalinkLoadResultType.Empty)
 		{
 			await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new()
 			{
