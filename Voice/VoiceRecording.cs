@@ -16,7 +16,7 @@ using DisCatSharp.Voice.EventArgs;
 
 using Microsoft.Extensions.Logging;
 
-namespace DisCatSharp.Examples.VoiceNext;
+namespace DisCatSharp.Examples.Voice;
 
 internal static class VoiceRecordingStore
 {

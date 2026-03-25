@@ -8,5 +8,5 @@
   <Project Path="Hosting/Hosting.csproj" />
   <Project Path="Interactivity/Interactivity.csproj" />
   <Project Path="Lavalink/Lavalink.csproj" />
-  <Project Path="VoiceNext/VoiceNext.csproj" />
+  <Project Path="Voice/Voice.csproj" />
 </Solution>

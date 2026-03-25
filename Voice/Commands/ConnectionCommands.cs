@@ -6,7 +6,7 @@ using DisCatSharp.ApplicationCommands.Context;
 using DisCatSharp.Enums;
 using DisCatSharp.Voice;
 
-namespace DisCatSharp.Examples.VoiceNext.Commands;
+namespace DisCatSharp.Examples.Voice.Commands;
 
 /// <summary>
 ///     Commands to connect and disconnect to the voice channel.
@@ -58,8 +58,8 @@ public class ConnectionCommands : ApplicationCommandsModule
 		}
 
 		// Get the current voice connection in the guild.
-		var vnext = ctx.Client.GetVoice();
-		var connection = vnext.GetConnection(ctx.Guild);
+		var voice = ctx.Client.GetVoice();
+		var connection = voice.GetConnection(ctx.Guild);
 
 		// Check if the bot is currently connected to the voice channel
 		if (connection == null)

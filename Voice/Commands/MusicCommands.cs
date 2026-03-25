@@ -9,7 +9,7 @@ using DisCatSharp.ApplicationCommands.Context;
 using DisCatSharp.Enums;
 using DisCatSharp.Voice;
 
-namespace DisCatSharp.Examples.VoiceNext.Commands;
+namespace DisCatSharp.Examples.Voice.Commands;
 
 /// <summary>
 ///     Playback control with these commands.
@@ -31,8 +31,8 @@ public class MusicCommands : ApplicationCommandsModule
 	public static async Task PlayAsync(InteractionContext ctx, [Option("path", "Path to the audio file")] string path)
 	{
 		// Get the current voice connection in the guild.
-		var vnext = ctx.Client.GetVoice();
-		var connection = vnext.GetConnection(ctx.Guild);
+		var voice = ctx.Client.GetVoice();
+		var connection = voice.GetConnection(ctx.Guild);
 
 		if (connection == null)
 		{
@@ -96,8 +96,8 @@ public class MusicCommands : ApplicationCommandsModule
 	public static async Task PauseAsync(InteractionContext ctx)
 	{
 		// Get the current voice connection in the guild.
-		var vnext = ctx.Client.GetVoice();
-		var connection = vnext.GetConnection(ctx.Guild);
+		var voice = ctx.Client.GetVoice();
+		var connection = voice.GetConnection(ctx.Guild);
 
 		if (connection == null)
 		{
@@ -136,8 +136,8 @@ public class MusicCommands : ApplicationCommandsModule
 	public static async Task ResumeAsync(InteractionContext ctx)
 	{
 		// Get the current voice connection in the guild.
-		var vnext = ctx.Client.GetVoice();
-		var connection = vnext.GetConnection(ctx.Guild);
+		var voice = ctx.Client.GetVoice();
+		var connection = voice.GetConnection(ctx.Guild);
 
 		if (connection == null)
 		{
@@ -176,8 +176,8 @@ public class MusicCommands : ApplicationCommandsModule
 	public static async Task StopAsync(InteractionContext ctx)
 	{
 		// Get the current voice connection in the guild.
-		var vnext = ctx.Client.GetVoice();
-		var connection = vnext.GetConnection(ctx.Guild);
+		var voice = ctx.Client.GetVoice();
+		var connection = voice.GetConnection(ctx.Guild);
 
 		if (connection == null)
 		{

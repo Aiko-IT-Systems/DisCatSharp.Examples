@@ -12,7 +12,7 @@ using Microsoft.Extensions.Logging;
 
 using Serilog;
 
-namespace DisCatSharp.Examples.VoiceNext;
+namespace DisCatSharp.Examples.Voice;
 
 /// <summary>
 ///     The program.

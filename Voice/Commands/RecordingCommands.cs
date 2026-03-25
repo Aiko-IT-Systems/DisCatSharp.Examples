@@ -11,7 +11,7 @@ using DisCatSharp.Entities;
 using DisCatSharp.Enums;
 using DisCatSharp.Voice;
 
-namespace DisCatSharp.Examples.VoiceNext.Commands;
+namespace DisCatSharp.Examples.Voice.Commands;
 
 /// <summary>
 ///     Commands that demonstrate how to capture incoming voice and turn it into teachable WAV recordings.

@@ -1,6 +1,6 @@
 # Voice Example
 
-This sample still lives in the `VoiceNext` folder, but the package reference now targets the modern `DisCatSharp.Voice` package introduced in the 10.7.0 line.
+This sample lives in the `Voice` folder and targets the modern `DisCatSharp.Voice` package introduced in the 10.7.0 line.
 
 ## What this sample covers
 
