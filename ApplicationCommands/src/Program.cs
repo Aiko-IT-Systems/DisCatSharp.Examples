@@ -52,7 +52,7 @@ public class Program
 			LoggerFactory = new LoggerFactory().AddSerilog(Log.Logger)
 		};
 
-		DiscordShardedClient discordShardedClient = new(discordConfiguration);
+		DiscordClient discordClient = new(discordConfiguration);
 
 		ApplicationCommandsConfiguration appCommandsConfiguration = new(new ServiceCollection()
 			.AddSingleton(Random.Shared)
@@ -62,26 +62,23 @@ public class Program
 			DebugStartup = true
 		};
 
-		discordShardedClient.Logger.LogInformation("Registering application commands...");
+		discordClient.Logger.LogInformation("Registering application commands...");
 
 		var guildId = ResolveGuildId(args);
 
-		foreach (var discordClient in discordShardedClient.ShardClients.Values)
-		{
-			var appCommandShardExtension = discordClient.UseApplicationCommands(appCommandsConfiguration);
+		var appCommandExtension = discordClient.UseApplicationCommands(appCommandsConfiguration);
 
-			appCommandShardExtension.SlashCommandExecuted += Slash_SlashCommandExecutedAsync;
-			appCommandShardExtension.SlashCommandErrored += Slash_SlashCommandErroredAsync;
-			appCommandShardExtension.ContextMenuExecuted += Context_ContextMenuCommandExecutedAsync;
-			appCommandShardExtension.ContextMenuErrored += Context_ContextMenuCommandErroredAsync;
+		appCommandExtension.SlashCommandExecuted += Slash_SlashCommandExecutedAsync;
+		appCommandExtension.SlashCommandErrored += Slash_SlashCommandErroredAsync;
+		appCommandExtension.ContextMenuExecuted += Context_ContextMenuCommandExecutedAsync;
+		appCommandExtension.ContextMenuErrored += Context_ContextMenuCommandErroredAsync;
 
-			if (guildId != null)
-				appCommandShardExtension.RegisterGuildCommands(Assembly.GetExecutingAssembly(), (ulong)guildId);
-			else
-				appCommandShardExtension.RegisterGlobalCommands(Assembly.GetExecutingAssembly());
-		}
+		if (guildId != null)
+			appCommandExtension.RegisterGuildCommands(Assembly.GetExecutingAssembly(), (ulong)guildId);
+		else
+			appCommandExtension.RegisterGlobalCommands(Assembly.GetExecutingAssembly());
 
-		discordShardedClient.Logger.LogInformation("Application commands registered successfully");
+		discordClient.Logger.LogInformation("Application commands registered successfully");
 
 		using var shutdown = new CancellationTokenSource();
 		Console.CancelKeyPress += (_, eventArgs) =>
@@ -91,9 +88,9 @@ public class Program
 		};
 
 		Log.Logger.Information("Connecting to Discord...");
-		await discordShardedClient.StartAsync();
+		await discordClient.ConnectAsync();
 
-		discordShardedClient.Logger.LogInformation("Connection success! Logged in as {UsernameWithDiscriminator} ({CurrentUserId})", discordShardedClient.CurrentUser.UsernameWithDiscriminator, discordShardedClient.CurrentUser.Id);
+		discordClient.Logger.LogInformation("Connection success! Logged in as {UsernameWithDiscriminator} ({CurrentUserId})", discordClient.CurrentUser.UsernameWithDiscriminator, discordClient.CurrentUser.Id);
 
 		try
 		{
@@ -103,7 +100,7 @@ public class Program
 		{ }
 		finally
 		{
-			await discordShardedClient.StopAsync();
+			await discordClient.DisconnectAsync();
 			Log.CloseAndFlush();
 		}
 	}
